@@ -228,6 +228,7 @@ int i;
         [_view_settings setHidden:YES];
         CGRect r = [_view_settings frame];
         r.origin.y = self.view_settings.frame.origin.y;
+        
         [_view_settings setFrame:r];
         [UIView animateWithDuration:0.3
                               delay:0.0
@@ -235,6 +236,7 @@ int i;
                             options:UIViewAnimationOptionCurveEaseIn
                          animations:^(void) {
                              self.view_bottom_menu.frame =  CGRectMake(0,0,self.view.frame.size.width, self.view.frame.size.height);
+                             
                          }
                          completion:NULL];
         self.view_settings.hidden=YES;
