@@ -1,0 +1,6 @@
+framework module Pods_melodyUITests {
+  umbrella header "Pods-melodyUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

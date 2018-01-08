@@ -1,0 +1,210 @@
+PODS:
+  - ActionSheetPicker-3.0 (2.2.0)
+  - AFNetworking (3.1.0):
+    - AFNetworking/NSURLSession (= 3.1.0)
+    - AFNetworking/Reachability (= 3.1.0)
+    - AFNetworking/Security (= 3.1.0)
+    - AFNetworking/Serialization (= 3.1.0)
+    - AFNetworking/UIKit (= 3.1.0)
+  - AFNetworking/NSURLSession (3.1.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.1.0)
+  - AFNetworking/Security (3.1.0)
+  - AFNetworking/Serialization (3.1.0)
+  - AFNetworking/UIKit (3.1.0):
+    - AFNetworking/NSURLSession
+  - Bolts (1.8.4):
+    - Bolts/AppLinks (= 1.8.4)
+    - Bolts/Tasks (= 1.8.4)
+  - Bolts/AppLinks (1.8.4):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.8.4)
+  - Braintree (4.8.5):
+    - Braintree/Card (= 4.8.5)
+    - Braintree/Core (= 4.8.5)
+    - Braintree/PayPal (= 4.8.5)
+    - Braintree/UI (= 4.8.5)
+  - Braintree/3D-Secure (4.8.5):
+    - Braintree/Card
+    - Braintree/Core
+  - Braintree/Apple-Pay (4.8.5):
+    - Braintree/Core
+  - Braintree/Card (4.8.5):
+    - Braintree/Core
+  - Braintree/Core (4.8.5)
+  - Braintree/PayPal (4.8.5):
+    - Braintree/Core
+    - Braintree/PayPalOneTouch
+  - Braintree/PayPalDataCollector (4.8.5):
+    - Braintree/Core
+    - Braintree/PayPalUtils
+  - Braintree/PayPalOneTouch (4.8.5):
+    - Braintree/Core
+    - Braintree/PayPalDataCollector
+    - Braintree/PayPalUtils
+  - Braintree/PayPalUtils (4.8.5)
+  - Braintree/UI (4.8.5):
+    - Braintree/Card
+    - Braintree/Core
+  - Braintree/UnionPay (4.8.5):
+    - Braintree/Card
+    - Braintree/Core
+  - Braintree/Venmo (4.8.5):
+    - Braintree/Core
+    - Braintree/PayPalDataCollector
+  - BraintreeDropIn (5.2.2):
+    - BraintreeDropIn/DropIn (= 5.2.2)
+  - BraintreeDropIn/DropIn (5.2.2):
+    - Braintree/Card (~> 4.0)
+    - Braintree/Core (~> 4.0)
+    - Braintree/UnionPay (~> 4.0)
+    - BraintreeDropIn/UIKit
+  - BraintreeDropIn/UIKit (5.2.2)
+  - Crashlytics (3.8.5):
+    - Fabric (~> 1.6.3)
+  - Fabric (1.6.11)
+  - FBSDKCoreKit (4.25.0):
+    - Bolts (~> 1.7)
+  - FBSDKLoginKit (4.25.0):
+    - FBSDKCoreKit
+  - FBSDKShareKit (4.25.0):
+    - FBSDKCoreKit
+  - Firebase/Auth (3.11.0):
+    - Firebase/Core
+    - FirebaseAuth (= 3.1.0)
+  - Firebase/Core (3.11.0):
+    - FirebaseAnalytics (= 3.6.0)
+    - FirebaseCore (= 3.4.6)
+  - Firebase/Crash (3.11.0):
+    - Firebase/Core
+    - FirebaseCrash (= 1.1.4)
+  - Firebase/Messaging (3.11.0):
+    - Firebase/Core
+    - FirebaseMessaging (= 1.2.1)
+  - FirebaseAnalytics (3.6.0):
+    - FirebaseCore (~> 3.4)
+    - FirebaseInstanceID (~> 1.0)
+    - GoogleInterchangeUtilities (~> 1.2)
+    - GoogleSymbolUtilities (~> 1.1)
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+  - FirebaseAuth (3.1.0):
+    - FirebaseAnalytics (~> 3.6)
+    - GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)
+    - GTMSessionFetcher/Core (~> 1.1)
+  - FirebaseCore (3.4.6):
+    - GoogleInterchangeUtilities (~> 1.2)
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+  - FirebaseCrash (1.1.4):
+    - FirebaseAnalytics (~> 3.5)
+    - FirebaseInstanceID (~> 1.0)
+    - GoogleInterchangeUtilities (~> 1.2)
+    - GoogleSymbolUtilities (~> 1.1)
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+  - FirebaseInstanceID (1.0.8)
+  - FirebaseMessaging (1.2.1):
+    - FirebaseAnalytics (~> 3.4)
+    - FirebaseInstanceID (~> 1.0)
+    - GoogleInterchangeUtilities (~> 1.2)
+    - GoogleSymbolUtilities (~> 1.1)
+    - GoogleToolboxForMac/Logger (~> 2.1)
+  - GoogleAPIClientForREST/Core (1.2.1):
+    - GTMSessionFetcher (>= 1.1.7)
+  - GoogleAPIClientForREST/Gmail (1.2.1):
+    - GoogleAPIClientForREST/Core
+    - GTMSessionFetcher (>= 1.1.7)
+  - GoogleInterchangeUtilities (1.2.2):
+    - GoogleSymbolUtilities (~> 1.1)
+  - GoogleSignIn (4.0.2):
+    - GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)
+    - GoogleToolboxForMac/NSString+URLArguments (~> 2.1)
+    - GTMOAuth2 (~> 1.0)
+    - GTMSessionFetcher/Core (~> 1.1)
+  - GoogleSymbolUtilities (1.1.2)
+  - GoogleToolboxForMac/DebugUtils (2.1.0):
+    - GoogleToolboxForMac/Defines (= 2.1.0)
+  - GoogleToolboxForMac/Defines (2.1.0)
+  - GoogleToolboxForMac/Logger (2.1.0):
+    - GoogleToolboxForMac/Defines (= 2.1.0)
+  - GoogleToolboxForMac/NSData+zlib (2.1.0):
+    - GoogleToolboxForMac/Defines (= 2.1.0)
+  - GoogleToolboxForMac/NSDictionary+URLArguments (2.1.0):
+    - GoogleToolboxForMac/DebugUtils (= 2.1.0)
+    - GoogleToolboxForMac/Defines (= 2.1.0)
+    - GoogleToolboxForMac/NSString+URLArguments (= 2.1.0)
+  - GoogleToolboxForMac/NSString+URLArguments (2.1.0)
+  - GTMOAuth2 (1.1.4):
+    - GTMSessionFetcher (~> 1.1)
+  - GTMSessionFetcher (1.1.11):
+    - GTMSessionFetcher/Full (= 1.1.11)
+  - GTMSessionFetcher/Core (1.1.11)
+  - GTMSessionFetcher/Full (1.1.11):
+    - GTMSessionFetcher/Core (= 1.1.11)
+  - ProgressHUD (2.4)
+  - SDWebImage (4.1.0):
+    - SDWebImage/Core (= 4.1.0)
+  - SDWebImage/Core (4.1.0)
+  - TwitterCore (2.7.0):
+    - Fabric
+  - TwitterKit (2.7.0):
+    - TwitterCore (= 2.7.0)
+
+DEPENDENCIES:
+  - ActionSheetPicker-3.0
+  - AFNetworking
+  - Braintree
+  - Braintree/3D-Secure
+  - Braintree/Apple-Pay
+  - Braintree/PayPal
+  - Braintree/Venmo
+  - BraintreeDropIn
+  - Crashlytics
+  - Fabric
+  - FBSDKCoreKit
+  - FBSDKLoginKit
+  - FBSDKShareKit
+  - Firebase/Auth
+  - Firebase/Core
+  - Firebase/Crash
+  - Firebase/Messaging
+  - GoogleAPIClientForREST/Gmail (~> 1.2.1)
+  - GoogleSignIn
+  - ProgressHUD
+  - SDWebImage (~> 4.0)
+  - TwitterKit
+
+SPEC CHECKSUMS:
+  ActionSheetPicker-3.0: d11a4c12c6aaf704b8a3f56d179198c99f3e41e6
+  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
+  Braintree: 12225834d0e39ffad56888756a3c0d8bda043d53
+  BraintreeDropIn: 0ff4879547af66dae814911992e01324975d556d
+  Crashlytics: dfbae35ef22ca189240d230ad501feea4ee85d2d
+  Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
+  FBSDKCoreKit: 53e3f4bfb64e80c5f229dd30ae33ff57fbbbd2d1
+  FBSDKLoginKit: f628c09684dae9c17f071cf90b014e886f5093ea
+  FBSDKShareKit: aea699d3cac749af08e360f4e949b82ffa8813f5
+  Firebase: b8134e285eb33201115bc688bc5d7f112923bc1f
+  FirebaseAnalytics: 9c67af0ebeb8d2146c9b4ea2616439affa947b58
+  FirebaseAuth: b436e4ecebe068bf8e8c6e4e29de5756ffe7ee24
+  FirebaseCore: 03da1cb32615569bbc2830a22f9ad753d9a02ef5
+  FirebaseCrash: 34f0349908ec87945a5ae96c402e7201a3f3aede
+  FirebaseInstanceID: ba1e640935235e5fac39dfa816fe7660e72e1a8a
+  FirebaseMessaging: acf66347e43c5637c697060c3001d25c809a4131
+  GoogleAPIClientForREST: a8b95a252014ce2e618df6b75dc72eca2c00b4af
+  GoogleInterchangeUtilities: d5bc4d88d5b661ab72f9d70c58d02ca8c27ad1f7
+  GoogleSignIn: d7ad83f13480e1f30453471d00d19b5293ac46af
+  GoogleSymbolUtilities: 631ee17048aa5e9ab133470d768ea997a5ef9b96
+  GoogleToolboxForMac: 2b2596cbb7186865e98cadf2b1e262d851c2b168
+  GTMOAuth2: 7fc9c10f5c745f4d9850419ea88889fe3baa6b7d
+  GTMSessionFetcher: 5ad62e8200fa00ed011fe5e08d27fef72c5b1429
+  ProgressHUD: 4b66b0df0e08519c5c7283a198fd2867a114c95a
+  SDWebImage: 0e435c14e402a6730315a0fb79f95e68654d55a4
+  TwitterCore: fbdbeaf6d2d20cf7c7aa4136fe5173c1c85df2e2
+  TwitterKit: 97e729ceea041d174126235bf6ff67dcf37772d4
+
+PODFILE CHECKSUM: fb0be4d7b0e9cf2fce87d17ce22b5b0558fb1451
+
+COCOAPODS: 1.1.1
