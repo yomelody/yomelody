@@ -1562,22 +1562,22 @@ long lastIndex = 10000;
              AudioFeedTableViewCell *cell1 = [_tbl_view_audio_feed cellForRowAtIndexPath:[NSIndexPath indexPathForRow:lastIndex inSection:0]];
             cell1.slider_progress.value = 0.0;
             [cell1.btn_PlayRecording setImage:[UIImage imageNamed:@"bar_play.png"] forState:UIControlStateNormal];
-            UIAlertController * alert=   [UIAlertController
-                                          alertControllerWithTitle:@"Alert"
-                                          message:@"Url Not Supported"
-                                          preferredStyle:UIAlertControllerStyleAlert];
-            
-            UIAlertAction* yesButton = [UIAlertAction
-                                        actionWithTitle:@"ok"
-                                        style:UIAlertActionStyleDefault
-                                        handler:^(UIAlertAction * action)
-                                        {
-                                            [Appdelegate hideProgressHudInView];
-
-                                        }];
-            
-            [alert addAction:yesButton];
-            [self presentViewController:alert animated:YES completion:nil];
+//            UIAlertController * alert=   [UIAlertController
+//                                          alertControllerWithTitle:@"Alert"
+//                                          message:@"Url Not Supported"
+//                                          preferredStyle:UIAlertControllerStyleAlert];
+//            
+//            UIAlertAction* yesButton = [UIAlertAction
+//                                        actionWithTitle:@"ok"
+//                                        style:UIAlertActionStyleDefault
+//                                        handler:^(UIAlertAction * action)
+//                                        {
+//                                            [Appdelegate hideProgressHudInView];
+//
+//                                        }];
+//            
+//            [alert addAction:yesButton];
+//            [self presentViewController:alert animated:YES completion:nil];
             int errorCode = CFSwapInt16HostToBig ([error code]);
             NSLog(@"Error: %@ [%4.4s])" , [error localizedDescription], (char*)&errorCode);
         }

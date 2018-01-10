@@ -48,7 +48,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>106</string>
+	<string>2</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -90,28 +90,16 @@
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>hi</string>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>$(PRODUCT_NAME) Bluetooth Peripheral use
-$(PRODUCT_NAME) Bluetooth Peripheral use
-</string>
 	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) camera use</string>
-	<key>NSContactsUsageDescription</key>
-	<string>$(PRODUCT_NAME) contact use</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>$(PRODUCT_NAME) location use</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>$(PRODUCT_NAME) location use</string>
+	<string>Please allow YoMelody to access your camera roll.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>$(PRODUCT_NAME) microphone use</string>
+	<string>Please allow YoMelody to access your microphone to audio recording.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(PRODUCT_NAME) photo use</string>
-	<key>NSRemindersUsageDescription</key>
-	<string>$(PRODUCT_NAME) reminder use</string>
+	<string>Please allow YoMelody to access your photo gallery.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>$(PRODUCT_NAME) speech use</string>
+	<string>speech use</string>
 	<key>Privacy - Calendars Usage Description </key>
-	<string>$(PRODUCT_NAME) calendar events</string>
+	<string>Calendar events</string>
 	<key>RequestsOpenAccess</key>
 	<true/>
 	<key>SoundCloud</key>
@@ -132,13 +120,6 @@ $(PRODUCT_NAME) Bluetooth Peripheral use
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-	</array>
-	<key>UISupportedInterfaceOrientations~ipad</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 </dict>
 </plist>

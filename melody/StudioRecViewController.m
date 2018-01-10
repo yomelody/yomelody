@@ -2731,25 +2731,15 @@ if ([[arrIndexCounterM objectAtIndex:sender.tag] isEqualToString:@"0"]) {
             [Appdelegate hideProgressHudInView];
             if (_isJoinScreen)
             {
-//                [Appdelegate showMessageHudWithMessage:@"Joined Successfully !" andDelay:4.0];
                 [ProgressHUD showSuccess:@"Joined Successfully !"];
             }
             else
             {
-//                [Appdelegate showMessageHudWithMessage:@"Recording saved Successfully !" andDelay:4.0];
+
                 [ProgressHUD showSuccess:@"Recording saved Successfully !"];
             }
 
-//        //---------------------- Share Social Network -----------------
-//          FBSDKShareLinkContent *content = [[FBSDKShareLinkContent alloc] init];
-////                        content.contentURL = [NSURL URLWithString:@"http://developers.facebook.com"];
-////                        [FBSDKShareDialog showFromViewController:self
-////                                                     withContent:content
-////                                                        delegate:nil];
-//
-//
-//
-//                    }
+
 
             NSLog(@"THUMBURL %@",[[dic_response objectForKey:@"melody_data"] objectForKey:@"thumbnail_url"]);
             thumbNailUrl =[[dic_response objectForKey:@"melody_data"] objectForKey:@"thumbnail_url"];
@@ -2849,7 +2839,7 @@ if ([[arrIndexCounterM objectAtIndex:sender.tag] isEqualToString:@"0"]) {
         GIDSignIn* signIn = [GIDSignIn sharedInstance];
         signIn.delegate = self;
         signIn.uiDelegate = self;
-        signIn.scopes = [NSArray arrayWithObjects:kGTLRAuthScopeGmailSend, nil];
+        signIn.scopes = [NSArray arrayWithObjects:kGTLRAuthScopeGmailCompose, nil];
 //        [[GIDSignIn sharedInstance] hasAuthInKeychain];
 //        [[GIDSignIn sharedInstance] signIn];
         [signIn signIn];
@@ -2876,70 +2866,15 @@ didSignInForUser:(GIDGoogleUser *)user
 // label name in the UITextView
 - (void)fetchLabels {
     self.output.text = strThumbnailURL;
-    GTLRUploadParameters *uploadParam = [[GTLRUploadParameters alloc] init];
-    uploadParam.MIMEType = @"message/rfc822";
-    uploadParam.data = [self getFormattedRawMessage];
-    
-    GTLRGmailQuery_UsersMessagesSend *query = [GTLRGmailQuery_UsersMessagesSend queryWithObject:strThumbnailURL userId:@"me" uploadParameters:uploadParam];
-    [self.service executeQuery:query completionHandler:^(GTLRServiceTicket * _Nonnull callbackTicket, id  _Nullable object, NSError * _Nullable callbackError) {
-        
-        NSData *data  = callbackError.userInfo[@"data"];
-        NSString *string = [[NSString alloc] initWithData:data encoding:0];
-        
-        NSLog(@"%@",string);
-    }];
+    self.output.text = @"Getting labels...";
+    GTLRGmailQuery_UsersLabelsList *query = [GTLRGmailQuery_UsersLabelsList queryWithUserId:@"me"];
+
+    [self.service executeQuery:query
+                      delegate:self
+             didFinishSelector:@selector(displayResultWithTicket:finishedWithObject:error:)];
 }
 
 
-- (NSData *)getFormattedRawMessage
-{
-    // Date string
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
-    dateFormatter.dateFormat = @"EEE, dd MMM yyyy HH:mm:ss Z";
-    NSString *strDate = [dateFormatter stringFromDate:[NSDate date]];
-    NSString *finalDate = [NSString stringWithFormat:@"Date: %@\r\n", strDate];
-    
-    // From string
-    NSString *from = @"From: <constantin.saulenco@gmail.com>\r\n";
-    
-    // To string
-    NSString *to = @"To: <constantin.saulenco@mobiversal.com>\r\n";
-    
-    // CC string
-    NSString *cc = @"";
-    
-    // BCC string
-    NSString *bcc = @"";
-    
-    // Subject string
-    NSString *subject = @"Subject: New stuff\r\n\r\n";
-    
-    // Body string
-    NSString *body = @"Hello my friend, \n can you please call me when have free time. \nMark. \r\n";
-    
-    // Final string to be returned
-    NSString *rawMessage = @"";
-    
-    // Send as "multipart/mixed"
-    NSString *contentTypeMain = @"Content-Type: multipart/mixed; boundary=\"project\"\r\n";
-    
-    // Reusable Boundary string
-    NSString *boundary = @"\r\n--project\r\n";
-    
-    // Body string
-    NSString *contentTypePlain = @"Content-Type: text/plain; charset=\"UTF-8\"\r\n";
-    
-    // Combine strings from "finalDate" to "body"
-    rawMessage = [[[[[[[[[contentTypeMain stringByAppendingString:finalDate] stringByAppendingString:from]stringByAppendingString:to]stringByAppendingString:cc]stringByAppendingString:bcc]stringByAppendingString:subject]stringByAppendingString:boundary]stringByAppendingString:contentTypePlain]stringByAppendingString:body];
-    
-    
-    // Image Content Type string
-    NSString *contentTypeJPG = boundary;
-    contentTypeJPG = [contentTypeJPG stringByAppendingString:[NSString stringWithFormat:@"Content-Type: image/jpeg; name=\"%@\"\r\n",@"IMG_1253.jpg"]];
-    contentTypeJPG = [contentTypeJPG stringByAppendingString:@"Content-Transfer-Encoding: base64\r\n"];
-    
-    return [rawMessage dataUsingEncoding:NSUTF8StringEncoding];
-}
 
 
 - (void)displayResultWithTicket:(GTLRServiceTicket *)ticket

@@ -2539,21 +2539,21 @@ _btn_go_to_studio_play.hidden=NO;
                 receivefileTableViewCell *cell1 = [_tbl_view_chat cellForRowAtIndexPath:[NSIndexPath indexPathForRow:lastIndex inSection:0]];
 //                cell1.slider_progress.value = 0.0;
                 [_btn_play setImage:[UIImage imageNamed:@"bar_play.png"] forState:UIControlStateNormal];
-                UIAlertController * alert=   [UIAlertController
-                                              alertControllerWithTitle:@"Alert"
-                                              message:@"Url Not Supported"
-                                              preferredStyle:UIAlertControllerStyleAlert];
-                
-                UIAlertAction* yesButton = [UIAlertAction
-                                            actionWithTitle:@"ok"
-                                            style:UIAlertActionStyleDefault
-                                            handler:^(UIAlertAction * action)
-                                            {
-                                                
-                                            }];
-                
-                [alert addAction:yesButton];
-                [self presentViewController:alert animated:YES completion:nil];
+//                UIAlertController * alert=   [UIAlertController
+//                                              alertControllerWithTitle:@"Alert"
+//                                              message:@"Url Not Supported"
+//                                              preferredStyle:UIAlertControllerStyleAlert];
+//                
+//                UIAlertAction* yesButton = [UIAlertAction
+//                                            actionWithTitle:@"ok"
+//                                            style:UIAlertActionStyleDefault
+//                                            handler:^(UIAlertAction * action)
+//                                            {
+//                                                
+//                                            }];
+//                
+//                [alert addAction:yesButton];
+//                [self presentViewController:alert animated:YES completion:nil];
                 int errorCode = CFSwapInt16HostToBig ([error code]);
                 NSLog(@"Error: %@ [%4.4s])" , [error localizedDescription], (char*)&errorCode);
             }
