@@ -295,11 +295,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.530736"
+            timestampString = "537320746.832992"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "538"
-            endingLineNumber = "538"
+            startingLineNumber = "557"
+            endingLineNumber = "557"
             landmarkName = "-load_instrumentals"
             landmarkType = "7">
          </BreakpointContent>
@@ -311,11 +311,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.5308909"
+            timestampString = "537320746.833092"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "493"
-            endingLineNumber = "493"
+            startingLineNumber = "512"
+            endingLineNumber = "512"
             landmarkName = "-load_instrumentals"
             landmarkType = "7">
          </BreakpointContent>
@@ -407,12 +407,12 @@
                   moduleName = "melody"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/codingbrains/Desktop/Gaurav_Projects/YoMelody/melody/MelodyViewController.m"
-                  timestampString = "537233758.792878"
+                  timestampString = "537320580.210436"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "2061"
                   endingLineNumber = "2061"
-                  offsetFromSymbolStart = "1168">
+                  offsetFromSymbolStart = "1033">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -422,12 +422,12 @@
                   moduleName = "melody"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/codingbrains/Desktop/Gaurav_Projects/YoMelody/melody/MelodyViewController.m"
-                  timestampString = "537233758.794353"
+                  timestampString = "537320580.212038"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "2061"
                   endingLineNumber = "2061"
-                  offsetFromSymbolStart = "36">
+                  offsetFromSymbolStart = "22">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -487,12 +487,12 @@
                   moduleName = "melody"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/codingbrains/Desktop/Gaurav_Projects/YoMelody/melody/MelodyViewController.m"
-                  timestampString = "537233758.8037879"
+                  timestampString = "537320580.221861"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "2202"
                   endingLineNumber = "2202"
-                  offsetFromSymbolStart = "432">
+                  offsetFromSymbolStart = "476">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -502,12 +502,12 @@
                   moduleName = "melody"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/codingbrains/Desktop/Gaurav_Projects/YoMelody/melody/MelodyViewController.m"
-                  timestampString = "537233758.8058929"
+                  timestampString = "537320580.2233191"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "2202"
                   endingLineNumber = "2202"
-                  offsetFromSymbolStart = "40">
+                  offsetFromSymbolStart = "15">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -679,11 +679,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.532423"
+            timestampString = "537320746.833339"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2146"
-            endingLineNumber = "2146"
+            startingLineNumber = "2177"
+            endingLineNumber = "2177"
             landmarkName = "-makePublic"
             landmarkType = "7">
          </BreakpointContent>
@@ -695,11 +695,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.532573"
+            timestampString = "537320746.833402"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1719"
-            endingLineNumber = "1719"
+            startingLineNumber = "1750"
+            endingLineNumber = "1750"
             landmarkName = "-loop_clicked:"
             landmarkType = "7">
          </BreakpointContent>
@@ -711,11 +711,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.532726"
+            timestampString = "537320746.833462"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1728"
-            endingLineNumber = "1728"
+            startingLineNumber = "1759"
+            endingLineNumber = "1759"
             landmarkName = "-loop_clicked:"
             landmarkType = "7">
          </BreakpointContent>
@@ -727,11 +727,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.532851"
+            timestampString = "537320746.833521"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2095"
-            endingLineNumber = "2095"
+            startingLineNumber = "2126"
+            endingLineNumber = "2126"
             landmarkName = "-btn_done:"
             landmarkType = "7">
          </BreakpointContent>
@@ -743,11 +743,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.532951"
+            timestampString = "537320746.833577"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2099"
-            endingLineNumber = "2099"
+            startingLineNumber = "2130"
+            endingLineNumber = "2130"
             landmarkName = "-btn_done:"
             landmarkType = "7">
          </BreakpointContent>
@@ -759,11 +759,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.533077"
+            timestampString = "537320746.833632"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2101"
-            endingLineNumber = "2101"
+            startingLineNumber = "2132"
+            endingLineNumber = "2132"
             landmarkName = "-btn_done:"
             landmarkType = "7">
          </BreakpointContent>
@@ -775,11 +775,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.533188"
+            timestampString = "537320746.833688"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "768"
-            endingLineNumber = "768"
+            startingLineNumber = "787"
+            endingLineNumber = "787"
             landmarkName = "-checkSubscriptionValidityStatus"
             landmarkType = "7">
          </BreakpointContent>
@@ -791,11 +791,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.533332"
+            timestampString = "537320746.833744"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "816"
-            endingLineNumber = "816"
+            startingLineNumber = "835"
+            endingLineNumber = "835"
             landmarkName = "-checkSubscriptionValidityStatus"
             landmarkType = "7">
          </BreakpointContent>
@@ -807,11 +807,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.533437"
+            timestampString = "537320746.8338"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1546"
-            endingLineNumber = "1546"
+            startingLineNumber = "1577"
+            endingLineNumber = "1577"
             landmarkName = "-loadgenres"
             landmarkType = "7">
          </BreakpointContent>
@@ -823,11 +823,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.533566"
+            timestampString = "537320746.833855"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1615"
-            endingLineNumber = "1615"
+            startingLineNumber = "1646"
+            endingLineNumber = "1646"
             landmarkName = "-loadgenres"
             landmarkType = "7">
          </BreakpointContent>
@@ -839,11 +839,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.5336699"
+            timestampString = "537320746.83391"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2736"
-            endingLineNumber = "2736"
+            startingLineNumber = "2767"
+            endingLineNumber = "2767"
             landmarkName = "-audioMixing"
             landmarkType = "7">
          </BreakpointContent>
@@ -855,11 +855,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.533808"
+            timestampString = "537320746.8339649"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2757"
-            endingLineNumber = "2757"
+            startingLineNumber = "2788"
+            endingLineNumber = "2788"
             landmarkName = "-audioMixing"
             landmarkType = "7">
          </BreakpointContent>
@@ -871,11 +871,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.533908"
+            timestampString = "537320746.83402"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2643"
-            endingLineNumber = "2643"
+            startingLineNumber = "2674"
+            endingLineNumber = "2674"
             landmarkName = "-audioMixing"
             landmarkType = "7">
          </BreakpointContent>
@@ -1415,11 +1415,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.535684"
+            timestampString = "537320746.83438"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1056"
-            endingLineNumber = "1056"
+            startingLineNumber = "1075"
+            endingLineNumber = "1075"
             landmarkName = "-playWave"
             landmarkType = "7">
          </BreakpointContent>
@@ -2039,12 +2039,12 @@
                   moduleName = "melody"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/codingbrains/Desktop/Gaurav_Projects/YoMelody/melody/MelodyViewController.m"
-                  timestampString = "537233759.099663"
+                  timestampString = "537320580.3866431"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1976"
                   endingLineNumber = "1976"
-                  offsetFromSymbolStart = "2264">
+                  offsetFromSymbolStart = "2669">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -2054,12 +2054,12 @@
                   moduleName = "melody"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/codingbrains/Desktop/Gaurav_Projects/YoMelody/melody/MelodyViewController.m"
-                  timestampString = "537233759.101687"
+                  timestampString = "537320580.3881069"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1976"
                   endingLineNumber = "1976"
-                  offsetFromSymbolStart = "16">
+                  offsetFromSymbolStart = "22">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -2567,12 +2567,12 @@
                   moduleName = "melody"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/codingbrains/Desktop/Gaurav_Projects/YoMelody/UpdateGroupVC.m"
-                  timestampString = "537233759.168465"
+                  timestampString = "537320580.445531"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "141"
                   endingLineNumber = "141"
-                  offsetFromSymbolStart = "740">
+                  offsetFromSymbolStart = "879">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -2582,12 +2582,12 @@
                   moduleName = "melody"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/codingbrains/Desktop/Gaurav_Projects/YoMelody/UpdateGroupVC.m"
-                  timestampString = "537233759.170114"
+                  timestampString = "537320580.447112"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "141"
                   endingLineNumber = "141"
-                  offsetFromSymbolStart = "536">
+                  offsetFromSymbolStart = "473">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -2597,12 +2597,12 @@
                   moduleName = "melody"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/codingbrains/Desktop/Gaurav_Projects/YoMelody/UpdateGroupVC.m"
-                  timestampString = "537233759.171595"
+                  timestampString = "537320580.448552"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "141"
                   endingLineNumber = "141"
-                  offsetFromSymbolStart = "116">
+                  offsetFromSymbolStart = "108">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -2612,12 +2612,12 @@
                   moduleName = "melody"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/codingbrains/Desktop/Gaurav_Projects/YoMelody/UpdateGroupVC.m"
-                  timestampString = "537233759.173072"
+                  timestampString = "537320580.449968"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "141"
                   endingLineNumber = "141"
-                  offsetFromSymbolStart = "64">
+                  offsetFromSymbolStart = "59">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -2627,12 +2627,12 @@
                   moduleName = "melody"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/codingbrains/Desktop/Gaurav_Projects/YoMelody/UpdateGroupVC.m"
-                  timestampString = "537233759.174511"
+                  timestampString = "537320580.451478"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "142"
                   endingLineNumber = "142"
-                  offsetFromSymbolStart = "88">
+                  offsetFromSymbolStart = "72">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -2900,11 +2900,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.540596"
+            timestampString = "537320746.835205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2049"
-            endingLineNumber = "2049"
+            startingLineNumber = "2080"
+            endingLineNumber = "2080"
             landmarkName = "-btn_done:"
             landmarkType = "7">
          </BreakpointContent>
@@ -2916,11 +2916,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.540722"
+            timestampString = "537320746.8352669"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2051"
-            endingLineNumber = "2051"
+            startingLineNumber = "2082"
+            endingLineNumber = "2082"
             landmarkName = "-btn_done:"
             landmarkType = "7">
          </BreakpointContent>
@@ -2932,11 +2932,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.540815"
+            timestampString = "537320746.835324"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2055"
-            endingLineNumber = "2055"
+            startingLineNumber = "2086"
+            endingLineNumber = "2086"
             landmarkName = "-btn_done:"
             landmarkType = "7">
          </BreakpointContent>
@@ -2948,23 +2948,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.5409271"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2058"
-            endingLineNumber = "2058"
-            landmarkName = "-btn_done:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.54103"
+            timestampString = "537320746.835379"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "2089"
@@ -2980,11 +2964,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.54114"
+            timestampString = "537320746.835433"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2092"
-            endingLineNumber = "2092"
+            startingLineNumber = "2120"
+            endingLineNumber = "2120"
             landmarkName = "-btn_done:"
             landmarkType = "7">
          </BreakpointContent>
@@ -2996,11 +2980,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.5412281"
+            timestampString = "537320746.835488"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2086"
-            endingLineNumber = "2086"
+            startingLineNumber = "2123"
+            endingLineNumber = "2123"
+            landmarkName = "-btn_done:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "melody/StudioRecViewController.m"
+            timestampString = "537320746.835547"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2117"
+            endingLineNumber = "2117"
             landmarkName = "-btn_done:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3012,11 +3012,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.541342"
+            timestampString = "537320746.835685"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2121"
-            endingLineNumber = "2121"
+            startingLineNumber = "2152"
+            endingLineNumber = "2152"
             landmarkName = "-btn_done:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3028,11 +3028,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.541449"
+            timestampString = "537320746.835775"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1868"
-            endingLineNumber = "1868"
+            startingLineNumber = "1899"
+            endingLineNumber = "1899"
             landmarkName = "-final_delete_clicked:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3188,11 +3188,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.541759"
+            timestampString = "537320746.8359309"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1863"
-            endingLineNumber = "1863"
+            startingLineNumber = "1894"
+            endingLineNumber = "1894"
             landmarkName = "StudioRecViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -3204,11 +3204,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.541854"
+            timestampString = "537320746.835991"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2726"
-            endingLineNumber = "2726"
+            startingLineNumber = "2757"
+            endingLineNumber = "2757"
             landmarkName = "-audioMixing"
             landmarkType = "7">
          </BreakpointContent>
@@ -3220,11 +3220,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.5419559"
+            timestampString = "537320746.836049"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3293"
-            endingLineNumber = "3293"
+            startingLineNumber = "3324"
+            endingLineNumber = "3324"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3236,11 +3236,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.542079"
+            timestampString = "537320746.836105"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3291"
-            endingLineNumber = "3291"
+            startingLineNumber = "3322"
+            endingLineNumber = "3322"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3252,11 +3252,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.542176"
+            timestampString = "537320746.8361599"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3249"
-            endingLineNumber = "3249"
+            startingLineNumber = "3280"
+            endingLineNumber = "3280"
             landmarkName = "-tableView:heightForRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3268,11 +3268,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.542284"
+            timestampString = "537320746.836217"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2724"
-            endingLineNumber = "2724"
+            startingLineNumber = "2755"
+            endingLineNumber = "2755"
             landmarkName = "-audioMixing"
             landmarkType = "7">
          </BreakpointContent>
@@ -3284,11 +3284,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.542408"
+            timestampString = "537320746.836271"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3295"
-            endingLineNumber = "3295"
+            startingLineNumber = "3326"
+            endingLineNumber = "3326"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3300,11 +3300,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.542518"
+            timestampString = "537320746.836327"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3241"
-            endingLineNumber = "3241"
+            startingLineNumber = "3272"
+            endingLineNumber = "3272"
             landmarkName = "-tableView:heightForRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3316,11 +3316,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.542612"
+            timestampString = "537320746.836382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3260"
-            endingLineNumber = "3260"
+            startingLineNumber = "3291"
+            endingLineNumber = "3291"
             landmarkName = "-numberOfSectionsInTableView:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3844,11 +3844,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.545794"
+            timestampString = "537320746.836805"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2852"
-            endingLineNumber = "2852"
+            startingLineNumber = "2883"
+            endingLineNumber = "2883"
             landmarkName = "-signIn:didSignInForUser:withError:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3860,11 +3860,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.545915"
+            timestampString = "537320746.836871"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2857"
-            endingLineNumber = "2857"
+            startingLineNumber = "2888"
+            endingLineNumber = "2888"
             landmarkName = "-signIn:didSignInForUser:withError:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3876,11 +3876,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.546007"
+            timestampString = "537320746.836929"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2854"
-            endingLineNumber = "2854"
+            startingLineNumber = "2885"
+            endingLineNumber = "2885"
             landmarkName = "-signIn:didSignInForUser:withError:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3892,11 +3892,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.546111"
+            timestampString = "537320746.836984"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2868"
-            endingLineNumber = "2868"
+            startingLineNumber = "2899"
+            endingLineNumber = "2899"
             landmarkName = "-fetchLabels"
             landmarkType = "7">
          </BreakpointContent>
@@ -3908,11 +3908,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.5462019"
+            timestampString = "537320746.8370399"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2884"
-            endingLineNumber = "2884"
+            startingLineNumber = "2915"
+            endingLineNumber = "2915"
             landmarkName = "-displayResultWithTicket:finishedWithObject:error:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3924,11 +3924,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.546309"
+            timestampString = "537320746.837096"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2836"
-            endingLineNumber = "2836"
+            startingLineNumber = "2867"
+            endingLineNumber = "2867"
             landmarkName = "-shareWithSocialNetwork:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3972,11 +3972,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.546603"
+            timestampString = "537320746.837176"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2893"
-            endingLineNumber = "2893"
+            startingLineNumber = "2924"
+            endingLineNumber = "2924"
             landmarkName = "-displayResultWithTicket:finishedWithObject:error:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3988,11 +3988,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.5467041"
+            timestampString = "537320746.8372329"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2798"
-            endingLineNumber = "2798"
+            startingLineNumber = "2829"
+            endingLineNumber = "2829"
             landmarkName = "-shareWithSocialNetwork:"
             landmarkType = "7">
          </BreakpointContent>
@@ -4004,11 +4004,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.546819"
+            timestampString = "537320746.837288"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2895"
-            endingLineNumber = "2895"
+            startingLineNumber = "2926"
+            endingLineNumber = "2926"
             landmarkName = "-displayResultWithTicket:finishedWithObject:error:"
             landmarkType = "7">
          </BreakpointContent>
@@ -4020,11 +4020,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.546929"
+            timestampString = "537320746.837343"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2891"
-            endingLineNumber = "2891"
+            startingLineNumber = "2922"
+            endingLineNumber = "2922"
             landmarkName = "-displayResultWithTicket:finishedWithObject:error:"
             landmarkType = "7">
          </BreakpointContent>
@@ -4036,11 +4036,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.54705"
+            timestampString = "537320746.837397"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2887"
-            endingLineNumber = "2887"
+            startingLineNumber = "2918"
+            endingLineNumber = "2918"
             landmarkName = "-displayResultWithTicket:finishedWithObject:error:"
             landmarkType = "7">
             <Locations>
@@ -4084,11 +4084,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.5471539"
+            timestampString = "537320746.8374521"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2901"
-            endingLineNumber = "2901"
+            startingLineNumber = "2932"
+            endingLineNumber = "2932"
             landmarkName = "-showAlert:message:"
             landmarkType = "7">
          </BreakpointContent>
@@ -4100,11 +4100,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.5472341"
+            timestampString = "537320746.837507"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2907"
-            endingLineNumber = "2907"
+            startingLineNumber = "2938"
+            endingLineNumber = "2938"
             landmarkName = "-showAlert:message:"
             landmarkType = "7">
          </BreakpointContent>
@@ -4116,11 +4116,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.547348"
+            timestampString = "537320746.837561"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2912"
-            endingLineNumber = "2912"
+            startingLineNumber = "2943"
+            endingLineNumber = "2943"
             landmarkName = "-showAlert:message:"
             landmarkType = "7">
          </BreakpointContent>
@@ -4132,11 +4132,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.547449"
+            timestampString = "537320746.837616"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2909"
-            endingLineNumber = "2909"
+            startingLineNumber = "2940"
+            endingLineNumber = "2940"
             landmarkName = "-showAlert:message:"
             landmarkType = "7">
          </BreakpointContent>
@@ -4244,11 +4244,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.547834"
+            timestampString = "537320746.837734"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2882"
-            endingLineNumber = "2882"
+            startingLineNumber = "2913"
+            endingLineNumber = "2913"
             landmarkName = "-displayResultWithTicket:finishedWithObject:error:"
             landmarkType = "7">
          </BreakpointContent>
@@ -4260,11 +4260,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.547942"
+            timestampString = "537320746.837791"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2888"
-            endingLineNumber = "2888"
+            startingLineNumber = "2919"
+            endingLineNumber = "2919"
             landmarkName = "-displayResultWithTicket:finishedWithObject:error:"
             landmarkType = "7">
          </BreakpointContent>
@@ -4276,11 +4276,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.5480469"
+            timestampString = "537320746.837846"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2873"
-            endingLineNumber = "2873"
+            startingLineNumber = "2904"
+            endingLineNumber = "2904"
             landmarkName = "-fetchLabels"
             landmarkType = "7">
          </BreakpointContent>
@@ -4292,11 +4292,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.548148"
+            timestampString = "537320746.8379"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2870"
-            endingLineNumber = "2870"
+            startingLineNumber = "2901"
+            endingLineNumber = "2901"
             landmarkName = "-fetchLabels"
             landmarkType = "7">
          </BreakpointContent>
@@ -4308,12 +4308,124 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "melody/StudioRecViewController.m"
-            timestampString = "537240602.548257"
+            timestampString = "537320746.837954"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2845"
-            endingLineNumber = "2845"
+            startingLineNumber = "2876"
+            endingLineNumber = "2876"
             landmarkName = "-shareWithSocialNetwork:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "melody/SignUpViewController.m"
+            timestampString = "537296908.384536"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "173"
+            endingLineNumber = "173"
+            landmarkName = "-keyboardWillShow:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "melody/SignUpViewController.m"
+            timestampString = "537296908.38463"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "185"
+            endingLineNumber = "185"
+            landmarkName = "-keyboardWillShow:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "melody/SignUpViewController.m"
+            timestampString = "537296908.384693"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "196"
+            endingLineNumber = "196"
+            landmarkName = "-keyboardWillShow:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "melody/SignUpViewController.m"
+            timestampString = "537296908.384763"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "201"
+            endingLineNumber = "201"
+            landmarkName = "-keyboardWillShow:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "melody/SignUpViewController.m"
+            timestampString = "537296908.384823"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "229"
+            endingLineNumber = "229"
+            landmarkName = "SignUpViewController"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "melody/SignUpViewController.m"
+            timestampString = "537296908.3848751"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "217"
+            endingLineNumber = "217"
+            landmarkName = "-keyboardWillHide:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "melody/StudioRecViewController.m"
+            timestampString = "537320746.838073"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1476"
+            endingLineNumber = "1476"
+            landmarkName = "-openFileWithFilePathURL:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -10,6 +10,9 @@
 #import "imageCollectionViewCell.h"
 #import "Constant.h"
 @interface SignUpViewController ()
+{
+    NSString *currentDevice;
+}
 @end
 
 @implementation SignUpViewController
@@ -19,6 +22,8 @@
     [super viewDidLoad];
     [SVProgressHUD dismiss];
     
+    NSLog(@"CURR DEV %@", [[UIDevice currentDevice] model]);
+    currentDevice=[[UIDevice currentDevice] model];
     [self.btn_Done setTitleColor:[UIColor colorWithRed:0.0f green:132.0f blue:200.0f alpha:.6] forState:UIControlStateNormal ];
 
     _croll_view_signupcontent.contentSize = CGSizeMake(_croll_view_signupcontent.contentSize.width,self.view.frame.size.height+100);
@@ -176,10 +181,18 @@
     if (isiPhone5)
     {
         _croll_view_signupcontent.contentSize = CGSizeMake(_croll_view_signupcontent.contentSize.width, self.view.frame.size.height+200);
+        [_croll_view_signupcontent setFrame:CGRectMake(0, 200, self.view.frame.size.width, self.view.frame.size.height-200)];
+    }
+    else if ([currentDevice isEqualToString:@"iPad"])
+    {
+        
+        _croll_view_signupcontent.contentSize = CGSizeMake(_croll_view_signupcontent.contentSize.width, self.view.frame.size.height+250);
+        [_croll_view_signupcontent setFrame:CGRectMake(0, 200, self.view.frame.size.width, self.view.frame.size.height-250)];
     }
     else
     {
         _croll_view_signupcontent.contentSize = CGSizeMake(_croll_view_signupcontent.contentSize.width, self.view.frame.size.height+100);
+        [_croll_view_signupcontent setFrame:CGRectMake(0, 100, self.view.frame.size.width, self.view.frame.size.height-100)];
     }
     _croll_view_signupcontent.scrollEnabled=YES;
     dp_view.hidden=YES;
@@ -197,6 +210,14 @@
     if(isiPhone5){
         _croll_view_signupcontent.contentSize = CGSizeMake(0,self.view.frame.size.height+100);
         _croll_view_signupcontent.scrollEnabled=YES;
+    }
+    else if ([currentDevice isEqualToString:@"iPad"])
+    {
+        
+        _croll_view_signupcontent.contentSize = CGSizeMake(_croll_view_signupcontent.contentSize.width, self.view.frame.size.height+300);
+        [_croll_view_signupcontent setFrame:CGRectMake(0, 300, self.view.frame.size.width, self.view.frame.size.height-300)];
+        _croll_view_signupcontent.scrollEnabled=YES;
+
     }
     else{
         _croll_view_signupcontent.contentSize = CGSizeMake(0,self.view.frame.size.height+50);

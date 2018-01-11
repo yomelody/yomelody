@@ -37,7 +37,7 @@
 @interface StudioRecViewController ()<AVAudioPlayerDelegate,FBSDKSharing,FBSDKSharingDelegate,GIDSignInDelegate,GIDSignInUIDelegate>
 {
     int i;
-//    CustomizationState _state;
+    CustomizationState _state;
     NSMutableArray * arr_MelodyHasInsturmenrM,*arrIndexLoopM;
     NSMutableDictionary * dic_MelodyDataM;
     NSTimer* sliderTimer;
@@ -71,7 +71,7 @@ long lastIndexvalue = 10000;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    _img_rec_cover.hidden=YES;
     [self initializesAllVaribles];
     isAllAudioPlaying = NO;
     self.scrollView_Genere.contentSize = CGSizeMake(0,self.view.frame.size.height*2/3);
@@ -344,7 +344,7 @@ long lastIndexvalue = 10000;
     dic_recording = [[NSMutableDictionary alloc]init];
     arr_recordingM = [[NSMutableArray alloc]init];
     isPlayAll = NO;
-//    [self initializesEZAudio];
+   [self initializesEZAudio];
     [recordingTimer invalidate];
     
 }
@@ -353,14 +353,33 @@ long lastIndexvalue = 10000;
 
 -(void)initializesEZAudio
 {
-
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    NSError *error;
+    [session setCategory:AVAudioSessionCategoryPlayback error:&error];
+    if (error)
+    {
+        NSLog(@"Error setting up audio session category: %@", error.localizedDescription);
+    }
+    [session setActive:YES error:&error];
+    if (error)
+    {
+        NSLog(@"Error setting up audio session active: %@", error.localizedDescription);
+    }
+    
+    self.audioPlot.backgroundColor=[UIColor clearColor];
+    self.audioPlot.color=[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
     // Customizing the audio plot's look
     self.audioPlot.plotType        = EZPlotTypeBuffer;
-    self.audioPlot.shouldFill      = NO;
-    self.audioPlot.shouldMirror    = NO;
-    [self.player setVolume:5];
+    self.audioPlot.shouldFill      = YES;
+    self.audioPlot.shouldMirror    = YES;
+    [self.player setVolume:0];
     // Create the audio player
     self.player = [EZAudioPlayer audioPlayerWithDelegate:self];
+    [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
+    if (error)
+    {
+        NSLog(@"Error overriding output to the speaker: %@", error.localizedDescription);
+    }
     [self setupNotificationsForPlay];
     
 }
@@ -886,7 +905,6 @@ long lastIndexvalue = 10000;
         minutes=0;
         hours=0;
         [audioPlayer_ofstate stop];
-        //        [self.player pause];
         [recordingTimer invalidate];
         state=[NSMutableString stringWithFormat:@"RECORDED"];
         [_view_state setBackgroundColor:[UIColor whiteColor]];
@@ -974,13 +992,14 @@ long lastIndexvalue = 10000;
             if (toggle_PlayPause) {
                 [cell.btn_play_pause setImage:[UIImage imageNamed:@"bar_play.png"] forState:UIControlStateNormal];
                 [audioPlayer pause];
-//                [self.player pause];
+                
+                [self.player pause];
                 
             }
             else{
                 [cell.btn_play_pause setImage:[UIImage imageNamed:@"transparent_pause.png"] forState:UIControlStateNormal];
                 [audioPlayer play];
-//                [self playWave];
+                [_player play];
             }
             
         }
@@ -1025,8 +1044,8 @@ long lastIndexvalue = 10000;
                 [audioPlayer prepareToPlay];
                 [audioPlayer  stop];
                 [audioPlayer play];
+                [_player play];
                 audioVolume = [audioPlayer volume];
-//                [self playWave];
                 [cell.btn_play_pause setImage:[UIImage imageNamed:@"transparent_pause.png"] forState:UIControlStateNormal];
                 instrument_play_status=1;
                 lastIndexvalue = sender.tag;
@@ -1081,12 +1100,14 @@ long lastIndexvalue = 10000;
             //transparent_pause
             [_btn_playAll setImage:[UIImage imageNamed:@"btn_play_fill.png"] forState:UIControlStateNormal];
             [self pausePlay];
+            [_player pause];
             
         }
         else{
             isPlayAll = !isPlayAll;
             [_btn_playAll setImage:[UIImage imageNamed:@"pause.png"] forState:UIControlStateNormal];
             [self allPlay];
+            [_player play];
             
         }
     }
@@ -1200,9 +1221,13 @@ long lastIndexvalue = 10000;
             if (audioPlayer.isPlaying) {
                 [audioPlayer pause];
             }
+            if([_player isPlaying]){
+                [_player pause];
+            }
+            [recordingTimer invalidate];
             [audioRecorder stop];
             audioPlayer = nil;
-//            [self.player pause];
+         
             
         }
         else if ([state isEqualToString:@"RECORDED"]) {
@@ -1249,7 +1274,10 @@ long lastIndexvalue = 10000;
             [_btn_state setImage:[UIImage imageNamed:@"state_redo_btn.png"] forState:UIControlStateNormal];
             i=0;
             [audioPlayer_ofstate stop];
-//            [self.player pause];
+            if ([_player isPlaying]) {
+                 [self.player pause];
+            }
+           
             
         }
         else{
@@ -1296,6 +1324,7 @@ long lastIndexvalue = 10000;
     z=0;
     for (audioPlayer in soundsArray){
          InstrumentalTableViewCell *cell = [_tbl_view_instrumentals cellForRowAtIndexPath:[NSIndexPath indexPathForRow:z inSection:0]];
+        [self openFileWithFilePathURL:[NSURL URLWithString:[arr_instrument_paths objectAtIndex:z]]];
         audioPlayer.delegate=self;
         instrument_play_index = z;
         sliderTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(timerupdateSlider_ForAllInstruments) userInfo:nil repeats:YES];
@@ -1306,6 +1335,7 @@ long lastIndexvalue = 10000;
                     [cell.btn_play_pause setImage:[UIImage imageNamed:@"transparent_pause.png"] forState:UIControlStateNormal];
                     instrument_play_status=1;
         [audioPlayer play];
+        [_player play];
         z++;
     }
 
@@ -1442,10 +1472,11 @@ long lastIndexvalue = 10000;
 
 - (void)openFileWithFilePathURL:(NSURL *)filePathURL
 {
-    _audioFile = [EZAudioFile audioFileWithURL:filePathURL];
+    NSString *strurl = @"http://52.89.220.199/api/uploads/melody/instruments/1514441620beatpack-01-bass.wav";
+    _audioFile = [EZAudioFile audioFileWithURL:[NSURL URLWithString:strurl]];
     _audioPlot.plotType = EZPlotTypeBuffer;
-    _audioPlot.shouldFill = NO;
-    _audioPlot.shouldMirror = NO;
+    _audioPlot.shouldFill = YES;
+    _audioPlot.shouldMirror = YES;
     __weak typeof (self) weakSelf = self;
     [self.audioFile getWaveformDataWithCompletionBlock:^(float **waveformData,
                                                          int length)

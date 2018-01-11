@@ -174,16 +174,16 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.90609137049999999" green="0.90609137049999999" blue="0.90609137049999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Sq-bW-qq8" customClass="EZAudioPlotGL">
-                                <rect key="frame" x="0.0" y="90" width="375" height="172"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kGh-cN-wU9">
                                 <rect key="frame" x="0.0" y="90" width="375" height="172"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Sq-bW-qq8" customClass="EZAudioPlotGL">
+                                <rect key="frame" x="0.0" y="90" width="375" height="172"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OHo-A0-anT">
                                 <rect key="frame" x="0.0" y="182" width="375" height="120"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -864,6 +864,7 @@
                     </view>
                     <connections>
                         <outlet property="_view_fx" destination="P3W-zj-cTL" id="dd8-Ia-cZO"/>
+                        <outlet property="audioPlot" destination="2Sq-bW-qq8" id="rcI-Z5-iqL"/>
                         <outlet property="btn_audiofeed" destination="bC3-it-PYW" id="cP9-gb-XmE"/>
                         <outlet property="btn_back_cancel" destination="Mpl-Ce-tGh" id="hCD-Og-ZyC"/>
                         <outlet property="btn_discover" destination="amx-gW-h5p" id="NZa-e0-UFB"/>
@@ -5243,11 +5244,11 @@ press (new chat icon) to start a new one</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jX9-uW-nSw">
-                                <rect key="frame" x="0.0" y="20" width="375" height="30"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="38"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PtD-Ni-SdS">
-                                        <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PtD-Ni-SdS">
+                                        <rect key="frame" x="2" y="4" width="30" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <inset key="imageEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
                                         <state key="normal" image="left_arrow.png"/>
@@ -5256,24 +5257,25 @@ press (new chat icon) to start a new one</string>
                                             <action selector="btn_back:" destination="iOz-jm-edi" eventType="touchUpInside" id="wdO-Rz-XgP"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M5d-U8-rup">
-                                        <rect key="frame" x="48" y="6" width="20" height="20"/>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M5d-U8-rup">
+                                        <rect key="frame" x="48" y="6" width="24" height="24"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <inset key="imageEdgeInsets" minX="2" minY="2" maxX="2" maxY="2"/>
                                         <state key="normal" image="menu_dots_home.png"/>
                                         <connections>
                                             <action selector="btn_home:" destination="iOz-jm-edi" eventType="touchUpInside" id="MG1-cO-7gc"/>
                                             <action selector="btn_home:" destination="zmu-qU-PC1" eventType="touchUpInside" id="PbV-eV-8k9"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Messenger" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ttM-y8-wDZ">
-                                        <rect key="frame" x="145" y="5" width="84" height="20"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Messenger" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ttM-y8-wDZ">
+                                        <rect key="frame" x="126" y="6" width="133" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                         <color key="textColor" red="0.28313314909999998" green="0.37775421139999998" blue="0.40659704800000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dPS-uy-n5E" userLabel="InviteBtn">
-                                        <rect key="frame" x="332" y="2" width="30" height="26"/>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dPS-uy-n5E" userLabel="InviteBtn">
+                                        <rect key="frame" x="333" y="4" width="30" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <inset key="imageEdgeInsets" minX="1" minY="1" maxX="1" maxY="1"/>
                                         <state key="normal" title="Button" image="btn_write.png"/>
@@ -5285,11 +5287,11 @@ press (new chat icon) to start a new one</string>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MMZ-ob-3z8">
-                                <rect key="frame" x="0.0" y="52" width="375" height="38"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="0.0" y="58" width="375" height="34"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0vI-kE-ccM">
-                                        <rect key="frame" x="337" y="6" width="24" height="24"/>
+                                        <rect key="frame" x="337" y="4" width="24" height="24"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <inset key="imageEdgeInsets" minX="2" minY="2" maxX="2" maxY="2"/>
                                         <state key="normal" title="Button" image="btn_add_white.png"/>
@@ -5305,7 +5307,7 @@ press (new chat icon) to start a new one</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Invite" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GME-9c-a8M">
-                                        <rect key="frame" x="286" y="7" width="46" height="22"/>
+                                        <rect key="frame" x="286" y="5" width="46" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
                                         <color key="textColor" red="0.048813098790000002" green="0.063312975889999998" blue="0.052122055760000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -5333,8 +5335,8 @@ press (new chat icon) to start a new one</string>
                                 <color key="backgroundColor" red="0.89365547895431519" green="0.89433497190475464" blue="0.89376074075698853" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="200" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="aEX-hM-npo">
-                                <rect key="frame" x="0.0" y="89" width="375" height="520"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="0.0" y="98" width="375" height="512"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="iOz-jm-edi" id="dx1-jW-q1a"/>
@@ -6260,15 +6262,15 @@ press (new chat icon) to start a new one</string>
         <image name="volume.png" width="100" height="100"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="8AS-pI-vpg"/>
+        <segue reference="32b-yB-J7E"/>
         <segue reference="UJN-5h-ReE"/>
-        <segue reference="OYT-6H-CPO"/>
-        <segue reference="Que-2r-gxW"/>
+        <segue reference="ibY-kO-HLx"/>
+        <segue reference="PRq-kz-icy"/>
         <segue reference="GqK-7k-YD8"/>
         <segue reference="trg-dM-osm"/>
-        <segue reference="eHl-5K-ZXa"/>
+        <segue reference="oqb-lZ-Tt9"/>
         <segue reference="l8E-Rh-c7L"/>
-        <segue reference="sOX-3a-a5C"/>
+        <segue reference="mzm-wt-Yyj"/>
         <segue reference="5Kr-CX-p2u"/>
     </inferredMetricsTieBreakers>
 </document>

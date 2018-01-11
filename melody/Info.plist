@@ -48,7 +48,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2</string>
+	<string>3</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -92,8 +92,6 @@
 	<string>hi</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Please allow YoMelody to access your camera roll.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Please allow YoMelody to access your microphone to audio recording.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Please allow YoMelody to access your photo gallery.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
