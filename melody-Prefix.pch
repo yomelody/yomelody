@@ -14,5 +14,10 @@
     #import <Foundation/Foundation.h>
     #import <SDWebImage/UIImageView+WebCache.h>
     #import "SPHMacro.h"
+    #import "KSToastView.h"
+#import "URLConfiguration.h"
+#import "Reachability.h"
+#import "AppDelegate.h"
+#import "MyManager.h"
 
 #endif

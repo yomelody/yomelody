@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface UserCollectionViewCell : UICollectionViewCell
+@property (weak, nonatomic) IBOutlet UILabel *lbl_userNameO;
 
 @end

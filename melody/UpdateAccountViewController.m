@@ -23,6 +23,28 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self intializesAllVariables];
+
+}
+
+-(void)setAppVersion{
+    NSDictionary *infoDictionary = [[NSBundle mainBundle]infoDictionary];
+    
+    NSString *version = infoDictionary[@"CFBundleShortVersionString"];
+    NSString *build = infoDictionary[(NSString*)kCFBundleVersionKey];
+    NSString *bundleName = infoDictionary[(NSString *)kCFBundleNameKey];
+    
+    NSString * str_ver = [NSString stringWithFormat:@"Version %@",version];
+    _lbl_version.text = str_ver;
+}
+
+
+-(void)intializesAllVariables{
+    // do initializes
+    //---------- Set Version number ----------
+    [self setAppVersion];
+    //    _btn_add_image.layer.cornerRadius=_btn_add_image.frame.size.width/2;
+    //    _btn_add_image.clipsToBounds=YES;
     [SVProgressHUD dismiss];
     [self.btn_Done setTitleColor:[UIColor colorWithRed:0.0f green:132.0f blue:200.0f alpha:.6] forState:UIControlStateNormal ];
     defaults_userdata=[NSUserDefaults standardUserDefaults];
@@ -30,9 +52,12 @@
     _tv_description.layer.borderWidth=.5f;
     _tv_description.layer.borderColor=(__bridge CGColorRef _Nullable)([UIColor grayColor]);
     _tv_description.layer.cornerRadius=10;
+    
+    _btn_add_image.layer.cornerRadius=10;
+
     _tv_description.delegate=self;
     // Do any additional setup after loading the view.
-    self.scroll_view_Updatecontent.contentSize = CGSizeMake(0,self.view.frame.size.height+100);
+    self.scroll_view_Updatecontent.contentSize = CGSizeMake(0,self.view.frame.size.height+250);
     //_croll_view_signupcontent.contentSize = CGSizeMake(375, 810);
     dic_response=[[NSMutableDictionary alloc]init];
     imageData=[[NSData alloc]init];
@@ -57,12 +82,11 @@
     
     _img_view_profile.clipsToBounds = YES;
     _img_view_profile.layer.cornerRadius=_img_view_profile.frame.size.width/2;
-//    _img_view_profile.layer.cornerRadius = 25.0f;
-//    _img_view_profile.clipsToBounds = NO;
+    //    _img_view_profile.layer.cornerRadius = 25.0f;
+    //    _img_view_profile.clipsToBounds = NO;
     _img_view_profile.userInteractionEnabled = YES;
     
-//    _btn_Update_edit.layer.cornerRadius=20;
-    
+    //    _btn_Update_edit.layer.cornerRadius=20;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
     [self.scroll_view_Updatecontent addGestureRecognizer:tap];
     UISwipeGestureRecognizer*swipedown=[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
@@ -79,10 +103,7 @@
     [_tf_phone addTarget:self action:@selector(tf_phone_change:) forControlEvents:UIControlEventEditingChanged];
     [_tf_confirmpass addTarget:self action:@selector(tf_confirmpass_change:) forControlEvents:UIControlEventEditingChanged];
     
-//    _btn_add_image.layer.cornerRadius=_btn_add_image.frame.size.width/2;
-//    _btn_add_image.clipsToBounds=YES;
     if ([[defaults_userdata stringForKey:@"rememberme"] isEqual:@"remember"]) {
-        
         _tf_password.textColor=[UIColor grayColor];
         _tf_confirmpass.textColor=[UIColor grayColor];
         
@@ -95,7 +116,6 @@
         _tf_dob_month.textColor=[UIColor grayColor];
         _tf_dob_year.textColor=[UIColor grayColor];
         _tv_description.textColor=[UIColor grayColor];
-        
         _tf_password.userInteractionEnabled=NO;
         _tf_confirmpass.userInteractionEnabled=NO;
         _tf_first_name.userInteractionEnabled=NO;
@@ -118,8 +138,6 @@
         _btn_clear_dob.hidden=YES;
         _btn_clear_phone.hidden=YES;
         _btn_clear_description.hidden=YES;
-        NSLog(@"%@",[defaults_userdata stringForKey:@"email"]);
-        NSLog(@"%@",[defaults_userdata stringForKey:@"mobile"]);
         
         _tf_password.text=[defaults_userdata stringForKey:@"email"];
         _tf_confirmpass.text=[defaults_userdata stringForKey:@"email"];
@@ -142,8 +160,8 @@
             _tf_dob_year.text=nil;
         }
         else{
-        NSArray*arr_bob=[[defaults_userdata stringForKey:@"dob"] componentsSeparatedByString:@"/"];
-            NSLog(@"arr %lu",[[arr_bob objectAtIndex:0] length]);
+            NSArray*arr_bob=[[defaults_userdata stringForKey:@"dob"] componentsSeparatedByString:@"/"];
+            NSLog(@"arr %lu",(unsigned long)[[arr_bob objectAtIndex:0] length]);
             if ([[arr_bob objectAtIndex:0] length]==4)
             {
                 _tf_dob_date.text=[arr_bob objectAtIndex:2];
@@ -167,18 +185,18 @@
         {
             [_btn_add_image setTitle:@"Add image" forState:UIControlStateNormal];
         }
-        //[_img_view_cover setImage:[UIImage imageWithData:[defaults_userdata objectForKey:@"cover_pic"]]];
-        //  _img_view_cover.image=[UIImage imageNamed:@""];
         if ([[defaults_userdata stringForKey:@"discription"] isEqual:@""]) {
             _tv_description.text=@"Add description";
         }else{
-        _tv_description.text=[defaults_userdata stringForKey:@"discription"];
-        
+            _tv_description.text=[defaults_userdata stringForKey:@"discription"];
+            
         }
         [SVProgressHUD dismiss];
     }
-
+    
+    
 }
+
 #pragma mark UITextViewDelegate
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     //handle user taps text view to type text
@@ -256,9 +274,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    self.scroll_view_Updatecontent.contentSize = CGSizeMake(0,self.view.frame.size.height+100);
+    self.scroll_view_Updatecontent.contentSize = CGSizeMake(0,self.view.frame.size.height+250);
     self.scroll_view_Updatecontent.scrollEnabled=YES;
-    //    _croll_view_signupcontent.scrollEnabled=YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -275,7 +292,6 @@
     [UIView animateWithDuration:0.3 animations:^{
         CGRect f = self.view.frame;
         f.origin.y = -keyboardSize.height+90;
-//        self.view.frame = f;
     }];
 
     self.scroll_view_Updatecontent.contentSize = CGSizeMake(0,self.view.frame.size.height+200+keyboardSize.height);
@@ -291,7 +307,6 @@
         self.view.frame = f;
     }];
     self.scroll_view_Updatecontent.contentSize = CGSizeMake(0,self.view.frame.size.height+100);
-   // _croll_view_signupcontent.scrollEnabled=NO;
 }
 
 
@@ -465,100 +480,12 @@
 
 #pragma mark -
 #pragma mark UIImagePickerControllerDelegate
-//- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(nonnull NSDictionary<NSString *,id> *)info
-//{
-//
-//    UIImage *imagePicked = [info valueForKey:UIImagePickerControllerOriginalImage];
-//    imagePicked = [self scaleAndRotateImage:imagePicked];
-//    _img_view_profile.image = imagePicked;
-////    dp_view.hidden=YES;
-//
-////    [self dismissModalViewControllerAnimated:YES];
-////    NSData *imageData = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage], 0.0f);
-//    NSURL *imageURL = [info valueForKey:UIImagePickerControllerReferenceURL];
-//    NSString *extension = [imageURL pathExtension];
-//    CFStringRef imageUTI = (UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension,(__bridge CFStringRef)extension , NULL));
-//
-//    if (UTTypeConformsTo(imageUTI, kUTTypeJPEG))
-//    {
-//        // Handle JPG
-//
-//
-//        CGFloat compression = 0.9f;
-//        CGFloat maxCompression = 0.1f;
-//        int maxFileSize = 300*300;
-//
-//        imageData = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage], compression);
-//
-//        while ([imageData length] > maxFileSize && compression > maxCompression)
-//        {
-//            compression -= 0.1;
-//            imageData = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage], compression);
-//        }
-//    _img_view_profile.image=[UIImage imageWithData:imageData];
-//
-//
-//    }
-//    else if (UTTypeConformsTo(imageUTI, kUTTypePNG))
-//    {
-//        // Handle PNG
-//        CGFloat compression = 0.9f;
-//        CGFloat maxCompression = 0.1f;
-//        int maxFileSize = 300*300;
-//        imageData = UIImagePNGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage]);
-//        while ([imageData length] > maxFileSize && compression > maxCompression)
-//        {
-//            compression -= 0.1;
-//            imageData = UIImageJPEGRepresentation([UIImage imageWithData:imageData], compression);
-//        }
-//        imageData = UIImagePNGRepresentation([UIImage imageWithData:imageData]);
-//        _img_view_profile.image=[UIImage imageWithData:imageData];
-//    }
-//    else
-//    {
-//
-//        CGFloat compression = 0.9f;
-//        CGFloat maxCompression = 0.1f;
-//        int maxFileSize = 300*300;
-//
-//        imageData = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage], compression);
-//
-//        while ([imageData length] > maxFileSize && compression > maxCompression)
-//        {
-//            compression -= 0.1;
-//            imageData = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage], compression);
-//        }
-//        imageData = UIImagePNGRepresentation([UIImage imageWithData:imageData]);
-//        _img_view_profile.image = imagePicked;
-//
-//    }
-//
-//    UIImage *tempImage=[UIImage imageWithData:imageData];
-//    tempImage=[self scaleImage:tempImage toSize:CGSizeMake(100, 100)];
-//    tempImage=[self scaleAndRotateImage:tempImage];
-//
-//    _img_view_profile.image=tempImage;
-//    //NSURL *imagePath = [asset objectForKey:@"UIImagePickerControllerReferenceURL"];
-//    //  NSURL *imagePath = [NSURL URLWithString:[asset ob]];
-//    imageName = [imageURL lastPathComponent];
-//
-//    if (([imageName  length]==0)) {
-//        imageName=@"image.png";
-//    }
-//    NSLog(@"%@",imageName);
-//    [self dismissModalViewControllerAnimated:YES];
-//
-//}
-
-#pragma mark -
-#pragma mark UIImagePickerControllerDelegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(nonnull NSDictionary<NSString *,id> *)info
 {
     //    _img_view_profile.image=[info objectForKey:UIImagePickerControllerOriginalImage];
     dp_view.hidden=YES;
     
     NSURL *imageURL = [info valueForKey:UIImagePickerControllerReferenceURL];
-    NSString *extension = [imageURL pathExtension];
         imageData = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage], 0.0f);
     
     UIImage*img12=[info valueForKey:UIImagePickerControllerOriginalImage];
@@ -572,7 +499,6 @@
         imageName=@"image.png";
     }
     NSLog(@"%@",imageName);
-//    [self dismissModalViewControllerAnimated:YES];
     [self dismissViewControllerAnimated:YES completion:nil];
     
 }
@@ -813,30 +739,10 @@
         
         
         [self NSStringIsValidEmail:_tf_email.text];
-        NSLog([self NSStringIsValidEmail:_tf_email.text] ? @"Yes" : @"No");
-        
         if ([_tf_first_name.text length]!=0 && [_tf_email.text length] !=0 && [_tf_username.text length]!=0  && [_tf_username.text length]>1) {
-            // [_tf_dob_date.text length]!=0  && [_tf_dob_month.text length]!=0 && [_tf_dob_year.text length]!=0 && [_tf_phone.text length]!=0
-            
             if ([self NSStringIsValidEmail:_tf_email.text] && [_tf_password.text isEqualToString:_tf_confirmpass.text])
             {
-//                if ([_tf_phone.text length]!=0) {
-//                    if ([_tf_phone.text length] >=10 && [_tf_phone.text length] <=16)
-//                    {
-//                        [self signup_call];
-//                    }
-//                    else{
-//
-//                        _lbl_phone_error.text=@"incorrect phone number";
-//
-//                    }
-//
-//
-//                }
-//                else
-//                {
-                    [self signup_call];
-                //}
+                [self signup_call];
             }
             else
             {
@@ -849,19 +755,15 @@
                     _lbl_email_error.text=@"incorrect email";
                 }
                 
-                
-                
             }
         }
         else
         {
             
-            
             if ([_tf_username.text length]<=1)
             {
                 _lbl_usename_error.text=@"Username required";
             }
-            
             
             if ([_tf_phone.text length]==0) {
                 _lbl_phone_error.text=@"Required";
@@ -880,11 +782,9 @@
                 _lbl_usename_error.text=@"Required";
             }
             
-            
             if ([_tf_dob_date.text length]==0 || [_tf_dob_month.text length]==0 || [_tf_dob_year.text length]==0 ) {
                 _lbl_dob_error.text=@"Required";
             }
-            
             
         }
         
@@ -894,11 +794,8 @@
     
     [self NSStringIsValidEmail:_tf_email.text];
     NSLog([self NSStringIsValidEmail:_tf_email.text] ? @"Yes" : @"No");
-    //  NSLog( @"%@", [self NSStringIsValidEmail:_tf_email.text]);
-    
     
     if ([_tf_first_name.text length]!=0 && [_tf_email.text length] !=0 && [_tf_username.text length]!=0 && [_tf_password.text length]!=0 && [_tf_dob_date.text length]!=0  && [_tf_dob_month.text length]!=0 && [_tf_dob_year.text length]!=0 && [_tf_password.text length]>7) {
-        
         
         if ([self NSStringIsValidEmail:_tf_email.text] && [_tf_password.text isEqualToString:_tf_confirmpass.text])
         {
@@ -916,7 +813,7 @@
                             }
                             else
                             {
-                                    _lbl_password_error.text=@"Confirm password ";
+                                _lbl_password_error.text=@"Confirm password ";
                             }
                         }
                     }
@@ -938,9 +835,7 @@
                     
                 }
                 else{
-                    
                     _lbl_phone_error.text=@"incorrect phone number";
-                    
                 }
 
             }
@@ -1032,10 +927,7 @@
         }
         if ([_tf_phone.text length] !=0  )
         {
-            //            if ([_tf_phone.text length] !=10 || ![self validatePhone:_tf_phone.text])
-            //            {
-            //                _lbl_phone_error.text=@"incorrect mobile number";
-            //            }
+    
             if ([_tf_phone.text length] >=10 && [_tf_phone.text length] <=16 )
             {
                 
@@ -1071,8 +963,6 @@
     }
     [SVProgressHUD setForegroundColor:[UIColor greenColor]];
     [SVProgressHUD show];
-//    self.tf_email.text = self.tf_email.placeholder;
-    NSLog(@"self.tf_email.placeholder %@",self.tf_email.placeholder);
     NSDictionary* params = @{
                              KEY_AUTH_KEY:KEY_AUTH_VALUE,
                              @"user_id":[defaults_userdata objectForKey:@"user_id"],
@@ -1469,7 +1359,6 @@
     [btn_cancel addTarget:self action:@selector(hide_view:) forControlEvents:UIControlEventTouchUpInside];
     [dp_view addSubview:btn_cancel];
     
-    
     UIButton*btn_cancel2=[UIButton buttonWithType:UIButtonTypeRoundedRect];
     btn_cancel2.frame=CGRectMake(15,0,30,30);
     //[btn_cancel2 setTitle:@"v" forState:UIControlStateNormal];
@@ -1477,17 +1366,13 @@
     [btn_cancel2 addTarget:self action:@selector(hide_view2:) forControlEvents:UIControlEventTouchUpInside];
     [dp_view addSubview:btn_cancel2];
     
-    
     // Add the picker
     pickerView = [[UIDatePicker alloc] init];
-    
     pickerView.datePickerMode = UIDatePickerModeDate;
-    
     pickerView.backgroundColor=[UIColor whiteColor];
     pickerView.layer.cornerRadius=15;
     pickerView.layer.masksToBounds=YES;
     pickerView.frame=CGRectMake(30, 20,dp_view.frame.size.width-60, dp_view.frame.size.height-110);
-    //[pickerView addTarget:sender action:@selector(datePickerChanged:) forControlEvents:UIControlEventValueChanged];
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     [df setDateFormat:@"yyyy"];
@@ -1500,13 +1385,12 @@
     [df setDateFormat:@"dd/mmm/yyyy"];
     [pickerView setMaximumDate:maxDate];
     [pickerView setMinimumDate:minDate];
-    
     [dp_view addSubview:pickerView];
-    
     [self.view addSubview:dp_view];
     
-    
 }
+
+
 -(void)hide_view:(id)sender{
     _lbl_dob_error.text=@"";
     dp_view.hidden=YES;
@@ -1540,31 +1424,35 @@
     }
 }
 
+
 -(BOOL) NSStringIsValidEmail:(NSString *)checkString
 {
     BOOL stricterFilter = NO;
-    // Discussion http://blog.logichigh.com/2010/09/02/validating-an-e-mail-address/
-    
     NSString *stricterFilterString = @"^[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$";
     NSString *laxString = @"^.+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2}[A-Za-z]*$";
     NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
     NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
     return [emailTest evaluateWithObject:checkString];
 }
+
+
 - (BOOL)validatePhone:(NSString *)phoneNumber
 {
-    //NSString *phoneRegex = @"^((\\+)|(00))[0-9]{6,14}$";
     NSString *phoneRegex = @"[789][0-9]{9}";
     NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", phoneRegex];
     
     return [phoneTest evaluateWithObject:phoneNumber];
 }
+
+
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string  {
     NSUInteger newLength = [textField.text length] + [string length] - range.length;
     NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:NUMBERS_ONLY] invertedSet];
     NSString *filtered = [[string componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
     return (([string isEqualToString:filtered])&&(newLength <= CHARACTER_LIMIT));
 }
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -1588,9 +1476,12 @@
     }
 }
 
+
 - (IBAction)btn_done:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+
 - (IBAction)btn_signin:(id)sender {
     [self performSegueWithIdentifier:@"go_to_login" sender:nil];
 }

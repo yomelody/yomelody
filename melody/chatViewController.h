@@ -28,7 +28,7 @@
     NSMutableArray*arr_msg_sender_id,*arr_AudioSharedM;
     AVAudioPlayer *audioPlayer;
     NSTimer *recordingTimer;
-    long instrument_play_index;
+    long instrument_play_index,audio_play_index;
 
 
 }
@@ -89,7 +89,11 @@
 
 - (void) handleURL:(NSURL *)url;
 @property (weak, nonatomic) IBOutlet UISlider *share_Slider;
+- (IBAction)btnNextAction:(id)sender;
 
 @property (strong, nonatomic)NSString *img_view_Profile;
+- (IBAction)btnPreviousAction:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *addMelodyBtnO;
+
 
 @end

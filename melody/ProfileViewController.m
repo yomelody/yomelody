@@ -7,28 +7,21 @@
 //
 
 #import "ProfileViewController.h"
-#import "AudioFeedTableViewCell.h"
-#import "ActivitiesTableViewCell.h"
-#import "menuCollectionViewCell.h"
-#import "AudioFeedCommentsViewController.h"
 #import "Constant.h"
-#import "StudioPlayViewController.h"
-#import "chatViewController.h"
-#import "MessengerViewController.h"
-#import "imageCollectionViewCell.h"
-
-@interface ProfileViewController ()<UITextFieldDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
+#import "MelodyPacksTableViewCell.h"
+@interface ProfileViewController ()<UITextFieldDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UITableViewDelegate>
 {
     NSString *artistNameString;
     NSString *searchString;
     NSString *userNameString;
-    NSString *filterString;
+    NSString *filterString,*str_genere;
     UIActivityIndicatorView *activityIndicatorView;
     int recording_typeInt;
     NSString *numberOfInstruments;
     NSString *BPM;
     int text_flag;
-    NSMutableArray *instrumentArray;
+    NSMutableArray *instrumentArray,*arr_MyMelodyM;
+//    NSMutableArray*arr_melody_pack_intrumentals;
     NSArray*arr_Actity,*arr_rev;
     NSInteger index;
     NSMutableArray*arr_users_id;
@@ -41,15 +34,19 @@
     NSDictionary*dic_response;
     NSDictionary * dic;
     NSTimer* sliderTimer;
-    BOOL toggle_PlayPause;
+    BOOL toggle_PlayPause,isMelody;
     int counter;
-
-    NSMutableArray *arr_recordingResponseM;
-    BOOL isActivityClicked,isProfilePic;
+    BOOL toggle_Play;
+    int status1;
+    int status2;
+    NSMutableArray *arr_recordingResponseM,*arrJoinedM;
+    BOOL isActivityClicked,isProfilePic,isPlayable;
     UIActivityViewController *activityController;
     NSString *current_UserID;
     NSInteger current_Record,limit;
-
+    long currentIndex_user;
+    NSMutableArray *arr_PublicState;
+    NSString *isPublic;
 
 }
 @end
@@ -72,9 +69,14 @@ long last_Index = 99999999999;
 
 
 -(void)initialezesAllVaribles{
+    
+    isMelody = NO;
+    isPlayable = NO;
+    currentIndex_user = 0;
     arr_recordingResponseM=[[NSMutableArray alloc]init];
     self.btn_follow_unfollow.hidden = YES;
     toggleLike = NO;
+    toggle_Play = NO;
     instrumentArray = [[NSMutableArray alloc] init];
     // Add some data for demo purposes.
     [instrumentArray addObject:@"1"];
@@ -82,6 +84,10 @@ long last_Index = 99999999999;
     [instrumentArray addObject:@"3"];
     [instrumentArray addObject:@"4"];
     [instrumentArray addObject:@"5"];
+    
+    status1=0;
+    status2=0;
+    _tbl_view_melody.hidden = YES;
     arr_users_id = [[NSMutableArray alloc]init];
     self.tf_srearch.delegate=self;
     [self.tf_srearch addTarget:self
@@ -107,14 +113,14 @@ long last_Index = 99999999999;
         _btn_editCover.hidden=NO;
         _btn_edit_biotab.hidden=NO;
         _img_editBtn.hidden=NO;
-      /*  _img_editProfile.hidden=NO;
+        _img_editProfile.hidden=NO;
         UITapGestureRecognizer *tapImageBtn = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(profileImageTap:)];
         _img_view_profile.userInteractionEnabled=YES;
         tapImageBtn.numberOfTapsRequired = 1;
         tapImageBtn.view.tag=1001;
         
         tapImageBtn.cancelsTouchesInView = YES;
-        [_img_view_profile addGestureRecognizer:tapImageBtn];*/
+        [_img_view_profile addGestureRecognizer:tapImageBtn];
         
    
     }
@@ -126,11 +132,11 @@ long last_Index = 99999999999;
         _btn_follow_unfollow.hidden=NO;
         _btn_chat.hidden=NO;
         [self loadUserDetails];
-       // _img_editProfile.hidden=YES;
+        _img_editProfile.hidden=YES;
         
     }
     //_btn_editCover.hidden=YES;//
-    _img_editProfile.hidden=YES;//
+    //_img_editProfile.hidden=YES;//
     _lbl_number_of_records.text=[defaults_userdata objectForKey:@"records"];
     _cv_menu.showsHorizontalScrollIndicator=NO;
     [_cv_menu setTag:1];
@@ -180,7 +186,7 @@ long last_Index = 99999999999;
     //-----------------* For Pull to refresh *---------------------
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(refreshTable:) forControlEvents:UIControlEventValueChanged];
-    [_tbl_view_audios addSubview:refreshControl];
+   // [_tbl_view_audios addSubview:refreshControl];
     
 }
 
@@ -251,6 +257,11 @@ long last_Index = 99999999999;
    // [Appdelegate showProgressHud];
     [sliderTimer invalidate];
     NSLog(@"viewWillAppear");
+    limit = 0;
+    loadingData = false;
+    current_Record = 0;
+    arr_recordingResponseM = [[NSMutableArray alloc] init];
+    [self loadRecordings];
     [self.btn_chat setHidden:YES];
 }
 
@@ -334,7 +345,7 @@ long last_Index = 99999999999;
 
 - (void)viewDidAppear:(BOOL)animated {
     if (arr_recordingResponseM == nil || arr_recordingResponseM.count == 0) {
-        [self loadRecordings];
+       // [self loadRecordings];
     }
 }
 
@@ -420,16 +431,16 @@ long last_Index = 99999999999;
                     NSData *data2=[requestReply dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
                     
                     id jsonObject = [NSJSONSerialization
-                                     
                                      JSONObjectWithData:data2
                                      options:NSJSONReadingAllowFragments error:&myError];
-                    
                     if ([[jsonObject valueForKey:@"flag"] isEqual:@"success"]) {
                        [Appdelegate hideProgressHudInView];
                         arr_rec_response=[jsonObject valueForKey:@"result"];
                         NSLog(@"%@",arr_rec_response);
                         dic = [arr_rec_response objectAtIndex:0];
+                        
                         _lbl_user_name.text=[NSString stringWithFormat:@"%@ %@",[dic valueForKey:@"fname"],[dic valueForKey:@"lname"]];
+                        
                         _lbl_user_tweeter_id.text=[NSString stringWithFormat:@"@%@",[dic valueForKey:@"username"]];
                          current_UserID=[dic valueForKey:@"id"];
                        NSString *ImageURL =[NSString stringWithFormat:@"%@",[dic valueForKey:@"profilepic"]];
@@ -445,7 +456,6 @@ long last_Index = 99999999999;
                         {
                             _lbl_number_of_followings.text=@"0";
                         }
-                        
 
                         //--------------------- Set No of Fans ------------------------
 
@@ -457,8 +467,7 @@ long last_Index = 99999999999;
                             _lbl_number_of_fans.text=@"0";
                         }
                         
-                        //--------------------- Set Profile profile ------------------------
-                        //NSString *ImageURL_Profile = [NSString stringWithFormat:@"%@%@",BaseUrl,[dic valueForKey:@"profilepic"]];
+                        //------------------Set Profile profile --------------------
                         NSString *ImageURL_Profile = [NSString stringWithFormat:@"%@",[dic valueForKey:@"profilepic"]];
                         NSURL *url_Profile = [NSURL URLWithString:ImageURL_Profile];
                         [_img_view_profile_biotab sd_setImageWithURL:url_Profile
@@ -510,7 +519,7 @@ long last_Index = 99999999999;
                             }
                             else{
                                 self.btn_chat.hidden = YES;
-                                [self.btn_follow_unfollow setImage:[UIImage imageNamed:@"follow.png"] forState:UIControlStateNormal];
+                                [self.btn_follow_unfollow setImage:[UIImage imageNamed:@"follow_white"] forState:UIControlStateNormal];
                             }
                             
                         }
@@ -598,15 +607,15 @@ long last_Index = 99999999999;
                             arr_response1=[jsonObject valueForKey:@"response"];
                             // NSLog(@"%@",arr_response);
                             for (int i=0; i<[arr_response1 count]; i++) {
-                                if ([[[arr_response1 objectAtIndex:i] valueForKey:@"name"] isEqualToString:@"My Melodies"])
-                                {
-                                    //...
-                                }
-                                else
-                                {
+//                                if ([[[arr_response1 objectAtIndex:i] valueForKey:@"name"] isEqualToString:@"My Melodies"])
+//                                {
+//                                    //...
+//                                }
+//                                else
+//                                {
                                 [arr_menu_items addObject:[[arr_response1 objectAtIndex:i] valueForKey:@"name"]];
                                 [arr_genre_id addObject:[[arr_response1 objectAtIndex:i] valueForKey:@"id"]];
-                                }
+//                                }
                                 
                                 if (i==0) {
                                     [arr_tab_select insertObject:@"1" atIndex:i];
@@ -621,6 +630,7 @@ long last_Index = 99999999999;
                             [_cv_menu reloadData];
                         }
                         else{
+                            [Appdelegate hideProgressHudInView];
                             UIAlertController * alert=   [UIAlertController
                                                           alertControllerWithTitle:@"Alert"
                                                           message:@"Invailid Server Request!"
@@ -651,8 +661,7 @@ long last_Index = 99999999999;
     
     @try{
         [Appdelegate showProgressHud];
-    self.placeholder_img.hidden = YES;
-    self.tbl_view_audios.hidden = NO;
+
     NSMutableDictionary *params =[[NSMutableDictionary alloc]init];
     
     [params setObject:KEY_AUTH_VALUE forKey:KEY_AUTH_KEY];
@@ -667,9 +676,11 @@ long last_Index = 99999999999;
     else{
         // SELF PROFILE
         if([defaults_userdata boolForKey:@"isUserLogged"]) {
-        [params setObject:[defaults_userdata valueForKey:@"user_id"] forKey:KEY_USER_ID];
+            
+            [params setObject:[defaults_userdata valueForKey:@"user_id"] forKey:KEY_USER_ID];
             [params setObject:@"Myrecording" forKey:@"key"];
-
+          
+            
         }
     }
     if ([genre isEqualToString:@""]){
@@ -681,7 +692,6 @@ long last_Index = 99999999999;
         [params setObject:@"extrafilter" forKey:@"filter"];
         [params setObject:@"user_recording" forKey:KEY_SHARE_FILETYPE];
         [params setObject:filterString forKey:@"filter_type"];
-//        [params removeObjectForKey:@"genere"];
         if ([filterString isEqualToString:@"Artist"] ) {
             [params setObject:userNameString forKey:@"username"];
         }
@@ -714,7 +724,7 @@ long last_Index = 99999999999;
         [parameterString appendFormat:@"%@=%@",key, params[key]];
     }
 
-    NSString* urlString = [NSString stringWithFormat:@"%@recordings.php",BaseUrl];
+    NSString* urlString = [NSString stringWithFormat:@"%@recordings.php",BaseUrl_Dev];
     NSURL* url = [NSURL URLWithString:urlString];
     NSURLSession* session =[NSURLSession sharedSession];
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
@@ -740,7 +750,6 @@ long last_Index = 99999999999;
                             
                 [alert addAction:yesButton];
                 [self presentViewController:alert animated:YES completion:nil];                                                 }
-                                                    
         else {
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSError *myError = nil;
@@ -754,6 +763,9 @@ long last_Index = 99999999999;
                 // NSLog(@"%@",jsonObject);
                 if ([[jsonObject valueForKey:@"flag"] isEqual:@"success"]) {
                     [Appdelegate hideProgressHudInView];
+                    
+                    self.placeholder_img.hidden = YES;
+                    self.tbl_view_audios.hidden = NO;
                     
                     arr_rec_pack_id=[[NSMutableArray alloc]init];
                     arr_rec_name=[[NSMutableArray alloc]init];
@@ -774,9 +786,12 @@ long last_Index = 99999999999;
                     followerID=[[NSMutableArray alloc]init];
                     arr_rec_recordings=[[NSMutableArray alloc]init];
                     arr_rec_recordings_url=[[NSMutableArray alloc]init];
-                    
+                    arrJoinedM = [[NSMutableArray alloc]init];
+                    arr_PublicState=[[NSMutableArray alloc]init];
+
                     NSArray *tempArrayM = [[NSArray alloc]init];
-                    tempArrayM = [jsonObject valueForKey:@"response"];
+//                    tempArrayM = [jsonObject valueForKey:@"response"];
+                    tempArrayM =  [Appdelegate valueOrNil:[jsonObject valueForKey:@"response"]];
                     [arr_recordingResponseM addObjectsFromArray:tempArrayM];
                     current_Record = arr_recordingResponseM.count;
                     NSLog(@"%@",arr_recordingResponseM);
@@ -792,6 +807,18 @@ long last_Index = 99999999999;
                         else
                         {
                             [arr_rec_pack_id addObject:[[arr_recordingResponseM objectAtIndex:i] valueForKey:@"recording_id"]];
+                        }
+                        
+                        //-----------------* For PUBILC STATE *-----------------
+                        if([[[arr_recordingResponseM objectAtIndex:i] valueForKey:@"public"] isEqual:[NSNull null]] || [[[arr_recordingResponseM objectAtIndex:i] valueForKey:@"public"] length]==0)
+                        {
+                            [arr_PublicState addObject:@"0"];
+                            
+                        }
+                        else
+                        {
+                            [arr_PublicState addObject:[[arr_recordingResponseM objectAtIndex:i] valueForKey:@"public"]];
+                            
                         }
                         
                         if([[[arr_recordingResponseM objectAtIndex:i] valueForKey:@"genre"] isEqual:[NSNull null]] || [[[arr_recordingResponseM objectAtIndex:i] valueForKey:@"genre"] length]==0)
@@ -1135,7 +1162,16 @@ long last_Index = 99999999999;
 #pragma mark -
 - (IBAction)btn_audio_tab:(id)sender {
     isActivityClicked = NO;
-
+    if ([str_genere isEqualToString:@"My Melodies"]) {
+        _tbl_view_audios.hidden=YES;
+        _tbl_view_melody.hidden=NO;
+    }
+    else
+    {
+        _tbl_view_melody.hidden=YES;
+        _tbl_view_audios.hidden=NO;
+    }
+    
     _btn_filter.hidden=NO;
     _btn_search.hidden=NO;
     _view_audio.hidden=NO;
@@ -1378,6 +1414,7 @@ long last_Index = 99999999999;
                 }
                 else
                 {
+                    [Appdelegate hideProgressHudInView];
                     if ([[jsonResponse objectForKey:@"flag"] isEqualToString:@"unsuccess"]) {
                         NSLog(@"unsuccess error");
                     }
@@ -1458,60 +1495,41 @@ long last_Index = 99999999999;
                                     handler:^(UIAlertAction * action)
                                     {
                                         MessengerViewController *myVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MessengerViewController"];
-                                        myVC.str_file_id = [arr_rec_pack_id objectAtIndex:sender.tag];
-                                        myVC.str_screen_type = @"profile";
-                                        myVC.isShare_Audio = YES;
-                                        Appdelegate.fromShareScreen = 1;
-
+                                        if (isMelody) {
+                                            myVC.str_file_id = [NSString stringWithFormat:@"%@", [arr_melody_pack_id objectAtIndex:sender.tag]];
+                                            
+                                            if ([str_genere isEqualToString:@"My Melodies"])
+                                            {
+                                                myVC.str_screen_type = @"user_melody";
+                                                myVC.isShare_Audio = YES;
+                                                Appdelegate.fromShareScreen = 1;
+                                            }
+                                          
+                                        }
+                                        else{
+                                            myVC.str_file_id = [arr_rec_pack_id objectAtIndex:sender.tag];
+                                            
+                                            myVC.str_screen_type = @"station";
+                                            myVC.isShare_Audio = YES;
+                                            Appdelegate.fromShareScreen = 1;
+                                        }
                                         [self presentViewController:myVC animated:YES completion:nil];
-                                        //Handel your yes please button action here
+                                        
                                     }];
         UIAlertAction* noButton = [UIAlertAction
                                    actionWithTitle:@"No"
                                    style:UIAlertActionStyleDefault
                                    handler:^(UIAlertAction * action)
                                    {
-                                       //Handel your yes please button action here
-                                       NSArray *activityItems = @[@"Hi ! this is AMAN"];
-                                       // NSString *text = @"hello";
-                                       // NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",[arr_rec_thumbnail_url objectAtIndex:i_Path]]];
-                                       //UIImage *image = [UIImage imageNamed:@"socialsharing-facebook-image.jpg"];
-                                       activityController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+                                       NSString *link = [NSString stringWithFormat:@"%@",[[arr_recordingResponseM objectAtIndex:sender.tag] objectForKey:@"thumbnail_url"]];
+                                      // NSString *noteStr = [NSString stringWithFormat:@""];
+                                       NSString *noteStr = [NSString stringWithFormat:@"Listen to %@\nOn YoMelody.com\n",[[arr_recordingResponseM objectAtIndex:sender.tag]objectForKey:@"recording_topic"]];
+
+                                       NSURL *url = [NSURL URLWithString:link];
                                        
-                                       if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-                                       {
-                                           activityController.popoverPresentationController.sourceView = self.view;
-                                           activityController.popoverPresentationController.sourceRect = CGRectMake(self.view.bounds.size.width/2, self.view.bounds.size.height/4, 0, 0);
-                                       }
-                                       
-            [self presentViewController:activityController animated:YES completion:nil];
-            if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
-                                        
-            SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-            [controller setInitialText:@"First post from my iPhone app"];
-            [controller addImage:[UIImage imageNamed:@"socialsharing-facebook-image.jpg"]];
-            [controller setCompletionHandler:^(SLComposeViewControllerResult result) {
-                    switch (result) {
-                    case SLComposeViewControllerResultCancelled:
-                    NSLog(@"Post Canceled");
-                    break;
-                    case SLComposeViewControllerResultDone:
-                    NSLog(@"Post Sucessful");
-                    break;
-                    default:
-                    break;
-                    }
-                    }];
-            [self presentViewController:controller animated:YES completion:Nil];
-                }
-            else if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
-            {
-                SLComposeViewController *tweetSheet = [SLComposeViewController
-                                                       composeViewControllerForServiceType:SLServiceTypeTwitter];
-                [tweetSheet setInitialText:@"Great fun to learn iOS programming at appcoda.com!"];
-                [self presentViewController:tweetSheet animated:YES completion:nil];
-            }
-        }];
+                                       UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[noteStr, url] applicationActivities:nil];
+                                       [self presentViewController:activityVC animated:YES completion:nil];
+                                   }];
         
         [alert addAction:noButton];
         [alert addAction:yesButton];
@@ -1574,6 +1592,7 @@ long last_Index = 99999999999;
             
         }
         else if ([[responseObject objectForKey:@"flag"] isEqualToString:@"unsuccess"]) {
+            [Appdelegate hideProgressHudInView];
             UIAlertController * alert=   [UIAlertController
                                           alertControllerWithTitle:@"Message"
                                           message:@"Error to upload file !"
@@ -1593,6 +1612,7 @@ long last_Index = 99999999999;
             [self presentViewController:alert animated:YES completion:nil];
         }
         else{
+            [Appdelegate hideProgressHudInView];
             UIAlertController * alert=   [UIAlertController
                                           alertControllerWithTitle:@"Error"
                                           message:MSG_NoInternetMsg
@@ -1623,129 +1643,131 @@ long last_Index = 99999999999;
 -(void)like:(UIButton *)sender{
     
     @try{
-
-    NSString* like_val=[[NSString alloc]init];
-    if ([[arr_rec_like_status objectAtIndex:sender.tag] isEqual:@"1"]) {
-        like_val=@"0";
-    }
-    else{
-        like_val=@"1";
-    }
-    
-    NSMutableDictionary *params =[[NSMutableDictionary alloc]init];
-    [params setObject:[arr_rec_pack_id objectAtIndex:sender.tag] forKey:@"file_id"];
-    [params setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"] forKey:@"user_id"];
-    [params setObject:like_val forKey:@"likes"];
-    [params setObject:@"user_recording" forKey:@"type"];
-    [params setObject:KEY_AUTH_VALUE forKey:KEY_AUTH_KEY];
-    [params setObject:[arr_rec_name objectAtIndex:sender.tag] forKey:@"topic"];
-    NSLog(@"%@",params);
-    NSMutableString* parameterString = [NSMutableString string];
-    for(NSString* key in [params allKeys])
-    {
-        if ([parameterString length]) {
-            [parameterString appendString:@"&"];
-        }
-        [parameterString appendFormat:@"%@=%@",key, params[key]];
-    }
-    NSString* urlString = [NSString stringWithFormat:@"%@likes.php",BaseUrl];
-    NSURL* url = [NSURL URLWithString:urlString];
-    //this is how cookies were created
-    NSURLSession* session =[NSURLSession sharedSession];
-    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
-    [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:[parameterString dataUsingEncoding:NSUTF8StringEncoding]];
-    [request setHTTPShouldHandleCookies:NO];
-
-    NSURLSessionDataTask* task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         
-        if(error)
-        {
-            //do something
-            NSLog(@"%@", error);
-            UIAlertController * alert=   [UIAlertController
-                                          alertControllerWithTitle:@"Message"
-                                          message:MSG_NoInternetMsg
-                                          preferredStyle:UIAlertControllerStyleAlert];
-            
-            UIAlertAction* yesButton = [UIAlertAction
-                                        actionWithTitle:@"ok"
-                                        style:UIAlertActionStyleDefault
-                                        handler:^(UIAlertAction * action)
-                                        {
-                                            //Handel your yes please button action here
-                                        }];
-            
-            [alert addAction:yesButton];
-            //[self presentViewController:alert animated:YES completion:nil];
+        NSString* like_val=[[NSString alloc]init];
+        if ([[arr_rec_like_status objectAtIndex:sender.tag] isEqual:@"1"]) {
+            like_val=@"0";
         }
-        else
+        else{
+            like_val=@"1";
+        }
+        
+        NSMutableDictionary *params =[[NSMutableDictionary alloc]init];
+        [params setObject:[arr_rec_pack_id objectAtIndex:sender.tag] forKey:@"file_id"];
+        [params setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"] forKey:@"user_id"];
+        [params setObject:like_val forKey:@"likes"];
+        [params setObject:@"user_recording" forKey:@"type"];
+        [params setObject:KEY_AUTH_VALUE forKey:KEY_AUTH_KEY];
+        [params setObject:[arr_rec_name objectAtIndex:sender.tag] forKey:@"topic"];
+        NSLog(@"%@",params);
+        NSMutableString* parameterString = [NSMutableString string];
+        for(NSString* key in [params allKeys])
         {
+            if ([parameterString length]) {
+                [parameterString appendString:@"&"];
+            }
+            [parameterString appendFormat:@"%@=%@",key, params[key]];
+        }
+        NSString* urlString = [NSString stringWithFormat:@"%@likes.php",BaseUrl_Dev];
+        NSURL* url = [NSURL URLWithString:urlString];
+        //this is how cookies were created
+        NSURLSession* session =[NSURLSession sharedSession];
+        NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
+        [request setHTTPMethod:@"POST"];
+        [request setHTTPBody:[parameterString dataUsingEncoding:NSUTF8StringEncoding]];
+        [request setHTTPShouldHandleCookies:NO];
+        
+        NSURLSessionDataTask* task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSError *myError = nil;
-               NSString *requestReply = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
-                NSLog(@"%@",requestReply);
-                NSData *data = [requestReply dataUsingEncoding:NSUTF8StringEncoding];
-                NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data
-                                                                             options:kNilOptions
-                                                                               error:&myError];
-                NSMutableDictionary*dic_response=[[NSMutableDictionary alloc]init];
-                NSLog(@"%@",jsonResponse);
-                if([[jsonResponse objectForKey:@"flag"] isEqualToString:@"success"]) {
-                    dic_response=[jsonResponse objectForKey:@"response"];
-                    NSLog(@"%@",dic_response);
-                    [arr_rec_like_count replaceObjectAtIndex:sender.tag withObject:[dic_response objectForKey:@"likes" ]];
-                    
-//                    [[[arr_rec_response objectAtIndex:sender.tag] mutableCopy] removeObjectForKey:@"like_status"];
-                    NSMutableDictionary*dic=[[arr_recordingResponseM objectAtIndex:sender.tag] mutableCopy];
-                    [dic setObject:like_val forKey:@"like_status"];
-                    NSMutableArray *mutableArray = [NSMutableArray arrayWithArray:arr_recordingResponseM];
-                    [mutableArray replaceObjectAtIndex:sender.tag withObject:dic];
-                    arr_recordingResponseM = mutableArray;
-                    
-                    [arr_rec_like_status replaceObjectAtIndex:sender.tag withObject:like_val];
-                    
-                    //---------------------- Get IndexPath ---------------------
-                    CGPoint buttonPosition = [sender convertPoint:CGPointZero toView:_tbl_view_audios];
-                    NSIndexPath *indexPath = [_tbl_view_audios indexPathForRowAtPoint:buttonPosition];
-                    //------------------ Reload TableView Cell -----------------
-                    if(indexPath != nil)
-                    {
-                        [_tbl_view_audios beginUpdates];
-                        [_tbl_view_audios reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                        [_tbl_view_audios endUpdates];
-                        [self getActivity];
-                    }
-                    
-                }
-                else
-                {
-                    if ([[jsonResponse objectForKey:@"flag"] isEqualToString:@"unsuccess"]) {
-                        UIAlertController * alert=   [UIAlertController
-                                                      alertControllerWithTitle:@"Alert"
-                                                      message:@"Error to like!"
-                                                      preferredStyle:UIAlertControllerStyleAlert];
-                        
-                        UIAlertAction* yesButton = [UIAlertAction
-                                                    actionWithTitle:@"ok"
-                                                    style:UIAlertActionStyleDefault
-                                                    handler:^(UIAlertAction * action)
-                                                    {
-                                                        //Handel your yes please button action here
-                                                    }];
-                        [alert addAction:yesButton];
-                        [self presentViewController:alert animated:YES completion:nil];
-                    }
-                }
+            if(error)
+            {
+                //do something
+                NSLog(@"%@", error);
+                UIAlertController * alert=   [UIAlertController
+                                              alertControllerWithTitle:@"Message"
+                                              message:MSG_NoInternetMsg
+                                              preferredStyle:UIAlertControllerStyleAlert];
                 
-            });
-        }
-    }];
-    [task resume];
+                UIAlertAction* yesButton = [UIAlertAction
+                                            actionWithTitle:@"ok"
+                                            style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * action)
+                                            {
+                                                //Handel your yes please button action here
+                                            }];
+                
+                [alert addAction:yesButton];
+                //[self presentViewController:alert animated:YES completion:nil];
+            }
+            else
+            {
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSError *myError = nil;
+                    NSString *requestReply = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+                    NSLog(@"%@",requestReply);
+                    NSData *data = [requestReply dataUsingEncoding:NSUTF8StringEncoding];
+                    NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data
+                                                                                 options:kNilOptions
+                                                                                   error:&myError];
+                    NSMutableDictionary*dic_response=[[NSMutableDictionary alloc]init];
+                    NSLog(@"%@",jsonResponse);
+                    if([[jsonResponse objectForKey:@"flag"] isEqualToString:@"success"]) {
+                        dic_response=[jsonResponse objectForKey:@"response"];
+                        NSLog(@"%@",dic_response);
+                        [arr_rec_like_count replaceObjectAtIndex:sender.tag withObject:[dic_response objectForKey:@"likes" ]];
+                        
+                        //                    [[[arr_rec_response objectAtIndex:sender.tag] mutableCopy] removeObjectForKey:@"like_status"];
+                        NSMutableDictionary*dic=[[arr_recordingResponseM objectAtIndex:sender.tag] mutableCopy];
+                        [dic setObject:like_val forKey:@"like_status"];
+                        NSMutableArray *mutableArray = [NSMutableArray arrayWithArray:arr_recordingResponseM];
+                        [mutableArray replaceObjectAtIndex:sender.tag withObject:dic];
+                        arr_recordingResponseM = mutableArray;
+                        
+                        [arr_rec_like_status replaceObjectAtIndex:sender.tag withObject:like_val];
+                        
+                        //---------------------- Get IndexPath ---------------------
+                        CGPoint buttonPosition = [sender convertPoint:CGPointZero toView:_tbl_view_audios];
+                        NSIndexPath *indexPath = [_tbl_view_audios indexPathForRowAtPoint:buttonPosition];
+                        //------------------ Reload TableView Cell -----------------
+                        if(indexPath != nil)
+                        {
+                            [_tbl_view_audios beginUpdates];
+                            [_tbl_view_audios reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                            [_tbl_view_audios endUpdates];
+                            [self getActivity];
+                        }
+                        
+                    }
+                    else
+                    {
+                        [Appdelegate hideProgressHudInView];
+                        if ([[jsonResponse objectForKey:@"flag"] isEqualToString:@"unsuccess"]) {
+                            UIAlertController * alert=   [UIAlertController
+                                                          alertControllerWithTitle:@"Alert"
+                                                          message:@"Error to like!"
+                                                          preferredStyle:UIAlertControllerStyleAlert];
+                            
+                            UIAlertAction* yesButton = [UIAlertAction
+                                                        actionWithTitle:@"ok"
+                                                        style:UIAlertActionStyleDefault
+                                                        handler:^(UIAlertAction * action)
+                                                        {
+                                                            //Handel your yes please button action here
+                                                        }];
+                            [alert addAction:yesButton];
+                            [self presentViewController:alert animated:YES completion:nil];
+                        }
+                    }
+                    
+                });
+            }
+        }];
+        [task resume];
     }
     @catch (NSException *exception) {
         NSLog(@"exception at likes.php%@",exception);
+        [Appdelegate hideProgressHudInView];
     }
     @finally{
         
@@ -1761,15 +1783,15 @@ long last_Index = 99999999999;
     AudioFeedTableViewCell *cell = (AudioFeedTableViewCell*)[_tbl_view_audios cellForRowAtIndexPath:indexPath];
     
     if (toggleLike)
-        {
-            toggleLike = !toggleLike;
-            [cell.btn_like setBackgroundImage:[UIImage imageNamed:@"btn_hand_fill.png"] forState:UIControlStateNormal];
-        }
-        else{
-            toggleLike = !toggleLike;
-            [cell.btn_like setBackgroundImage:[UIImage imageNamed:@"btn_hand_outline.png"] forState:UIControlStateNormal];
-        }
-   
+    {
+        toggleLike = !toggleLike;
+        [cell.btn_like setBackgroundImage:[UIImage imageNamed:@"btn_hand_fill.png"] forState:UIControlStateNormal];
+    }
+    else{
+        toggleLike = !toggleLike;
+        [cell.btn_like setBackgroundImage:[UIImage imageNamed:@"btn_hand_outline.png"] forState:UIControlStateNormal];
+    }
+    
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
         //Background Thread
         [self like:sender];
@@ -1777,8 +1799,10 @@ long last_Index = 99999999999;
             //Run UI Updates
         });
     });
-        
+    
 }
+
+
 - (IBAction)btn_chat:(id)sender {
     
     [arr_users_id addObject:self.follower_id];
@@ -1798,17 +1822,17 @@ long last_Index = 99999999999;
 - (IBAction)btn_follow_unfollow:(id)sender {
     toggleFollow = !toggleFollow;
     if (toggleFollow) {
-    [self.btn_follow_unfollow setImage:[UIImage imageNamed:@"following.png"] forState:UIControlStateNormal];
+        [self.btn_follow_unfollow setImage:[UIImage imageNamed:@"following.png"] forState:UIControlStateNormal];
     }
     else{
-
+        
         [self.btn_follow_unfollow setImage:[UIImage imageNamed:@"follow.png"] forState:UIControlStateNormal];
     }
     NSDictionary* params = @{
                              KEY_AUTH_KEY:KEY_AUTH_VALUE,
                              @"user_id":_follower_id,
                              @"followerID":_user_id
-                         };
+                             };
     NSLog(@"%@",params);
     NSMutableString* parameterString = [NSMutableString string];
     for(NSString* key in [params allKeys])
@@ -1865,7 +1889,7 @@ long last_Index = 99999999999;
                 NSLog(@"%@",jsonResponse);
                 if([[jsonResponse objectForKey:@"flag"] isEqualToString:@"success"]) {
                     [defaults_userdata setBool:YES forKey:@"isfollow"];
-
+                    
                     dic_response=[jsonResponse objectForKey:@"response"];
                     NSLog(@"%@",[dic_response objectForKey:@"follow_status"]);
                     if ([[NSString stringWithFormat:@"%@",[dic_response objectForKey:@"follow_status"]] isEqual:@"1"]) {
@@ -1877,13 +1901,14 @@ long last_Index = 99999999999;
                     {
                         [defaults_userdata setBool:NO forKey:@"isfollow"];
                         self.btn_chat.hidden = YES;
-
+                        
                         [defaults_userdata setObject:[NSString stringWithFormat:@"%@",[dic_response objectForKey:@"follow_count"]] forKey:@"followers" ];
-                        [_btn_follow_unfollow setImage:[UIImage imageNamed:@"follow.png"] forState:UIControlStateNormal];
+                        [_btn_follow_unfollow setImage:[UIImage imageNamed:@"follow_white"] forState:UIControlStateNormal];
                     }
                 }
                 else
                 {
+                    [Appdelegate hideProgressHudInView];
                     if ([[jsonResponse objectForKey:@"flag"] isEqualToString:@"unsuccess"]) {
                         UIAlertController * alert=   [UIAlertController
                                                       alertControllerWithTitle:@"Alert"
@@ -1931,7 +1956,7 @@ long last_Index = 99999999999;
     if (isActivityClicked) {
         [params setObject:searchString forKey:@"searchKey"];
     }
-
+    
     NSLog(@"%@",params);
     NSMutableString* parameterString = [NSMutableString string];
     for(NSString* key in [params allKeys])
@@ -1941,7 +1966,7 @@ long last_Index = 99999999999;
         }
         [parameterString appendFormat:@"%@=%@",key, params[key]];
     }
-    NSString* urlString = [NSString stringWithFormat:@"%@activity.php",BaseUrl];
+    NSString* urlString = [NSString stringWithFormat:@"%@activity.php",BaseUrl_Dev];
     NSURL* url = [NSURL URLWithString:urlString];
     
     //this is how cookies were created
@@ -1956,7 +1981,7 @@ long last_Index = 99999999999;
         if(error)
         {
             NSLog(@"%@", error);
-         
+            
         }
         else
         {
@@ -1984,9 +2009,10 @@ long last_Index = 99999999999;
                 }
                 else
                 {
+                    [Appdelegate hideProgressHudInView];
                     if ([[jsonResponse objectForKey:@"flag"] isEqualToString:@"unsuccess"]) {
                         NSLog(@"unsuccess error");
-
+                        
                     }
                 }
             });
@@ -2026,23 +2052,21 @@ long last_Index = 99999999999;
 {
     
     if (collectionView.tag ==1) {
-    menuCollectionViewCell *cell = (menuCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:indexPath];
-    cell.lbl_menu_title.adjustsFontSizeToFitWidth=YES;
-    
-    if ([[arr_tab_select objectAtIndex:indexPath.item] isEqual:@"1"]) {
-        cell.img_menu.image = [UIImage imageNamed:@"underline.png"];
-        cell.lbl_menu_title.text=[arr_menu_items objectAtIndex:indexPath.row];
-    }
-    else
-    {
-        cell.lbl_menu_title.text=[arr_menu_items objectAtIndex:indexPath.row];
+        menuCollectionViewCell *cell = (menuCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:indexPath];
+        cell.lbl_menu_title.adjustsFontSizeToFitWidth=YES;
         
-        cell.img_menu.image = [UIImage imageNamed:@"white.png"];
-        
-    }
-
+        if ([[arr_tab_select objectAtIndex:indexPath.item] isEqual:@"1"]) {
+            cell.img_menu.image = [UIImage imageNamed:@"underline.png"];
+            cell.lbl_menu_title.text=[arr_menu_items objectAtIndex:indexPath.row];
+        }
+        else
+        {
+            cell.lbl_menu_title.text=[arr_menu_items objectAtIndex:indexPath.row];
+            cell.img_menu.image = [UIImage imageNamed:@"white.png"];
+            
+        }
         return cell;
-
+        
     }
     else {
         imageCollectionViewCell *cell = (imageCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
@@ -2063,8 +2087,14 @@ long last_Index = 99999999999;
     @try{
     limit = 0;
     current_Record = 0;
+        _placeholder_img.hidden = NO;
+        _tbl_view_audios.hidden = YES;
+        _tbl_view_melody.hidden = YES;
+        
     arr_recordingResponseM=[[NSMutableArray alloc]init];
-
+    str_genere = [arr_menu_items objectAtIndex:indexPath.item];
+        arr_MyMelodyM=[[NSMutableArray alloc]init];
+        maxDuration=[[NSMutableArray alloc]init];
     if (collectionView.tag ==1) {
     current_Record = 0;
     int i;
@@ -2085,6 +2115,26 @@ long last_Index = 99999999999;
     {
         genre=[arr_genre_id objectAtIndex:indexPath.item];
     }
+        if ([str_genere isEqualToString:@"My Melodies"])
+        {
+            if ([defaults_userdata boolForKey:@"isUserLogged"])
+            {
+                isMelody = YES;
+                [self loadMelodyPacks];
+            }
+            else
+            {
+                ViewController *myVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+                myVC.open_login=@"0";
+                myVC.other_vc_flag=@"1";
+                [self presentViewController:myVC animated:YES completion:nil];
+            }
+        }
+        else{
+            _tbl_view_melody.hidden = YES;
+            isMelody = NO;
+
+        }
     recording_typeInt=0;
     [self loadRecordings];
     [_cv_menu reloadData];
@@ -2099,7 +2149,7 @@ long last_Index = 99999999999;
     }
     }
     @catch (NSException *exception) {
-        NSLog(@"exception at likes.php :%@",exception);
+        NSLog(@"exception at didSelectItemAtIndexPath :%@",exception);
     }
     @finally{
         
@@ -2110,12 +2160,50 @@ long last_Index = 99999999999;
 -(BOOL)collectionView:(UICollectionView* )collectionView shouldSelectItemAtIndexPath:(NSIndexPath* )indexPath
 {
     NSLog(@"this is caled");
+    if (collectionView == _cv_menu) {
+        return YES;
+    }
+    else
+    {
+    [self dismissViewControllerAnimated:YES completion:nil];
+    [self uploadProfilePicFromCollectionView];
     return YES;
+    }
+}
+
+-(void)uploadProfilePicFromCollectionView
+{
+    UIAlertController * alert=   [UIAlertController
+                                  alertControllerWithTitle:@"Confirmation"
+                                  message:@"Proceed to upload profile pic"
+                                  preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* cancelButton = [UIAlertAction
+                                   actionWithTitle:@"Cancel"
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction * action)
+                                   {
+                                       //Handel your yes please button action here
+                                       
+                                   }];
+    UIAlertAction* yesButton = [UIAlertAction
+                                actionWithTitle:@"OK"
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+                                    //Handel your yes please button action here
+                                    [self upload_cover];
+                                    
+                                }];
+    
+    [alert addAction:cancelButton];
+    [alert addAction:yesButton];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 
 #pragma mark - TableView Delegates & Datasource
 #pragma mark -
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView.tag==1) {
@@ -2126,6 +2214,9 @@ long last_Index = 99999999999;
     }
     else if (tableView.tag==3) {
         return arr_Actity.count;
+    }
+    else if (tableView==_tbl_view_melody) {
+        return arr_MyMelodyM.count;
     }
     else{
         return 0;
@@ -2144,6 +2235,9 @@ long last_Index = 99999999999;
     else if (tableView.tag==3) {
         return 85;
     }
+    else if (tableView==_tbl_view_melody) {
+        return 190;
+    }
     else{
         return 0;
     }
@@ -2157,10 +2251,12 @@ long last_Index = 99999999999;
     else if (tableView.tag==2) {
         return 1;
     }
-    else if (tableView.tag==3) {
+    else if (tableView.tag==3 ) {
         return 1;
     }
-    
+    else if (tableView==_tbl_view_melody) {
+        return 1;
+    }
     else{
         return 0;
     }
@@ -2182,8 +2278,9 @@ long last_Index = 99999999999;
                                                           owner:self options:nil];
             cell.accessoryType = UITableViewCellStyleDefault;
             cell = (AudioFeedTableViewCell*)[nib2 objectAtIndex:0];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+         
         }
+           cell.selectionStyle = UITableViewCellSelectionStyleNone;
             [cell.slider_progress setThumbImage:[UIImage imageNamed:@"thumb_transparent.png"] forState:UIControlStateNormal];
             [cell.btn_Profile setTag:indexPath.row];
             cell.btn_Profile.layer.cornerRadius = cell.btn_Profile.frame.size.width / 2;
@@ -2209,7 +2306,7 @@ long last_Index = 99999999999;
             [cell.btn_other_options addTarget:self action:@selector(show_options:) forControlEvents:UIControlEventTouchUpInside];
             
             [cell.btn_share addTarget:self action:@selector(openshare:) forControlEvents:UIControlEventTouchUpInside];
-            
+            cell.btn_share.tag=indexPath.row;
             cell.lbl_profile_name.text=[arr_rec_name objectAtIndex:indexPath.row];
             cell.lbl_profile_twitter_id.text=[NSString stringWithFormat:@"@%@",[arr_rec_station objectAtIndex:indexPath.row]];
             cell.lbl_timer.text=[Appdelegate timeFormatted:[arr_rec_duration objectAtIndex:indexPath.row]];
@@ -2219,12 +2316,27 @@ long last_Index = 99999999999;
                 cell.lbl_date_top.text=[Appdelegate formatDateWithString:tempDate];
                 cell.lbl_date_aidios.text=[Appdelegate formatDateWithString:tempDate];
             }
-
+        [cell.btn_share_value setTitle:[NSString stringWithFormat:@"%@",[arr_rec_share_count objectAtIndex:indexPath.row]] forState:UIControlStateNormal];
             [cell.btn_play_value setTitle:[NSString stringWithFormat:@"%@",[arr_rec_play_count objectAtIndex:indexPath.row]] forState:UIControlStateNormal];
-        if (arr_recordingResponseM != nil || arr_recordingResponseM.count > 0) {
+        
+        //---------------- * Next Button * --------------------
+        cell.btn_next_audio.tag = indexPath.row;
+        [cell.btn_next_audio addTarget:self action:@selector(btn_nextAction:) forControlEvents:UIControlEventTouchUpInside];
+        //---------------- * Previous Button * --------------------
+        cell.btn_previous_audio.tag = indexPath.row;
+        [cell.btn_previous_audio addTarget:self action:@selector(btn_previousAction:) forControlEvents:UIControlEventTouchUpInside];
+        
+        if ([arr_recordingResponseM count]>0)
+        {
             long includeL =[[[arr_recordingResponseM objectAtIndex:indexPath.row] valueForKey:@"join_count"]longValue];
+            
             cell.lbl_included.text = [NSString stringWithFormat:@"Include : %ld",includeL];
-            cell.lbl_oneof.text = [NSString stringWithFormat:@"( 1 of %ld )",includeL];
+            if (indexPath.row == instrument_play_index) {
+                cell.lbl_oneof.text = [NSString stringWithFormat:@"( %ld of %ld )",currentIndex_user+1,includeL];
+            }
+            else{
+                cell.lbl_oneof.text = [NSString stringWithFormat:@"( 1 of %ld )",includeL];
+            }
         }
         
         
@@ -2245,13 +2357,41 @@ long last_Index = 99999999999;
             else{
                 [cell.btn_like setBackgroundImage:[UIImage imageNamed:@"btn_hand_outline.png"] forState:UIControlStateNormal];
             }
-            //------------- Cover pic -----------------
-            NSURL *url = [NSURL URLWithString:[arr_rec_cover objectAtIndex:indexPath.row]];
+        
+        //----* Make Public/Private only show on OWN(logged-in user) Recordings *-----
+        if ([[[arr_recordingResponseM objectAtIndex:indexPath.row] valueForKey:@"added_by"] isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"]]) {
+            
+            if ([[arr_PublicState objectAtIndex:indexPath.row] isEqual:@"1"]) {
+                [cell.switch_PublicOrPrivate setOn:YES];
+            }
+            else
+            {
+                [cell.switch_PublicOrPrivate setOn:NO];
+            }
+            [cell.switch_PublicOrPrivate addTarget:self action:@selector(switchPublicToggled:)
+                                  forControlEvents:UIControlEventTouchUpInside];
+            cell.switch_PublicOrPrivate.hidden=NO;
+            
+        }
+        else{
+            cell.switch_PublicOrPrivate.hidden=YES;
+            
+        }
+        //----------------------------------------------------------------------
+        
+        
+        
+        
+        //---------------------*** Cover pic ***------------------------
+            NSString *strUrlForCover = [arr_rec_cover objectAtIndex:indexPath.row];
+            strUrlForCover = [strUrlForCover stringByReplacingOccurrencesOfString:@"Mobile" withString:@"original"];
+        
+            NSURL *url = [NSURL URLWithString:strUrlForCover];
             cell.img_view_back_cover.contentMode = UIViewContentModeScaleToFill;
             [cell.img_view_back_cover sd_setImageWithURL:url
                                         placeholderImage:[UIImage imageNamed:@"bg_cell.png"]];
             NSURL *url2 = [NSURL URLWithString:[arr_rec_profile objectAtIndex:indexPath.row]];
-            
+        
             NSURLSessionTask *task2 = [[NSURLSession sharedSession] dataTaskWithURL:url2 completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                 if (data) {
                     UIImage *image = [UIImage imageWithData:data];
@@ -2302,89 +2442,208 @@ long last_Index = 99999999999;
             
             cell = (ActivitiesTableViewCell*)[nib2 objectAtIndex:0];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.img_view_profileimage.layer.cornerRadius = cell.img_view_profileimage.frame.size.width / 2;
-            cell.img_view_profileimage.clipsToBounds = YES;
             
-            NSString *str_topic = [[arr_Actity objectAtIndex:indexPath.row] valueForKey:@"topic"];
+        }
+        cell.img_view_profileimage.layer.cornerRadius = cell.img_view_profileimage.frame.size.width / 2;
+        cell.img_view_profileimage.clipsToBounds = YES;
+        
+        NSString *str_topic = [[arr_Actity objectAtIndex:indexPath.row] valueForKey:@"topic"];
+        
+        if ([str_topic isEqualToString:@""]) {
+            cell.lbl_topic.text = @"";
+        }
+        else{
+            cell.lbl_topic.text = str_topic;
+        }
+        //----------------* new code for set Date From Server side *----------
+        cell.lbl_timing.text=[[arr_Actity objectAtIndex:indexPath.row]valueForKey:@"ActivityTime"];
+        //------------------------------------------------------------------*
+        
+        NSString *str_activityName = [[arr_Actity objectAtIndex:indexPath.row] valueForKey:@"activity_name"];
+        NSString *secondUser = [[[arr_Actity objectAtIndex:indexPath.row] valueForKey:@"second_user"] capitalizedString];
+        NSString *firstUser;
+        if ([[[arr_Actity objectAtIndex:indexPath.row] valueForKey:@"first_user"] isEqualToString:@" "])
+        {
+            firstUser=@"";
+        }
+        else
+        {
+            firstUser= [[NSString stringWithFormat:@"%@'s",[[arr_Actity objectAtIndex:indexPath.row] valueForKey:@"first_user"]] capitalizedString];
+        }
+        NSString *completeString;
+        
+        if ([str_activityName isEqualToString:@""])
+        {
+            str_activityName = @"N/A";
+        }
+        else
+        {
+            completeString = [NSString stringWithFormat:@"%@ %@ %@",
+                              secondUser,str_activityName,firstUser];
             
-            if ([str_topic isEqualToString:@""]) {
-                cell.lbl_topic.text = @"";
-            }
-            else{
-                cell.lbl_topic.text = str_topic;
-            }
-            //----------------* new code for set Date From Server side *----------
-            cell.lbl_timing.text=[[arr_Actity objectAtIndex:indexPath.row]valueForKey:@"ActivityTime"];
-            //------------------------------------------------------------------*
+            NSDictionary *attribs = @{
+                                      NSForegroundColorAttributeName:[UIColor blackColor],
+                                      NSFontAttributeName:[UIFont systemFontOfSize:12]
+                                      };
             
-            NSString *str_activityName = [[arr_Actity objectAtIndex:indexPath.row] valueForKey:@"activity_name"];
-            NSString *secondUser = [[[arr_Actity objectAtIndex:indexPath.row] valueForKey:@"second_user"] capitalizedString];
-            NSString *firstUser;
-            if ([[[arr_Actity objectAtIndex:indexPath.row] valueForKey:@"first_user"] isEqualToString:@" "])
-            {
-                firstUser=@"";
-            }
-            else
-            {
-               firstUser= [[NSString stringWithFormat:@"%@'s",[[arr_Actity objectAtIndex:indexPath.row] valueForKey:@"first_user"]] capitalizedString];
-            }
-            NSString *completeString;
-
-            if ([str_activityName isEqualToString:@""])
-            {
-                str_activityName = @"N/A";
-            }
-            else
-            {
-                completeString = [NSString stringWithFormat:@"%@ %@ %@",
-                                  secondUser,str_activityName,firstUser];
-                
-                NSDictionary *attribs = @{
-                                          NSForegroundColorAttributeName:[UIColor blackColor],
-                                          NSFontAttributeName:[UIFont systemFontOfSize:12]
-                                          };
-                
-                NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:completeString attributes:attribs];
-                
-                NSRange secondUserRange = [completeString rangeOfString:secondUser];
-                NSRange activityRange = [completeString rangeOfString:str_activityName];
-                NSRange firstUserRange = [completeString rangeOfString:firstUser];
-                NSDictionary *boldAttrib = @{NSFontAttributeName:[UIFont boldSystemFontOfSize:12]};
-                NSDictionary *nonBoldAttrib = @{NSFontAttributeName:[UIFont systemFontOfSize:12]};
-                
-                [attributedText setAttributes:boldAttrib range:secondUserRange];
-                [attributedText setAttributes:nonBoldAttrib range:activityRange];
-                [attributedText setAttributes:boldAttrib range:firstUserRange];
-                [cell.lbl_activity setAttributedText:attributedText];
-            }
-            /////==========NEW CODE FOR PROFILE NAVIGATION
-            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleImageTap:)];
-            cell.img_view_profileimage.userInteractionEnabled=YES;
-            tap.numberOfTapsRequired = 1;
-            tap.view.tag=indexPath.row;
-            cell.img_view_profileimage.tag = indexPath.row;
-            tap.cancelsTouchesInView = YES;
-            [cell.img_view_profileimage addGestureRecognizer:tap];
-            if ([[arr_Actity objectAtIndex:indexPath.row] valueForKey:@"profile_pick"] != [NSNull null]) {
-                //------------- Cover pic -----------------
-                NSURL *url2 = [NSURL URLWithString:[[arr_Actity objectAtIndex:indexPath.row] valueForKey:@"profile_pick"]];
-                cell.img_view_profileimage.contentMode = UIViewContentModeScaleToFill;
-                
-                [cell.img_view_profileimage sd_setImageWithURL:url2
-                                            placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
-            }
+            NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:completeString attributes:attribs];
             
-            return cell;
+            NSRange secondUserRange = [completeString rangeOfString:secondUser];
+            NSRange activityRange = [completeString rangeOfString:str_activityName];
+            NSRange firstUserRange = [completeString rangeOfString:firstUser];
+            NSDictionary *boldAttrib = @{NSFontAttributeName:[UIFont boldSystemFontOfSize:12]};
+            NSDictionary *nonBoldAttrib = @{NSFontAttributeName:[UIFont systemFontOfSize:12]};
+            
+            [attributedText setAttributes:boldAttrib range:secondUserRange];
+            [attributedText setAttributes:nonBoldAttrib range:activityRange];
+            [attributedText setAttributes:boldAttrib range:firstUserRange];
+            [cell.lbl_activity setAttributedText:attributedText];
+        }
+        /////==========NEW CODE FOR PROFILE NAVIGATION
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleImageTap:)];
+        cell.img_view_profileimage.userInteractionEnabled=YES;
+        tap.numberOfTapsRequired = 1;
+        tap.view.tag=indexPath.row;
+        cell.img_view_profileimage.tag = indexPath.row;
+        tap.cancelsTouchesInView = YES;
+        [cell.img_view_profileimage addGestureRecognizer:tap];
+        if ([[arr_Actity objectAtIndex:indexPath.row] valueForKey:@"profile_pick"] != [NSNull null]) {
+            //------------- Cover pic -----------------
+            NSURL *url2 = [NSURL URLWithString:[[arr_Actity objectAtIndex:indexPath.row] valueForKey:@"profile_pick"]];
+            cell.img_view_profileimage.contentMode = UIViewContentModeScaleToFill;
+            
+            [cell.img_view_profileimage sd_setImageWithURL:url2
+                                          placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
         }
         return cell;
     }
-    else{
-        return 0;
-    }
+     else if(tableView == _tbl_view_melody)
+     {
+         MelodyPacksTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Melody"];
+         
+         if (cell == nil)
+         {
+             NSArray *nib2 = [[NSBundle mainBundle] loadNibNamed:@"MelodyPacksTableViewCell"
+                                                           owner:self options:nil];
+             cell.accessoryType = UITableViewCellStyleDefault;
+             cell = (MelodyPacksTableViewCell*)[nib2 objectAtIndex:0];
+             cell.selectionStyle = UITableViewCellSelectionStyleNone;
+             
+         }
+         
+         cell.btn_hide.tag=indexPath.row;
+         [cell.btn_hide addTarget:self action:@selector(hide_cellmelody:) forControlEvents:UIControlEventTouchUpInside];
+         cell.btn_hide.hidden=YES;
+         
+         cell.btn_playpause.tag=indexPath.row;
+         [cell.btn_playpause addTarget:self action:@selector(btn_playpause_clicked:) forControlEvents:UIControlEventTouchUpInside];
+         
+         [cell.lbl_no_of_play setTitle:[NSString stringWithFormat:@"%@",[[arr_MyMelodyM objectAtIndex:indexPath.row] valueForKey:@"playcounts"]] forState:UIControlStateNormal];
+         
+         
+         cell.btn_add.tag=indexPath.row;
+         [cell.btn_add addTarget:self action:@selector(btn_add_clicked:) forControlEvents:UIControlEventTouchUpInside];
+         
+         cell.btn_play.tag=indexPath.row;
+         
+         //------------------------------ * Like * ---------------------------------
+         //------------* Set the like/Unlike image according their like status *-----------
+         
+         if ([[arr_melody_like_status objectAtIndex:indexPath.row] isEqual:@"1"]) {
+             [cell.btn_like setBackgroundImage:[UIImage imageNamed:@"btn_hand_fill.png"] forState:UIControlStateNormal];
+         }
+         else{
+             [cell.btn_like setBackgroundImage:[UIImage imageNamed:@"btn_hand_outline.png"] forState:UIControlStateNormal];
+         }
+         cell.btn_like.tag=indexPath.row;
+         [cell.btn_like addTarget:self action:@selector(btn_MelodyPacks_like_clicked:) forControlEvents:UIControlEventTouchUpInside];
+         
+         [cell.lbl_no_of_like setTitle:[NSString stringWithFormat:@"%@",[arr_melody_pack_no_of_like objectAtIndex:indexPath.row]] forState:UIControlStateNormal];
+         //--------------------------------------------------------------------------------
+         
+        
+         
+         cell.btn_menu.tag=indexPath.row;
+         [cell.btn_menu addTarget:self action:@selector(btn_menu_clicked:) forControlEvents:UIControlEventTouchUpInside];
+         
+         //------------------------------ * Comment * ---------------------------------
+
+         cell.btn_comment.tag=indexPath.row;
+         [cell.btn_comment addTarget:self action:@selector(btn_Melodypackcomment_clicked:) forControlEvents:UIControlEventTouchUpInside];
+         [cell.lbl_no_of_comments setTitle:[[arr_MyMelodyM objectAtIndex:indexPath.row] valueForKey:@"commentscounts"] forState:UIControlStateNormal];
+         
+         //------------------------------ * Share * ---------------------------------
+         cell.btn_share.tag=indexPath.row;
+         [cell.btn_share addTarget:self action:@selector(openshare:) forControlEvents:UIControlEventTouchUpInside];//btn_share_clicked
+         [cell.btn_no_of_share setTitle:[[arr_MyMelodyM objectAtIndex:indexPath.row] valueForKey:@"sharecounts"] forState:UIControlStateNormal];
+         
+         cell.img_view_profile.layer.cornerRadius = cell.img_view_profile.frame.size.width / 2;
+         cell.img_view_profile.clipsToBounds = YES;
+         [cell.slider_progress setMinimumTrackImage:[UIImage imageNamed:@"blue_bar.png"] forState:UIControlStateNormal];
+         [cell.slider_progress setMaximumTrackImage:[UIImage imageNamed:@"black_bar.png"] forState:UIControlStateNormal];
+         [cell.slider_progress setThumbImage:[UIImage imageNamed:@"thumb.png"] forState:UIControlStateNormal];
+         [cell.slider_progress setThumbImage:[UIImage imageNamed:@"thumb.png"] forState:UIControlStateFocused];
+         
+         cell.img_melodypack_cover.contentMode = UIViewContentModeScaleToFill;
+         cell.img_view_profile.contentMode = UIViewContentModeScaleAspectFill;
+         //------------- Cover pic -----------------
+         
+         NSString *imageCoverUrlString = [[arr_MyMelodyM objectAtIndex:indexPath.row] valueForKey:@"cover"];
+         NSString *encodedCoverImageUrlString = [imageCoverUrlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+         NSURL *image_Cover_URL = [NSURL URLWithString: encodedCoverImageUrlString];
+         
+         //            NSURL *url = [NSURL URLWithString:[arr_melody_pack_cover objectAtIndex:indexPath.row]];
+         cell.img_melodypack_cover.contentMode = UIViewContentModeScaleToFill;
+         
+         [cell.img_melodypack_cover sd_setImageWithURL:image_Cover_URL
+                                      placeholderImage:[UIImage imageNamed:@"bg_cell.png"]];
+         
+         //------------- Profile pic -----------------
+         NSString *imageProfileUrlString = [[arr_MyMelodyM objectAtIndex:indexPath.row] valueForKey:@"profilepic"];
+         NSString *encodedProfileImageUrlString = [imageProfileUrlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+         
+         NSURL *url2 = [NSURL URLWithString: encodedProfileImageUrlString];
+         
+         cell.img_view_profile.contentMode = UIViewContentModeScaleToFill;
+         
+         [cell.img_view_profile sd_setImageWithURL:url2
+                                  placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
+         cell.lbl_timer.textAlignment=NSTextAlignmentRight;
+         cell.lbl_timer.text=[NSString stringWithFormat:@"%@",[Appdelegate timeFormatted:[[arr_MyMelodyM objectAtIndex:indexPath.row] valueForKey:@"duration"]]];//arr_melody_pack_timerM //maxDuration
+
+         //---------------------------- * Title * ---------------------------
+//         [cell.lbl_profile_title setFrame:CGRectMake(cell.img_view_profile.frame.origin.x+
+//                                                     cell.img_view_profile.frame.size.width+10,
+//                                            cell.lbl_profile_title.frame.origin.y,
+//                                            cell.lbl_profile_title.frame.size.width,
+//                                            cell.lbl_profile_title.frame.size.height)];
+         
+         
+         cell.lbl_profile_title.text=[[arr_MyMelodyM objectAtIndex:indexPath.row] valueForKey:@"name"];
+         cell.lbl_profile_id.text=[[arr_MyMelodyM objectAtIndex:indexPath.row] valueForKey:@"username"];
+         
+         cell.lbl_genre.text=[NSString stringWithFormat:@"Genre : %@",[[arr_MyMelodyM objectAtIndex:indexPath.row] valueForKey:@"genre_name"]];
+         
+         NSString *tempDate = [[arr_MyMelodyM objectAtIndex:indexPath.row] valueForKey:@"date"];
+         cell.lbl_date.textAlignment=NSTextAlignmentRight;
+         if (tempDate == nil || tempDate.length >0) {
+             cell.lbl_date.text=[Appdelegate formatDateWithString:tempDate];
+         }
+         cell.lbl_bpm.text=[NSString stringWithFormat:@"BPM : %@",[[arr_MyMelodyM objectAtIndex:indexPath.row] valueForKey:@"bpm"]];
+         if ([[[arr_MyMelodyM objectAtIndex:indexPath.row] valueForKey:@"bpm"] isEqual:@"1"]) {
+             cell.lbl_no_of_instrumentals.text=[NSString stringWithFormat:@"%@ Instrumental",[[arr_MyMelodyM objectAtIndex:indexPath.row] valueForKey:@"instrument"]];
+         }
+         else
+         {
+             cell.lbl_no_of_instrumentals.text=[NSString stringWithFormat:@"%@ Instrumentals",[[arr_MyMelodyM objectAtIndex:indexPath.row] valueForKey:@"instrument"]];
+         }
+         
+         return cell;
+     }
         
     }
     @catch (NSException *exception) {
-        NSLog(@"exception at likes.php :%@",exception);
+        NSLog(@"exception at TableView :%@",exception);
     }
     @finally{
         
@@ -2394,6 +2653,40 @@ long last_Index = 99999999999;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    if(tableView.tag == 3)
+    {
+        
+        if ([[arr_Actity objectAtIndex:indexPath.row] objectForKey:@"recordingID"] != [NSNull null])
+        {
+            NSLog(@"REC ID %@",[[arr_Actity objectAtIndex:indexPath.row] objectForKey:@"recordingID"]);
+            AudioFeedCommentsViewController *audioFeedVC=[self.storyboard instantiateViewControllerWithIdentifier:@"AudioFeedCommentsViewController"];
+            audioFeedVC.fileID = [[arr_Actity objectAtIndex:indexPath.row] objectForKey:@"recordingID"];
+            audioFeedVC.fileType = @"user_recording";
+            audioFeedVC.isFrom=@"ACTIVITY";
+            [self presentViewController:audioFeedVC animated:YES completion:nil];
+            
+        }
+        else if ([[arr_Actity objectAtIndex:indexPath.row] objectForKey:@"adminmelodyid"] != [NSNull null])
+        {
+            NSLog(@"ADMIN MEL ID %@",[[arr_Actity objectAtIndex:indexPath.row] objectForKey:@"adminmelodyid"]);
+            MelodyPackCommentsViewController*vc=[self.storyboard instantiateViewControllerWithIdentifier:@"MelodyPackCommentsViewController"];;
+            vc.fileID = [[arr_Actity objectAtIndex:indexPath.row] objectForKey:@"adminmelodyid"];
+            vc.fileType = @"admin_melody";
+            vc.isFrom=@"ACTIVITY";
+            [self presentViewController:vc animated:YES completion:nil];
+        }
+        else if ([[arr_Actity objectAtIndex:indexPath.row] objectForKey:@"melodyID"] != [NSNull null])
+        {
+            NSLog(@"USER MEL ID %@",[[arr_Actity objectAtIndex:indexPath.row] objectForKey:@"melodyID"]);
+            MelodyPackCommentsViewController*vc=[self.storyboard instantiateViewControllerWithIdentifier:@"MelodyPackCommentsViewController"];;
+            vc.fileID = [[arr_Actity objectAtIndex:indexPath.row] objectForKey:@"melodyID"];
+            vc.fileType = @"user_melody";
+            vc.isFrom=@"ACTIVITY";
+            [self presentViewController:vc animated:YES completion:nil];
+        }
+        
+        
+    }
     if (tableView.tag == 2) {
         filterString = [arr_filter_data_list objectAtIndex:indexPath.row];
         if (indexPath.row == 3 || indexPath.row == 5) {
@@ -2410,19 +2703,20 @@ long last_Index = 99999999999;
             
         }
     }
-
+    
     
 }
 
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    if ((loadingData) && (indexPath.row == current_Record - 1) && ((current_Record % 10) == 0))
-    {
-        limit = arr_recordingResponseM.count;
-        counter= counter+1;
-        [self loadRecordings];
+    if (tableView.tag==1) {
+        if ((loadingData) && (indexPath.row == current_Record - 1) && ((current_Record % 10) == 0))
+        {
+            limit = arr_recordingResponseM.count;
+            counter= counter+1;
+            [self loadRecordings];
+        }
     }
 }
 
@@ -2433,67 +2727,71 @@ long last_Index = 99999999999;
     NSIndexPath *iPath = [_tbl_view_activities indexPathForRowAtPoint:tapLocation];
     NSLog(@"FINAL TAG VALUE %ld",(long)iPath.row);
     ProfileViewController *myVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ProfileViewController"];
-     NSLog(@"usr id %@",[defaults_userdata objectForKey:@"user_id"]);
-     NSLog(@"othr user id %@",[[arr_Actity objectAtIndex:iPath.row]valueForKey:@"created_by_userID"]);
-     if ([defaults_userdata objectForKey:@"user_id"] == current_UserID)
-     {
-     if ([[arr_Actity objectAtIndex:iPath.row]valueForKey:@"created_by_userID"]==[defaults_userdata objectForKey:@"user_id"])
-     {
-     //...
-     }
-     else
-     {
-     myVC.follower_id = [[arr_Actity objectAtIndex:iPath.row]valueForKey:@"created_by_userID"];
-     [self presentViewController:myVC animated:YES completion:nil];
-     }
-     }
-     else
-     {
-     if ([[arr_Actity objectAtIndex:iPath.row]valueForKey:@"created_by_userID"]==current_UserID)
-     {
-     //...
-     }
-     else
-     {
-     myVC.follower_id = [[arr_Actity objectAtIndex:iPath.row]valueForKey:@"created_by_userID"];
-     [self presentViewController:myVC animated:YES completion:nil];
-     }
-     
-     }
+    NSLog(@"usr id %@",[defaults_userdata objectForKey:@"user_id"]);
+    NSLog(@"othr user id %@",[[arr_Actity objectAtIndex:iPath.row]valueForKey:@"created_by_userID"]);
+    if ([defaults_userdata objectForKey:@"user_id"] == current_UserID)
+    {
+        if ([[arr_Actity objectAtIndex:iPath.row]valueForKey:@"created_by_userID"]==[defaults_userdata objectForKey:@"user_id"])
+        {
+            //...
+        }
+        else
+        {
+            myVC.follower_id = [[arr_Actity objectAtIndex:iPath.row]valueForKey:@"created_by_userID"];
+            [self presentViewController:myVC animated:YES completion:nil];
+        }
+    }
+    else
+    {
+        if ([[arr_Actity objectAtIndex:iPath.row]valueForKey:@"created_by_userID"]==current_UserID)
+        {
+            //...
+        }
+        else
+        {
+            myVC.follower_id = [[arr_Actity objectAtIndex:iPath.row]valueForKey:@"created_by_userID"];
+            [self presentViewController:myVC animated:YES completion:nil];
+        }
+        
+    }
     
 }
+
 #pragma mark UIImagePickerControllerDelegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(nonnull NSDictionary<NSString *,id> *)info
 {
     if (isProfilePic) {
-    _img_view_profile.image = [info objectForKey:UIImagePickerControllerOriginalImage];
+        _img_view_profile.image = [info objectForKey:UIImagePickerControllerOriginalImage];
     }
     else{
-    _img_view_cover.image=[info objectForKey:UIImagePickerControllerOriginalImage];
-
+        _img_view_cover.image=[info objectForKey:UIImagePickerControllerOriginalImage];
+        
     }
     [self dismissModalViewControllerAnimated:YES];
     NSURL *imageURL = [info valueForKey:UIImagePickerControllerReferenceURL];
     NSString *extension = [imageURL pathExtension];
     CFStringRef imageUTI = (UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension,(__bridge CFStringRef)extension , NULL));
-    
-    if (UTTypeConformsTo(imageUTI, kUTTypeJPEG))
-    {
-        // Handle JPG
-        imageData = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage],0.0f);
-        
-    }
-    else if (UTTypeConformsTo(imageUTI, kUTTypePNG))
-    {
-        // Handle PNG
-        imageData = UIImagePNGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage]);
+
+    UIImage*img12=[info valueForKey:UIImagePickerControllerOriginalImage];
+    if (isProfilePic) {
+        UIImage*compressedImage = [Appdelegate scaleImage:img12 toSize:CGSizeMake(100, 100)];
+        compressedImage = [Appdelegate scaleAndRotateImage:compressedImage];
+        imageData = UIImagePNGRepresentation(compressedImage);
     }
     else
     {
-        NSLog(@"file format not vailid !");
+        imageData = UIImagePNGRepresentation(img12);
     }
     
-    imageName = [imageURL lastPathComponent];
+    if(imageURL == nil)
+    {
+        imageName = @"image.png";
+    }
+    else
+    {
+        imageName = [imageURL lastPathComponent];
+    }
+    
     NSLog(@"%@",imageName);
     if (imageData) {
         NSString * strInfo;
@@ -2520,7 +2818,7 @@ long last_Index = 99999999999;
                                             _img_view_profile.image = [UIImage imageWithData:imageData];
                                         }
                                         else{
-                                        _img_view_cover.image=[UIImage imageWithData:imageData];
+                                            _img_view_cover.image=[UIImage imageWithData:imageData];
                                             
                                         }
                                         //Handel your yes please button action here
@@ -2533,7 +2831,7 @@ long last_Index = 99999999999;
         [self presentViewController:alert animated:YES completion:nil];
         
     }
-  
+    
 }
 
 
@@ -2554,25 +2852,54 @@ long last_Index = 99999999999;
         vc.str_CurrernUserId = [followerID objectAtIndex:index];
         vc.str_RecordingId = [arr_rec_pack_id objectAtIndex:index];
         vc.arr_recordings=[arr_rec_recordings objectAtIndex:index];
+        
+        //------------------- New Code for traversing -----------------
+        NSMutableDictionary *tempDict = [[NSMutableDictionary alloc] init];
+        [tempDict setValue:[followerID objectAtIndex:index] forKey:@"str_currentUserID"];
+        [tempDict setValue:[arr_rec_pack_id objectAtIndex:index] forKey:@"str_recordingID"];
+        vc.stationDict= tempDict;
     }
 }
 
 
 - (IBAction)btn_back:(id)sender {
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_navigation"] isEqual:@"1"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"notification_navigation" ];
+        
+        Appdelegate.str_chat_status=@"0";
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"device_token"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"profilepic"];
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UITabBarController *rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+        [[UIApplication sharedApplication].keyWindow setRootViewController:rootViewController];
+        //   [self.view.window.rootViewController dismissViewControllerAnimated:NO completion:nil];
+    }
+    else
+    {
     [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (IBAction)btn_home:(id)sender {
     
-//    UIViewController *vc = self.presentingViewController;
-//
-//    [vc dismissViewControllerAnimated:YES completion:NULL];
     if (Appdelegate.isFirstTimeSignUp)
     {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         ViewController *rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
         [[UIApplication sharedApplication].keyWindow setRootViewController:rootViewController];
-        //Appdelegate.isFirstTimeSignUp=NO; >> IF PROBLEM OCCURS AGAIN UNCOMMENT THIS LINE
+    }
+    else if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_navigation"] isEqual:@"1"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"notification_navigation" ];
+        
+        Appdelegate.str_chat_status=@"0";
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"device_token"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"profilepic"];
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UITabBarController *rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+        [[UIApplication sharedApplication].keyWindow setRootViewController:rootViewController];
+        //   [self.view.window.rootViewController dismissViewControllerAnimated:NO completion:nil];
     }
     else{
         [self.view.window.rootViewController dismissViewControllerAnimated:NO completion:nil];
@@ -2582,16 +2909,39 @@ long last_Index = 99999999999;
 #pragma mark -
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
-    AudioFeedTableViewCell *cell = [self.tbl_view_audios cellForRowAtIndexPath:[NSIndexPath indexPathForRow:instrument_play_index inSection:0]];
-    [cell.btn_PlayRecording setImage:[UIImage imageNamed:@"bar_play.png"] forState:UIControlStateNormal];
-    audioPlayer = nil;
-    //    if([defaults_userdata boolForKey:@"isUserLogged"]) {
-    toggle_PlayPause= YES;
-    //    }
-    cell.slider_progress.value=0.0;
-    audioPlayer = nil;
-    [sliderTimer invalidate];
-    sliderTimer = nil;
+ 
+    if ([str_genere isEqualToString:@"My Melodies"]) {
+        MelodyPacksTableViewCell *cell = [self.tbl_view_melody cellForRowAtIndexPath:[NSIndexPath indexPathForRow:instrument_play_index inSection:0]];
+        [cell.btn_playpause setImage:[UIImage imageNamed:@"bar_play.png"] forState:UIControlStateNormal];
+        audioPlayer = nil;
+        //    if([defaults_userdata boolForKey:@"isUserLogged"]) {
+        toggle_PlayPause= YES;
+        //    }
+        cell.slider_progress.value=0.0;
+        audioPlayer = nil;
+        [sliderTimer invalidate];
+        sliderTimer = nil;
+    }
+    else{
+        AudioFeedTableViewCell *cell = [self.tbl_view_audios cellForRowAtIndexPath:[NSIndexPath indexPathForRow:instrument_play_index inSection:0]];
+        [cell.btn_PlayRecording setImage:[UIImage imageNamed:@"bar_play.png"] forState:UIControlStateNormal];
+        audioPlayer = nil;
+        //    if([defaults_userdata boolForKey:@"isUserLogged"]) {
+        toggle_PlayPause= YES;
+        //    }
+        cell.slider_progress.value=0.0;
+        audioPlayer = nil;
+        [sliderTimer invalidate];
+        sliderTimer = nil;
+    }
+    
+    
+    //---------------- New Code for Continues play ------------------
+    currentIndex_user ++;
+    if (currentIndex_user < arrJoinedM.count) {
+        NSLog(@"currentIndex_user %ld",currentIndex_user);
+        [self playNextOrPrevious_Tapped:instrument_play_index];
+    }
 }
 
 
@@ -2607,13 +2957,22 @@ long last_Index = 99999999999;
     NSString *userid = [defaults_userdata objectForKey:@"user_id"];
     NSLog(@"userid %@",userid);
     NSMutableDictionary *params =[[NSMutableDictionary alloc]init];
-    [params setObject:[arr_rec_pack_id objectAtIndex:sender] forKey:@"fileid"];
+        if ([str_genere isEqualToString:@"My Melodies"]) {
+            [params setObject:[arr_melody_pack_id objectAtIndex:sender] forKey:@"fileid"];
+            [params setObject:@"melody" forKey:@"type"];
+            [params setObject:@"user" forKey:@"user_type"];
+        }
+        else{
+            [params setObject:[arr_rec_pack_id objectAtIndex:sender] forKey:@"fileid"];
+            [params setObject:@"recording" forKey:@"type"];
+            [params setObject:@"user" forKey:@"user_type"];
+
+        }
     [params setObject:KEY_AUTH_VALUE forKey:KEY_AUTH_KEY];
     if ([defaults_userdata boolForKey:@"isUserLogged"]) {
         [params setObject:[defaults_userdata objectForKey:@"user_id"] forKey:@"userid"];
         
-    }    [params setObject:@"recording" forKey:@"type"];
-    [params setObject:@"user" forKey:@"user_type"];
+    }
     
     NSLog(@"%@",params);
     NSMutableString* parameterString = [NSMutableString string];
@@ -2673,12 +3032,16 @@ long last_Index = 99999999999;
                     NSLog(@"%@",dic_response);
                     long a = [[arr_rec_play_count objectAtIndex:sender] integerValue]+1;
                     [arr_rec_play_count replaceObjectAtIndex:sender withObject:[NSNumber numberWithInteger:a]];
-                    [self.tbl_view_audios reloadData];
-                    
+                    if (isMelody) {
+                        [self.tbl_view_melody reloadData];
+                    }
+                    else{
+                        [self.tbl_view_audios reloadData];
+                    }
                 }
                 else
                 {
-                    
+                     [Appdelegate hideProgressHudInView];
                     if ([[jsonResponse objectForKey:@"flag"] isEqualToString:@"unsuccess"]) {
                         UIAlertController * alert=   [UIAlertController
                                                       alertControllerWithTitle:@"Alert"
@@ -2705,20 +3068,187 @@ long last_Index = 99999999999;
     [task resume];
     }
     @catch (NSException *exception) {
-        NSLog(@"exception at likes.php :%@",exception);
+        NSLog(@"exception at method_PlayCount :%@",exception);
+         [Appdelegate hideProgressHudInView];
     }
     @finally{
         
     }
 }
 
-#pragma mark - Play Method
+-(void)playerInitializes{
+    [audioPlayer stop];
+    [sliderTimer invalidate];
+    sliderTimer = nil;
+    audioPlayer = nil;
+}
+
+-(void)sliderChanged{
+    // Fast skip the music when user scroll the UISlider
+    AudioFeedTableViewCell *cell = [_tbl_view_audios cellForRowAtIndexPath:[NSIndexPath indexPathForRow:instrument_play_index inSection:0]];
+    [audioPlayer setCurrentTime:cell.slider_progress.value];
+    [cell.btn_PlayRecording setImage:[UIImage imageNamed:@"transparent_pause.png"] forState:UIControlStateNormal];
+    instrument_play_status=1;
+    
+}
+
+
+#pragma mark - Previous & Next Method
+#pragma mark -
+
+- (void)btn_previousAction:(UIButton *)sender {
+    NSLog(@"btn_previousAction");
+    instrument_play_index = sender.tag;
+    [self playerInitializes];
+    AudioFeedTableViewCell *cell = [self.tbl_view_audios cellForRowAtIndexPath:[NSIndexPath indexPathForRow:instrument_play_index inSection:0]];
+    [cell.btn_PlayRecording setImage:[UIImage imageNamed:@"bar_play.png"] forState:UIControlStateNormal];
+    
+    if (sender.tag == last_Index && isPlayable) {
+        if ([[arr_recordingResponseM objectAtIndex:sender.tag] valueForKey:@"joined"] == [NSNull null] )
+        {
+            arrJoinedM = [[arr_recordingResponseM objectAtIndex:sender.tag] valueForKey:@"joined"];
+        }
+        
+        if (currentIndex_user > 0) {
+            currentIndex_user -= 1;
+            NSLog(@"currentIndex_user %ld",currentIndex_user);
+            AudioFeedTableViewCell *cell = [self.tbl_view_audios cellForRowAtIndexPath:[NSIndexPath indexPathForRow:instrument_play_index inSection:0]];
+            long includeL =[[[arr_recordingResponseM objectAtIndex:sender.tag] valueForKey:@"join_count"]longValue];
+            
+            cell.lbl_oneof.text = [NSString stringWithFormat:@"( %ld of %ld )",currentIndex_user+1,includeL];
+            [self playNextOrPrevious_Tapped:sender.tag];
+        }
+    }
+    else{
+        currentIndex_user = 0;
+        if ([[arr_recordingResponseM objectAtIndex:sender.tag] valueForKey:@"joined"] == [NSNull null] )
+        {
+            arrJoinedM = [[arr_recordingResponseM objectAtIndex:sender.tag] valueForKey:@"joined"];
+        }
+        if (currentIndex_user > 0) {
+            currentIndex_user -= 1;
+            NSLog(@"currentIndex_user %ld",currentIndex_user);
+            AudioFeedTableViewCell *cell = [self.tbl_view_audios cellForRowAtIndexPath:[NSIndexPath indexPathForRow:instrument_play_index inSection:0]];
+            
+            long includeL =[[[arr_recordingResponseM objectAtIndex:sender.tag] valueForKey:@"join_count"]longValue];
+            
+            cell.lbl_oneof.text = [NSString stringWithFormat:@"( %ld of %ld )",currentIndex_user+1,includeL];
+            [self playNextOrPrevious_Tapped:sender.tag];
+            
+        }
+    }
+}
+
+
+- (void)btn_nextAction:(UIButton *)sender {
+    NSLog(@"btn_nextAction");
+    instrument_play_index = sender.tag;
+    [self playerInitializes];
+    
+    AudioFeedTableViewCell *cell = [self.tbl_view_audios cellForRowAtIndexPath:[NSIndexPath indexPathForRow:instrument_play_index inSection:0]];
+    [cell.btn_PlayRecording setImage:[UIImage imageNamed:@"bar_play.png"] forState:UIControlStateNormal];
+    if (isPlayable) {
+        
+        if ([[arr_recordingResponseM objectAtIndex:sender.tag] valueForKey:@"joined"] != [NSNull null] )
+        {
+            arrJoinedM = [[arr_recordingResponseM objectAtIndex:sender.tag] valueForKey:@"joined"];
+        }
+        
+        if (currentIndex_user < arrJoinedM.count-1) {
+            currentIndex_user += 1;
+            NSLog(@"currentIndex_user %ld",currentIndex_user);
+            
+            long includeL =[[[arr_recordingResponseM objectAtIndex:sender.tag] valueForKey:@"join_count"]longValue];
+            
+            cell.lbl_oneof.text = [NSString stringWithFormat:@"( %ld of %ld )",currentIndex_user+1,includeL];
+            
+            [self playNextOrPrevious_Tapped:sender.tag];
+            
+        }
+        
+    }
+    else{
+        currentIndex_user = 0;
+        if (currentIndex_user > 0) {
+            currentIndex_user -= 1;
+            [self playNextOrPrevious_Tapped:sender.tag];
+            AudioFeedTableViewCell *cell = [self.tbl_view_audios cellForRowAtIndexPath:[NSIndexPath indexPathForRow:instrument_play_index inSection:0]];
+            
+            long includeL =[[[arr_recordingResponseM objectAtIndex:sender.tag] valueForKey:@"join_count"]longValue];
+            
+            cell.lbl_oneof.text = [NSString stringWithFormat:@"( %ld of %ld )",currentIndex_user+1,includeL];
+        }
+    }
+    
+}
+
+
+-(void)playNextOrPrevious_Tapped:(long)sender{
+    
+    @try{
+        [Appdelegate showProgressHud];
+        dispatch_queue_t myqueue = dispatch_queue_create("queue", NULL);
+        dispatch_async(myqueue, ^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                [self playerInitializes];
+                AudioFeedTableViewCell *cell = [_tbl_view_audios cellForRowAtIndexPath:[NSIndexPath indexPathForRow:sender inSection:0]];
+                
+                cell.lbl_oneof.text = [NSString stringWithFormat:@"( %ld of %lu )",currentIndex_user+1,(unsigned long)arrJoinedM.count];
+                
+                NSString *urlstr =[[[[arr_recordingResponseM objectAtIndex:sender]valueForKey:@"joined"] objectAtIndex:currentIndex_user]valueForKey:@"recording_url"];
+                urlstr = [urlstr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
+                
+                NSURL *urlforPlay = [NSURL URLWithString:urlstr];
+                NSData *data = [NSData dataWithContentsOfURL:urlforPlay];
+                
+                cell.lbl_timer.text=[Appdelegate timeFormatted:[[arrJoinedM objectAtIndex:currentIndex_user] valueForKey:@"recording_duration"]];
+                NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",[[arrJoinedM objectAtIndex:currentIndex_user] valueForKey:@"cover_url"]]];
+                cell.img_view_back_cover.contentMode = UIViewContentModeScaleToFill;
+                
+                [cell.img_view_back_cover sd_setImageWithURL:url
+                                            placeholderImage:[UIImage imageNamed:@"bg_cell.png"]];
+                NSError*error=nil;
+                audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:&error];
+                [audioPlayer setDelegate:self];
+                [audioPlayer prepareToPlay];
+                if ([audioPlayer prepareToPlay] == YES){
+                    
+                    sliderTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timerupdateSlider) userInfo:nil repeats:YES];
+                    // Set the maximum value of the UISlider
+                    cell.slider_progress.maximumValue=[audioPlayer duration];
+                    cell.slider_progress.value = 0.0;
+                    // Set the valueChanged target
+                    [cell.slider_progress addTarget:self action:@selector(sliderChanged) forControlEvents:UIControlEventValueChanged];
+                    [cell.btn_PlayRecording setImage:[UIImage imageNamed:@"transparent_pause.png"] forState:UIControlStateNormal];
+                    [Appdelegate hideProgressHudInView];
+                    [audioPlayer stop];
+                    [audioPlayer play];
+                }
+            });
+            
+        });
+        
+    }
+    @catch (NSException *exception) {
+        NSLog(@"exception %@",exception);
+    }
+    @finally{
+        
+    }
+}
+
+
+#pragma mark - Play Method RECORDING
+#pragma mark -
 
 - (void)btn_Recordings_Play_clicked:(UIButton* )sender {
     
     @try{
         instrument_play_index = sender.tag;
-        AudioFeedTableViewCell *cell = [_tbl_view_audios cellForRowAtIndexPath:[NSIndexPath indexPathForRow:sender.tag inSection:0]];
+        isPlayable = YES;
+        AudioFeedTableViewCell *cell;
+        cell = [_tbl_view_audios cellForRowAtIndexPath:[NSIndexPath indexPathForRow:sender.tag inSection:0]];
         if (audioPlayer) {
        
             if(last_Index == sender.tag && toggle_PlayPause) {
@@ -2736,101 +3266,916 @@ long last_Index = 99999999999;
         else{
             
             [Appdelegate showProgressHud];
-
             dispatch_queue_t myqueue = dispatch_queue_create("queue", NULL);
             dispatch_async(myqueue, ^{
-            if(audioPlayer){
-                [audioPlayer stop];
-                audioPlayer = nil;
-            }
-            //        toggle_PlayPause = !toggle_PlayPause;
-            NSString *urlstr =[arr_rec_recordings_url objectAtIndex:instrument_play_index];
-            urlstr = [urlstr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
-            
-            NSURL *urlforPlay = [NSURL URLWithString:urlstr];
-            NSData *data = [NSData dataWithContentsOfURL:urlforPlay];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self method_PlayCount:instrument_play_index];
-
-            NSError*error=nil;
-            audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:&error];
-            
-            [audioPlayer setDelegate:self];
-            [audioPlayer prepareToPlay];
-            if ([audioPlayer prepareToPlay] == YES){
-                
-                if (last_Index != 10000) {
-                    AudioFeedTableViewCell *cell1 = [_tbl_view_audios cellForRowAtIndexPath:[NSIndexPath indexPathForRow:last_Index inSection:0]];
-                    cell1.slider_progress.value = 0.0;
-                    [cell1.btn_PlayRecording setImage:[UIImage imageNamed:@"bar_play.png"] forState:UIControlStateNormal];
-                }
-                
-                sliderTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(timerupdateSlider) userInfo:nil repeats:YES];
-                // Set the maximum value of the UISlider
-                cell.slider_progress.maximumValue=[audioPlayer duration];
-                cell.slider_progress.value = 0.0;
-                // Set the valueChanged target
-                [cell.slider_progress addTarget:self action:@selector(sliderChanged) forControlEvents:UIControlEventValueChanged];
-                
-                [cell.btn_PlayRecording setImage:[UIImage imageNamed:@"transparent_pause.png"] forState:UIControlStateNormal];
-                    [Appdelegate hideProgressHudInView];
+                if(audioPlayer){
                     [audioPlayer stop];
-                    [audioPlayer play];
+                    audioPlayer = nil;
+                }
+                NSString *urlstr;
+                if ([str_genere isEqualToString:@"My Melodies"]){
+                    urlstr =[[arr_MyMelodyM objectAtIndex:instrument_play_index]valueForKey:@"melodyurl"];
+                }
+                else{
+                    urlstr =[arr_rec_recordings_url objectAtIndex:instrument_play_index];
+                }
+                urlstr = [urlstr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
                 
-            }
-            
-            else {
-                AudioFeedTableViewCell *cell1 = [_tbl_view_audios cellForRowAtIndexPath:[NSIndexPath indexPathForRow:last_Index inSection:0]];
-                cell1.slider_progress.value = 0.0;
-                [cell1.btn_PlayRecording setImage:[UIImage imageNamed:@"bar_play.png"] forState:UIControlStateNormal];
-//                UIAlertController * alert=   [UIAlertController
-//                                              alertControllerWithTitle:@"Alert"
-//                                              message:@"Url Not Supported"
-//                                              preferredStyle:UIAlertControllerStyleAlert];
-//                
-//                UIAlertAction* yesButton = [UIAlertAction
-//                                            actionWithTitle:@"ok"
-//                                            style:UIAlertActionStyleDefault
-//                                            handler:^(UIAlertAction * action)
-//                                            {
-//                                                [Appdelegate hideProgressHudInView];
-//                                                
-//                                            }];
-//                
-//                [alert addAction:yesButton];
-//                [self presentViewController:alert animated:YES completion:nil];
-                int errorCode = CFSwapInt16HostToBig ([error code]);
-                NSLog(@"Error: %@ [%4.4s])" , [error localizedDescription], (char*)&errorCode);
-            }
+                NSURL *urlforPlay = [NSURL URLWithString:urlstr];
+                NSData *data = [NSData dataWithContentsOfURL:urlforPlay];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self method_PlayCount:instrument_play_index];
+                    
+                    //---------------- New Code for Continues play ------------------
+                    currentIndex_user = 0;
+                    if (![str_genere isEqualToString:@"My Melodies"]){
+                        long includeL =[[[arr_recordingResponseM objectAtIndex:instrument_play_index] valueForKey:@"join_count"]longValue];
+                        cell.lbl_oneof.text = [NSString stringWithFormat:@"( %ld of %ld )",currentIndex_user+1,includeL];
+                        
+                        if ([[arr_recordingResponseM objectAtIndex:instrument_play_index] valueForKey:@"joined"] != [NSNull null] )
+                        {
+                            arrJoinedM = [[arr_recordingResponseM objectAtIndex:instrument_play_index] valueForKey:@"joined"];
+                        }
+                        
+                        //----------------------------------------------------------------
+                    }
+                    
                 
+                    NSError*error=nil;
+                    audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:&error];
+                    
+                    [audioPlayer setDelegate:self];
+                    [audioPlayer prepareToPlay];
+                    if ([audioPlayer prepareToPlay] == YES){
+                        
+                        if (last_Index != 10000) {
+                            AudioFeedTableViewCell *cell1 = [_tbl_view_audios cellForRowAtIndexPath:[NSIndexPath indexPathForRow:last_Index inSection:0]];
+                            cell1.slider_progress.value = 0.0;
+                            [cell1.btn_PlayRecording setImage:[UIImage imageNamed:@"bar_play.png"] forState:UIControlStateNormal];
+                        }
+                        
+                        sliderTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timerupdateSlider) userInfo:nil repeats:YES];
+                        // Set the maximum value of the UISlider
+                        cell.slider_progress.maximumValue=[audioPlayer duration];
+                        cell.slider_progress.value = 0.0;
+                        // Set the valueChanged target
+                        [cell.slider_progress addTarget:self action:@selector(sliderChanged) forControlEvents:UIControlEventValueChanged];
+                        
+                        [cell.btn_PlayRecording setImage:[UIImage imageNamed:@"transparent_pause.png"] forState:UIControlStateNormal];
+                        [Appdelegate hideProgressHudInView];
+                        [audioPlayer stop];
+                        [audioPlayer play];
+                        
+                    }
+                    
+                    else {
+                        [Appdelegate hideProgressHudInView];
+                        AudioFeedTableViewCell *cell1 = [_tbl_view_audios cellForRowAtIndexPath:[NSIndexPath indexPathForRow:last_Index inSection:0]];
+                        cell1.slider_progress.value = 0.0;
+                        [cell1.btn_PlayRecording setImage:[UIImage imageNamed:@"bar_play.png"] forState:UIControlStateNormal];
+                        
+                        int errorCode = CFSwapInt16HostToBig ([error code]);
+                        NSLog(@"Error: %@ [%4.4s])" , [error localizedDescription], (char*)&errorCode);
+                    }
+                    
+                });
             });
-         });
         }
         last_Index = sender.tag;
     }
     @catch (NSException *exception) {
-        NSLog(@"exception at likes.php :%@",exception);
+        [Appdelegate hideProgressHudInView];
+        NSLog(@"exception at btn_Recordings_Play_clicked :%@",exception);
     }
     @finally{
         
     }
 }
 
-
 -(void)timerupdateSlider{
     // Update the slider about the music time
-    
     AudioFeedTableViewCell *cell = [_tbl_view_audios cellForRowAtIndexPath:[NSIndexPath indexPathForRow:instrument_play_index inSection:0]];
+    cell.slider_progress.value = audioPlayer.currentTime;
+    //--------------------* Set the playlist timer *-------------------------
+    cell.lbl_timer.text=[NSString stringWithFormat:@"%@",[Appdelegate timeFormatted:[NSString stringWithFormat:@"%f",audioPlayer.currentTime]]];
+    
+}
+
+
+
+
+#pragma mark - Play Method MELODY
+#pragma mark -
+-(void)btn_playpause_clicked:(UIButton*)sender{
+    
+    @try{
+        
+        instrument_play_index = sender.tag;
+        MelodyPacksTableViewCell *cell = [self.tbl_view_melody cellForRowAtIndexPath:[NSIndexPath indexPathForRow:instrument_play_index inSection:0]];
+
+        if(last_Index == sender.tag && audioPlayer != nil){
+            if(!toggle_Play)
+            {
+                [cell.btn_playpause setImage:[UIImage imageNamed:@"bar_play.png"] forState:UIControlStateNormal];
+                toggle_Play = !toggle_Play;
+                [ProgressHUD dismiss];
+                [audioPlayer pause];
+                
+            }
+            
+            else {
+                toggle_Play = !toggle_Play;
+                [cell.btn_playpause setImage:[UIImage imageNamed:@"transparent_pause.png"] forState:UIControlStateNormal];
+                [ProgressHUD dismiss];
+                [audioPlayer play];
+                
+            }
+        }
+        
+        else{
+            [sliderTimer invalidate];
+            sliderTimer = nil;
+            MelodyPacksTableViewCell *cell = [_tbl_view_melody cellForRowAtIndexPath:[NSIndexPath
+                                                                                           indexPathForRow:instrument_play_index inSection:0]];
+            [cell.btn_playpause setImage:[UIImage imageNamed:@"transparent_pause.png"] forState:UIControlStateNormal];
+            
+            if (last_Index != sender.tag){
+                MelodyPacksTableViewCell *cell = [self.tbl_view_melody cellForRowAtIndexPath:[NSIndexPath indexPathForRow:last_Index inSection:0]];
+                [cell.btn_playpause setImage:[UIImage imageNamed:@"bar_play.png"] forState:UIControlStateNormal];
+                audioPlayer.numberOfLoops = 0;
+                //                    audioPlayer = nil;
+                cell.slider_progress.value = 0.0;
+            }
+            [Appdelegate showProgressHud];
+            dispatch_queue_t myqueue = dispatch_queue_create("queue", NULL);
+            dispatch_async(myqueue, ^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    @try{
+                        if([defaults_userdata boolForKey:@"isUserLogged"]) {
+                            [self method_PlayCount:instrument_play_index];
+                        }
+                        
+                            NSError*error=nil;
+                            NSString *urlstr =[[arr_MyMelodyM objectAtIndex:instrument_play_index]valueForKey:@"melodyurl"];
+                            NSURL *urlforPlay = [NSURL URLWithString:urlstr];
+                            NSData *data = [NSData dataWithContentsOfURL:urlforPlay];
+                            audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:&error];
+                            audioPlayer.delegate = self;
+                            [audioPlayer prepareToPlay];
+                            if ([audioPlayer prepareToPlay] == YES){
+                                sliderTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timerupdateSlider_melody) userInfo:nil repeats:YES];
+                                // Set the maximum value of the UISlider
+                                cell.slider_progress.maximumValue=[audioPlayer duration];
+                                cell.slider_progress.value = 0.0;
+                                // Set the valueChanged target
+                                [cell.slider_progress addTarget:self action:@selector(sliderChanged_melody:) forControlEvents:UIControlEventValueChanged];
+                                [Appdelegate hideProgressHudInView];
+                                [cell.btn_playpause setImage:[UIImage imageNamed:@"transparent_pause.png"] forState:UIControlStateNormal];
+                                [audioPlayer stop];
+                                [audioPlayer play];
+                                
+                            }
+                            
+                            else {
+                                
+                                [Appdelegate hideProgressHudInView];
+                                MelodyPacksTableViewCell *cell1 = [_tbl_view_melody cellForRowAtIndexPath:[NSIndexPath indexPathForRow:last_Index inSection:0]];
+                                cell1.slider_progress.value = 0.0;
+                                [cell1.btn_playpause setImage:[UIImage imageNamed:@"bar_play.png"] forState:UIControlStateNormal];
+                                
+                                int errorCode = CFSwapInt16HostToBig ([error code]);
+                                NSLog(@"Error: %@ [%4.4s])" , [error localizedDescription], (char*)&errorCode);
+                            }
+                        
+                    }
+                    @catch (NSException *exception) {
+                        NSLog(@"exception at soundarray :%@",exception);
+                        [Appdelegate hideProgressHudInView];
+                    }
+                    @finally{
+                        
+                    }
+                });
+            });
+            
+        }
+        last_Index = sender.tag;
+    }
+    @catch (NSException *exception) {
+        NSLog(@"exception at btn_playpause_clicked :%@",exception);
+        [Appdelegate hideProgressHudInView];
+        
+    }
+    @finally{
+        
+    }
+}
+
+//1
+-(void)timerupdateSlider_melody{
+    // Update the slider about the music time
+    MelodyPacksTableViewCell *cell = [self.tbl_view_melody cellForRowAtIndexPath:[NSIndexPath indexPathForRow:instrument_play_index inSection:0]];
     cell.slider_progress.value = audioPlayer.currentTime;
 }
 
 
--(void)sliderChanged{
+-(void)sliderChanged_melody:(id)sender{
     // Fast skip the music when user scroll the UISlider
-    AudioFeedTableViewCell *cell = [_tbl_view_audios cellForRowAtIndexPath:[NSIndexPath indexPathForRow:instrument_play_index inSection:0]];
+    MelodyPacksTableViewCell *cell = [self.tbl_view_melody cellForRowAtIndexPath:[NSIndexPath indexPathForRow:instrument_play_index inSection:0]];
     [audioPlayer setCurrentTime:cell.slider_progress.value];
-    [cell.btn_PlayRecording setImage:[UIImage imageNamed:@"transparent_pause.png"] forState:UIControlStateNormal];
-    instrument_play_status=1;
+}
+
+
+
+
+#pragma mark - Fans Or Following Method
+#pragma mark -
+
+- (IBAction)btn_Fans_Action:(id)sender {
+   
+    FansOrFollowingVC *fansVC = [self.storyboard instantiateViewControllerWithIdentifier:@"FansOrFollowingVC"];
+    fansVC.str_type = @"fan";
+    fansVC.userID=current_UserID;
+    [self presentViewController:fansVC animated:YES completion:nil];
+}
+
+
+- (IBAction)btn_Following_Action:(id)sender {
+    FansOrFollowingVC *fansVC = [self.storyboard instantiateViewControllerWithIdentifier:@"FansOrFollowingVC"];
+    fansVC.str_type = @"following";
+    fansVC.userID=current_UserID;
+    [self presentViewController:fansVC animated:YES completion:nil];
+}
+
+
+- (void)switchPublicToggled:(UISwitch*)sender {
+    
+    //- (void)switchPublicToggled:(id)sender{
+    //    UISwitch *myPublicSwitch = (UISwitch *)sender;
+    UISwitch *myPublicSwitch = (UISwitch *)sender;
+    
+    UIAlertController * alert;
+    NSString *status,*message;
+    index = (long)sender.tag;
+    NSLog(@"New VALUE OF INDEX === %ld",(long)sender.tag);
+    NSLog(@"VALUE OF INDEX === %ld",(long)index);
+    message= @"As a moderator,feel free to make public or private anytime.";
+    
+    if ([[arr_PublicState objectAtIndex:sender.tag] isEqual:@"0"])
+    {
+        status=@"Make Public?";
+        alert = [UIAlertController
+                 alertControllerWithTitle:status
+                 message:message
+                 preferredStyle:UIAlertControllerStyleAlert];
+    }
+    else
+    {
+        status=@"Make Private?";
+        alert = [UIAlertController
+                 alertControllerWithTitle:status
+                 message:message
+                 preferredStyle:UIAlertControllerStyleAlert];
+    }
+    UIAlertAction* cancelButton = [UIAlertAction
+                                   actionWithTitle:@"Cancel"
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction * action)
+                                   {
+                                       //Handel your yes please button action here
+                                       if ([[arr_PublicState objectAtIndex:sender.tag] isEqual:@"1"]) {
+                                           [myPublicSwitch setOn:YES];
+                                       }
+                                       else{
+                                           [myPublicSwitch setOn:NO];
+                                       }
+                                   }];
+    UIAlertAction* yesButton = [UIAlertAction
+                                actionWithTitle:@"Ok"
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+                                    //Handel your yes please button action here
+                                    NSLog(@"VALUE OF INDEX=X === %ld",(long)sender.tag);
+                                    if ([[arr_PublicState objectAtIndex:sender.tag] isEqual:@"1"]) {
+                                        isPublic=@"0";
+                                    }
+                                    else{
+                                        isPublic=@"1";
+                                    }
+                                    [self makePublicOrPrivateRecording:sender];
+                                }];
+    
+    [alert addAction:cancelButton];
+    [alert addAction:yesButton];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+
+-(void)makePublicOrPrivateRecording:(id)sender
+{
+    @try{
+        [Appdelegate showProgressHud];
+        NSMutableDictionary *params =[[NSMutableDictionary alloc]init];
+        [params setObject:[arr_rec_pack_id objectAtIndex:index] forKey:@"rid"];
+        [params setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"] forKey:@"user_id"];
+        [params setObject:isPublic forKey:@"ispublic"];
+        [params setObject:KEY_AUTH_VALUE forKey:KEY_AUTH_KEY];
+        
+        NSLog(@"%@",params);
+        NSMutableString* parameterString = [NSMutableString string];
+        for(NSString* key in [params allKeys])
+        {
+            if ([parameterString length]) {
+                [parameterString appendString:@"&"];
+            }
+            [parameterString appendFormat:@"%@=%@",key, params[key]];
+        }
+        NSString* urlString = [NSString stringWithFormat:@"%@public.php",BaseUrl];
+        NSURL* url = [NSURL URLWithString:urlString];
+        NSURLSession* session =[NSURLSession sharedSession];
+        NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
+        [request setHTTPMethod:@"POST"];
+        [request setHTTPBody:[parameterString dataUsingEncoding:NSUTF8StringEncoding]];
+        [request setHTTPShouldHandleCookies:NO];
+        
+        NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            
+            if(error)
+            {
+                //do something
+                [Appdelegate hideProgressHudInView];
+                NSLog(@"%@", error);
+                UIAlertController * alert=   [UIAlertController
+                                              alertControllerWithTitle:@"Message"
+                                              message:@"Network Error !"
+                                              preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction* yesButton = [UIAlertAction
+                                            actionWithTitle:@"ok"
+                                            style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * action)
+                                            {
+                                                //Handel your yes please button action here
+                                                
+                                            }];
+                
+                [alert addAction:yesButton];
+                [self presentViewController:alert animated:YES completion:nil];
+            }
+            else
+            {
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSError *myError = nil;
+                    
+                    NSString *requestReply = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+                    NSLog(@"%@",requestReply);
+                    NSData *data = [requestReply dataUsingEncoding:NSUTF8StringEncoding];
+                    NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data
+                                                                                 options:kNilOptions
+                                                                                   error:&myError];
+                    NSMutableDictionary*dic_response=[[NSMutableDictionary alloc]init];
+                    NSLog(@"%@",jsonResponse);
+                    if([[jsonResponse objectForKey:@"flag"] isEqualToString:@"Success"]) {
+                        [Appdelegate hideProgressHudInView];
+                        
+                        dic_response=[jsonResponse objectForKey:@"response"];
+                        NSLog(@"---- Before %@",arr_PublicState);
+                        
+                        //                        [arr_PublicState replaceObjectAtIndex:index withObject:isPublic];
+                        
+                        NSLog(@"**** After %@",arr_PublicState);
+                        
+                        NSString *succesMSG = [jsonResponse objectForKey:@"msg"];
+                        
+                        [TSMessage showNotificationWithTitle:NSLocalizedString(@"Success", nil)
+                                                    subtitle:NSLocalizedString(succesMSG, nil)
+                                                        type:TSMessageNotificationTypeSuccess];
+                        arr_rec_response=[[NSMutableArray alloc]init];
+                        [self loadRecordings];
+                        
+                    }
+                    else
+                    {
+                        [Appdelegate hideProgressHudInView];
+                        if ([[jsonResponse objectForKey:@"flag"] isEqualToString:@"unsuccess"]) {
+                            UIAlertController * alert=   [UIAlertController
+                                                          alertControllerWithTitle:@"Alert"
+                                                          message:@"Error to like!"
+                                                          preferredStyle:UIAlertControllerStyleAlert];
+                            
+                            UIAlertAction* yesButton = [UIAlertAction
+                                                        actionWithTitle:@"ok"
+                                                        style:UIAlertActionStyleDefault
+                                                        handler:^(UIAlertAction * action)
+                                                        {
+                                                            //Handel your yes please button action here
+                                                            
+                                                        }];
+                            
+                            [alert addAction:yesButton];
+                            [self presentViewController:alert animated:YES completion:nil];
+                        }
+                        
+                        
+                    }
+                    
+                });
+            }
+        }];
+        [task resume];
+    }
+    @catch (NSException *exception) {
+        [Appdelegate hideProgressHudInView];
+        
+        NSLog(@"exception at public.php %@",exception);
+    }
+    @finally{
+        
+    }
     
 }
+
+
+/***************************Call Melody Packs api**********************************/
+-(void)loadMelodyPacks
+{
+    if([[MyManager sharedManager] isInternetAvailable])
+    {
+        [KSToastView ks_showToast:@"Internet connectivity issue" delay:0.1f];
+        return;
+    }
+    [Appdelegate showProgressHud];
+    @try{
+     
+        NSMutableDictionary *params =[[NSMutableDictionary alloc]init];
+        [params setObject:KEY_AUTH_VALUE forKey:KEY_AUTH_KEY];
+        
+        if ([defaults_userdata boolForKey:@"isUserLogged"]) {
+            
+            if (self.follower_id != [defaults_userdata valueForKey:@"user_id"] && _follower_id != nil) {
+                [params setObject:self.follower_id forKey:@"users_id"];
+
+            }
+            else
+            {
+                [params setObject:[defaults_userdata objectForKey:@"user_id"] forKey:@"users_id"];
+
+            }
+        }
+        
+        [params setObject:genre forKey:@"genere"];
+        [params setObject:[NSString stringWithFormat:@"%ld",(long)limit] forKey:@"limit"];
+        [params setObject:@"user_melody" forKey:KEY_SHARE_FILETYPE];
+        if(recording_typeInt == Search){
+            [params setObject:searchString forKey:@"search"];
+        }
+        if (recording_typeInt == Filter)
+        {
+            
+            [params setObject:@"extrafilter" forKey:@"filter"];
+            [params setObject:@"user_melody" forKey:KEY_SHARE_FILETYPE];
+            [params setObject:filterString forKey:@"filter_type"];
+            [params removeObjectForKey:@"genere"];
+            
+            if ([filterString isEqualToString:@"Artist"] ) {
+                [params setObject:userNameString forKey:@"username"];
+            }
+            else if ([filterString isEqualToString:@"Instruments"] ) {
+                [params setObject:numberOfInstruments forKey:@"count"];
+            }
+            
+            else if ([filterString isEqualToString:@"BPM"] ) {
+                [params setObject:BPM forKey:@"count"];
+            }
+        }
+        
+        NSMutableString* parameterString = [NSMutableString string];
+        for(NSString* key in [params allKeys])
+        {
+            if ([parameterString length]) {
+                [parameterString appendString:@"&"];
+            }
+            [parameterString appendFormat:@"%@=%@",key, params[key]];
+        }
+        NSString* urlString = [NSString stringWithFormat:@"%@melody.php",BaseUrl];
+        NSURL* url = [NSURL URLWithString:urlString];
+        NSURLSession* session =[NSURLSession sharedSession];
+        NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
+        [request setHTTPMethod:@"POST"];
+        [request setHTTPBody:[parameterString dataUsingEncoding:NSUTF8StringEncoding]];
+        [request setHTTPShouldHandleCookies:NO];
+        
+        NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
+            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if (error) {
+            NSLog(@"%@", error);
+            [Appdelegate hideProgressHudInView];
+                                                            
+            }
+            else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [Appdelegate hideProgressHudInView];
+                    NSError *myError = nil;
+                    
+                    NSString *requestReply = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+                    NSLog(@"%@",requestReply);
+                    NSData *myRequestData = [requestReply dataUsingEncoding:NSUTF8StringEncoding];
+                    
+                    id jsonObject = [NSJSONSerialization
+                                     JSONObjectWithData:myRequestData
+                                     options:NSJSONReadingAllowFragments error:&myError];
+                    
+                    if ([[jsonObject valueForKey:@"flag"] isEqual:@"success"]) {
+                        self.placeholder_img.hidden = YES;
+                        self.tbl_view_melody.hidden = NO;
+                        self.tbl_view_audios.hidden = YES;
+
+                        limit=[[jsonObject valueForKey:@"response"] count];
+                        arr_melody_pack_id=[[NSMutableArray alloc]init];
+                        
+                        arr_melody_thumbnailURL=[[NSMutableArray alloc]init];
+                        //arr_melody_thumbnailURL
+                        arr_melody_pack_name=[[NSMutableArray alloc]init];
+                        arr_melody_pack_instrumentals_count=[[NSMutableArray alloc]init];
+                        arr_melody_pack_bpm=[[NSMutableArray alloc]init];
+                        arr_melody_pack_genre=[[NSMutableArray alloc]init];
+                        arr_melody_pack_station=[[NSMutableArray alloc]init];
+                        arr_melody_pack_cover=[[NSMutableArray alloc]init];
+                        arr_melody_pack_profile=[[NSMutableArray alloc]init];
+                        arr_melody_pack_intrumentals=[[NSMutableArray alloc]init];
+                        arr_melody_pack_post_date=[[NSMutableArray alloc]init];
+                        arr_melody_pack_no_of_play=[[NSMutableArray alloc]init];
+                        arr_melody_pack_no_of_like=[[NSMutableArray alloc]init];
+                        arr_melody_pack_no_of_share=[[NSMutableArray alloc]init];
+                        arr_melody_pack_no_of_coments=[[NSMutableArray alloc]init];
+                        arr_melody_like_status=[[NSMutableArray alloc]init];
+                        arr_melody_url=[[NSMutableArray alloc]init];
+                        arr_melody_pack_timerM = [[NSMutableArray alloc]init];
+                        
+                        instrumentURLArrayM=[[NSMutableArray alloc]init];
+                        NSArray *arr_temp = [[NSArray alloc]init];
+                        arr_temp=[jsonObject valueForKey:@"response"];
+                        [arr_MyMelodyM addObjectsFromArray:arr_temp];
+                        current_Record = arr_MyMelodyM.count;
+                        loadingData = YES;
+                        NSLog(@"%@",arr_MyMelodyM);
+                        for (int i=0; i<[arr_MyMelodyM count]; i++) {
+                            [arr_melody_pack_timerM addObject:[NSString stringWithFormat:@"%@",[[arr_MyMelodyM objectAtIndex:i] valueForKey:@"duration"]]];
+                            
+                            NSLog(@"%@",[arr_MyMelodyM objectAtIndex:i]);
+                            [arr_melody_pack_id addObject:[[arr_MyMelodyM objectAtIndex:i] valueForKey:@"melodypackid"]];
+                            [arr_melody_pack_genre addObject:[[arr_MyMelodyM objectAtIndex:i] valueForKey:@"genre_name"]];
+                            [arr_melody_pack_name addObject:[[arr_MyMelodyM objectAtIndex:i] valueForKey:@"name"]];
+                            [arr_melody_pack_station addObject:[[arr_MyMelodyM objectAtIndex:i] valueForKey:@"username"]];
+                            
+                            [arr_melody_pack_cover addObject:[NSString stringWithFormat:@"%@",[[arr_MyMelodyM objectAtIndex:i] valueForKey:@"cover"]]];
+                            
+                            [arr_melody_pack_profile addObject:[NSString stringWithFormat:@"%@",[[arr_MyMelodyM objectAtIndex:i] valueForKey:@"profilepic"]]];
+                            /*-------- melody@url ----------*/
+                            [arr_melody_url addObject:[[arr_MyMelodyM objectAtIndex:i]
+                                                       valueForKey:@"melodyurl"]];
+                            
+                            [arr_melody_pack_intrumentals addObject:[[arr_MyMelodyM objectAtIndex:i] valueForKey:@"instruments"]];
+                            
+                            //                                    NSArray *temparr =  [[arr_response objectAtIndex:i] valueForKey:@"instruments"];
+                            NSArray *temparr = [Appdelegate valueOrNil:[[arr_MyMelodyM objectAtIndex:i] valueForKey:@"instruments"]];
+                            
+                            [instrumentURLArrayM addObject:temparr];
+                            
+                            for (int i=0 ; i<temparr.count; i++) {
+                                NSLog(@" value %@",[[temparr objectAtIndex:i]valueForKey:@"instrument_url"]);
+                            }
+                            int max = 0;
+                            for (int n=0; n<[arr_melody_pack_intrumentals count]; n++)
+                            {
+                                max=0;
+                                NSArray *tempDuration=[[NSArray alloc]init];
+                                tempDuration = [[arr_melody_pack_intrumentals objectAtIndex:i] valueForKey:@"duration"];
+                                for (int j=0; j<[tempDuration count]; j++)
+                                {
+                                    int num=[[tempDuration objectAtIndex:j] intValue];
+                                    if (num>max)
+                                    {
+                                        max=num;
+                                    }
+                                }
+                                
+                            }
+                            [maxDuration addObject:[NSString stringWithFormat:@"%d",max]];
+                            
+                            
+                            [arr_melody_pack_instrumentals_count addObject:[NSString stringWithFormat:@"%lu",(unsigned long)[[arr_melody_pack_intrumentals objectAtIndex:i]count]]];
+                            [arr_melody_pack_post_date addObject:[[arr_MyMelodyM objectAtIndex:i] valueForKey:@"date"] ];
+                            [arr_melody_pack_bpm addObject:[[arr_MyMelodyM objectAtIndex:i] valueForKey:@"bpm"] ];
+                            
+                            [arr_melody_pack_no_of_play addObject:[[arr_MyMelodyM objectAtIndex:i] valueForKey:@"playcounts"] ];
+                            [arr_melody_pack_no_of_like addObject:[[arr_MyMelodyM objectAtIndex:i] valueForKey:@"likescounts"] ];
+                            [arr_melody_pack_no_of_coments addObject:[[arr_MyMelodyM objectAtIndex:i] valueForKey:@"commentscounts"] ];
+                            [arr_melody_pack_no_of_share addObject:[[arr_MyMelodyM objectAtIndex:i] valueForKey:@"sharecounts"] ];
+                            
+                            if([[[arr_MyMelodyM objectAtIndex:i] valueForKey:@"like_status"] isEqual:[NSNull null]])
+                            {
+                                [arr_melody_like_status addObject:@"0"];
+                            }
+                            else
+                            {
+                                [arr_melody_like_status addObject:[[arr_MyMelodyM objectAtIndex:i] valueForKey:@"like_status"] ];
+                            }
+                            
+                            
+                        }
+                        [_tbl_view_melody reloadData];
+                    }
+                    else
+                    {
+                        [Appdelegate hideProgressHudInView];
+                        if (!loadingData) {
+                            self.placeholder_img.hidden = NO;
+                            self.tbl_view_melody.hidden = YES;
+                            self.placeholder_img.image = [UIImage imageNamed:@"NoResult_img"];
+                        }
+                        else{
+                            [Appdelegate hideProgressHudInView];
+                        }
+                        
+                    }
+                });
+            }
+                                                    }];
+        [dataTask resume];
+    }
+    @catch (NSException *exception) {
+        [Appdelegate hideProgressHudInView];
+        NSLog(@"exception at melody.php :%@",exception);
+    }
+    @finally{
+        
+    }
+    
+}
+
+
+-(void)btn_add_clicked:(UIButton*)sender
+{
+    if (![defaults_userdata boolForKey:@"isUserLogged"]) {
+        if (arr_melody_pack_intrumentals.count<=1 ) {
+            _sender_tag=[NSString stringWithFormat:@"%ld",(long)sender.tag];
+            [self melody_to_studio];
+        }
+        else{
+            Appdelegate.screen_After_Login = Studio;
+            ViewController *myVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+            myVC.open_login=@"0";
+            myVC.other_vc_flag=@"1";
+            [self presentViewController:myVC animated:YES completion:nil];
+        }
+    }
+    else{
+        _sender_tag=[NSString stringWithFormat:@"%ld",(long)sender.tag];
+        [self melody_to_studio];
+        
+    }
+    
+}
+
+-(void)melody_to_studio{
+    if ([str_genere isEqualToString:@"My Melodies"]) {
+        
+        StudioRecViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"StudioRecViewController"];
+        
+        NSString *originalCoverImage =[[arr_MyMelodyM objectAtIndex:[_sender_tag integerValue]]objectForKey:@"cover"];
+        
+        originalCoverImage = [originalCoverImage stringByReplacingOccurrencesOfString:@"Mobile" withString:@"original"];
+        NSMutableArray *arr_InstrumentM = [[NSMutableArray alloc]init];
+        NSMutableDictionary *dic_InstrumentM = [[NSMutableDictionary alloc]init];
+        [dic_InstrumentM setValue:@"120" forKey:@"bpm"];//1
+        [dic_InstrumentM setValue:originalCoverImage forKey:@"coverpic"];//2
+        [dic_InstrumentM setValue:[[arr_MyMelodyM objectAtIndex:[_sender_tag integerValue]]  objectForKey:@"duration"] forKey:@"duration"];//3
+        
+        
+        [dic_InstrumentM setValue:[[arr_MyMelodyM objectAtIndex:[_sender_tag integerValue]]  objectForKey:@"melodyurl"] forKey:@"instrument_url"];//4
+        
+        [dic_InstrumentM setValue:[[arr_MyMelodyM objectAtIndex:[_sender_tag integerValue]]  objectForKey:@"name"] forKey:@"instruments_name"];//5
+        
+        [dic_InstrumentM setValue:@"user_melody" forKey:@"instruments_type"];//6
+        [dic_InstrumentM setValue:[[arr_MyMelodyM objectAtIndex:[_sender_tag integerValue]]  objectForKey:@"melodypackid"] forKey:@"melodypackid"];//7
+        
+        [dic_InstrumentM setValue:[[arr_MyMelodyM objectAtIndex:[_sender_tag integerValue]]
+                                   objectForKey:@"profilepic"] forKey:@"profilepic"];//8
+        
+        [dic_InstrumentM setValue:[[arr_MyMelodyM objectAtIndex:[_sender_tag integerValue]]  objectForKey:@"date"] forKey:@"uploadeddate"];//9
+        
+        [dic_InstrumentM setValue:[[arr_MyMelodyM objectAtIndex:[_sender_tag integerValue]]  objectForKey:@"added_by_admin"] forKey:@"id"];//10
+        //melodypackid
+        
+        NSString *str_userName = [NSString stringWithFormat:@"%@",[[arr_MyMelodyM objectAtIndex:[_sender_tag integerValue]]
+                                                                   objectForKey:@"username"]];
+        
+        [dic_InstrumentM setValue:str_userName forKey:@"username"];//10
+        
+        [arr_InstrumentM addObject:dic_InstrumentM];
+        vc.arr_melodypack_instrumental = arr_InstrumentM;
+        vc.str_name=[[arr_MyMelodyM objectAtIndex:[_sender_tag integerValue]]  objectForKey:@"name"];
+        vc.str_date=[[arr_MyMelodyM objectAtIndex:[_sender_tag integerValue]]  objectForKey:@"date"];
+        vc.str_instrumentTYPE = @"id";
+//        vc.fromScreen=_fromScreen;
+        [self presentViewController:vc animated:YES completion:nil];
+
+    }
+}
+
+
+- (void)btn_MelodyPacks_like_clicked:(UIButton*)sender
+{
+    
+    if ([defaults_userdata boolForKey:@"isUserLogged"]) {
+        NSString* like_val=[[NSString alloc]init];
+        if ([[arr_melody_like_status objectAtIndex:sender.tag] isEqual:@"1"]) {
+            like_val=@"0";
+        }
+        else{
+            like_val=@"1";
+        }
+        
+        NSMutableDictionary *params =[[NSMutableDictionary alloc]init];
+        [params setObject:[arr_melody_pack_id objectAtIndex:sender.tag] forKey:@"file_id"];
+        [params setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"] forKey:@"user_id"];
+        [params setObject:like_val forKey:@"likes"];
+        //7
+        [params setObject:@"user_melody" forKey:@"type"];
+        [params setObject:KEY_AUTH_VALUE forKey:KEY_AUTH_KEY];
+        [params setObject:[arr_melody_pack_name objectAtIndex:sender.tag] forKey:@"topic"];
+        
+        NSLog(@"%@",params);
+        NSMutableString* parameterString = [NSMutableString string];
+        for(NSString* key in [params allKeys])
+        {
+            if ([parameterString length]) {
+                [parameterString appendString:@"&"];
+            }
+            [parameterString appendFormat:@"%@=%@",key, params[key]];
+        }
+        NSString* urlString = [NSString stringWithFormat:@"%@likes.php",BaseUrl_Dev];
+        NSURL* url = [NSURL URLWithString:urlString];
+        NSURLSession* session =[NSURLSession sharedSession];
+        NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
+        [request setHTTPMethod:@"POST"];
+        [request setHTTPBody:[parameterString dataUsingEncoding:NSUTF8StringEncoding]];
+        [request setHTTPShouldHandleCookies:NO];
+        
+        NSURLSessionDataTask* task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            
+            if(error)
+            {
+                //do something
+                NSLog(@"%@", error);
+                UIAlertController * alert=   [UIAlertController
+                                              alertControllerWithTitle:@"Message"
+                                              message:@"Network Error !"
+                                              preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction* yesButton = [UIAlertAction
+                                            actionWithTitle:@"ok"
+                                            style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * action)
+                                            {
+                                                //Handel your yes please button action here
+                                            }];
+                
+                [alert addAction:yesButton];
+                [self presentViewController:alert animated:YES completion:nil];
+            }
+            else
+            {
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSError *myError = nil;
+                    
+                    NSString *requestReply = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+                    NSLog(@"%@",requestReply);
+                    
+                    NSData *data = [requestReply dataUsingEncoding:NSUTF8StringEncoding];
+                    NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data
+                                                                                 options:kNilOptions
+                                                                                   error:&myError];
+                    NSMutableDictionary*dic_response=[[NSMutableDictionary alloc]init];
+                    NSLog(@"%@",jsonResponse);
+                    if([[jsonResponse objectForKey:@"flag"] isEqualToString:@"success"]) {
+                        dic_response=[jsonResponse objectForKey:@"response"];
+                        NSLog(@"%@",dic_response);
+                        [arr_melody_pack_no_of_like replaceObjectAtIndex:sender.tag withObject:[dic_response objectForKey:@"likes" ]];
+                        
+                        [[[arr_MyMelodyM objectAtIndex:sender.tag] mutableCopy] removeObjectForKey:@"like_status"];
+                        NSMutableDictionary*dic=[[arr_MyMelodyM objectAtIndex:sender.tag] mutableCopy];
+                        [dic setObject:like_val forKey:@"like_status"];
+                        NSMutableArray *mutableArray = [NSMutableArray arrayWithArray:arr_MyMelodyM];
+                        [mutableArray replaceObjectAtIndex:sender.tag withObject:dic];
+                        arr_MyMelodyM = mutableArray;
+                        [arr_melody_like_status replaceObjectAtIndex:sender.tag withObject:like_val];
+                        CGPoint buttonPosition = [sender convertPoint:CGPointZero toView:_tbl_view_melody];
+                        
+                        NSIndexPath *indexPath = [_tbl_view_melody indexPathForRowAtPoint:buttonPosition];
+                        if(indexPath != nil)
+                        {
+                            [_tbl_view_melody beginUpdates];
+                            [_tbl_view_melody reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                            [_tbl_view_melody endUpdates];
+                            //                        [self getActivity:[[NSUserDefaults standardUserDefaults]
+                            //                                           objectForKey:@"user_id"]];
+                        }
+                        
+                    }
+                    else
+                    {
+                        if ([[jsonResponse objectForKey:@"flag"] isEqualToString:@"unsuccess"]) {
+                            UIAlertController * alert=   [UIAlertController
+                                                          alertControllerWithTitle:@"Alert"
+                                                          message:@"Error to like!"
+                                                          preferredStyle:UIAlertControllerStyleAlert];
+                            
+                            UIAlertAction* yesButton = [UIAlertAction
+                                                        actionWithTitle:@"ok"
+                                                        style:UIAlertActionStyleDefault
+                                                        handler:^(UIAlertAction * action)
+                                                        {
+                                                            //Handel your yes please button action here
+                                                            
+                                                        }];
+                            
+                            [alert addAction:yesButton];
+                            [self presentViewController:alert animated:YES completion:nil];
+                        }
+                        
+                        
+                    }
+                    
+                });
+            }
+        }];
+        [task resume];
+    }
+    else{
+        ViewController *myVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+        myVC.open_login=@"0";
+        myVC.other_vc_flag=@"1";
+        [self presentViewController:myVC animated:YES completion:nil];
+    }
+    
+}
+
+- (void)hide_cellmelody:(UIButton*)sender
+{
+    [arr_melody_pack_id removeObjectAtIndex:sender.tag];
+    [arr_melody_pack_genre removeObjectAtIndex:sender.tag];
+    [arr_melody_pack_name removeObjectAtIndex:sender.tag];
+    [arr_melody_pack_profile removeObjectAtIndex:sender.tag];
+    [arr_melody_pack_cover removeObjectAtIndex:sender.tag];
+    [arr_melody_pack_station removeObjectAtIndex:sender.tag];
+    [arr_melody_pack_intrumentals removeObjectAtIndex:sender.tag];
+    [arr_melody_pack_instrumentals_count removeObjectAtIndex:sender.tag];
+    [arr_melody_pack_post_date removeObjectAtIndex:sender.tag];
+    [_tbl_view_melody reloadData];
+}
+
+- (void)btn_menu_clicked:(UIButton*)sender
+{
+    //AudioFeedTableViewCell *cell = (ActivitiesTableViewCell*)[nib2 objectAtIndex:0];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:sender.tag inSection:0];
+    MelodyPacksTableViewCell *cell = (MelodyPacksTableViewCell*)[_tbl_view_melody cellForRowAtIndexPath:indexPath];
+    
+    if (status2==0) {
+        cell.btn_hide.hidden=NO;
+        status2=1;
+    }
+    else{
+        cell.btn_hide.hidden=YES;
+        status2=0;
+    }
+}
+
+- (void)btn_Melodypackcomment_clicked:(UIButton*)sender
+{
+    if ([defaults_userdata boolForKey:@"isUserLogged"]) {
+        MelodyPackCommentsViewController *melodyVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MelodyPackCommentsViewController"];
+        
+        melodyVC.isFromMelody=@"USER";
+        melodyVC.dic_data=[arr_MyMelodyM objectAtIndex:sender.tag];
+        [self presentViewController:melodyVC animated:YES completion:nil];
+        
+    }
+    else
+    {
+        ViewController *myVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+        myVC.open_login=@"0";
+        myVC.other_vc_flag=@"1";
+        [self presentViewController:myVC animated:YES completion:nil];
+    }
+}
+
+
+
+
+
 @end

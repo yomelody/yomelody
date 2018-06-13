@@ -49,11 +49,18 @@
     NSLog(@"%@",_dic_data);
     // hides the index
     like_count=[[NSString alloc]init];
-    like_count=[_dic_data objectForKey:@"likescounts"];
-    play_count=[[NSString alloc]init];;
-        play_count=[_dic_data objectForKey:@"playcounts"];
     like_status=[[NSString alloc]init];
+    play_count=[[NSString alloc]init];
+
+    if ([_isFrom isEqualToString:@"ACTIVITY"]) {
+        [self getSpecificMelodyData];
+    }
+    else{
+    like_count=[_dic_data objectForKey:@"likescounts"];
+    play_count=[_dic_data objectForKey:@"playcounts"];
     like_status=[_dic_data objectForKey:@"like_status"];
+    }
+    
     _tbl_melodypack_comments.sectionIndexMinimumDisplayRowCount = NSIntegerMax;
     soundsArray = [NSMutableArray new];
     fileSize = 0;
@@ -73,19 +80,23 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     @try{
-    
-    NSArray *melodyUrlArray=[[NSArray alloc]init];
-    melodyUrlArray = [_dic_data valueForKey:@"instruments"];
-    melodyUrlArrayURLM=[[NSMutableArray alloc]init];
-    for (int i=0; i<melodyUrlArray.count; i++) {
-        NSString *strUrl = [[melodyUrlArray objectAtIndex:i]valueForKey:@"instrument_url"];
-        [melodyUrlArrayURLM addObject:strUrl];
-    }
-   
-   
+        
+        NSArray *melodyUrlArray=[[NSArray alloc]init];
+        if ([_isFrom isEqualToString:@"ACTIVITY"]) {
+            //[self getSpecificMelodyData];
+        }
+        else{
+            melodyUrlArray = [_dic_data valueForKey:@"instruments"];
+        }
+        melodyUrlArrayURLM=[[NSMutableArray alloc]init];
+        for (int i=0; i<melodyUrlArray.count; i++) {
+            NSString *strUrl = [[melodyUrlArray objectAtIndex:i]valueForKey:@"instrument_url"];
+            [melodyUrlArrayURLM addObject:strUrl];
+        }
+        
     }
     @catch (NSException *exception) {
-        NSLog(@"exception at likes.php :%@",exception);
+        NSLog(@"exception at  :%@",exception);
     }
     @finally{
         
@@ -591,7 +602,7 @@
                 
                 for (audioPlayer in soundsArray){
                     audioPlayer.delegate=self;
-                    [cell.slider_progress addTarget:self action:@selector(sliderChanged:) forControlEvents:UIControlEventValueChanged];
+                    [cell.slider_progress addTarget:self action:@selector(sliderChanged) forControlEvents:UIControlEventValueChanged];
                     cell.slider_progress.tag = instrument_play_index;
                     [Appdelegate hideProgressHudInView];
                     [audioPlayer play];
@@ -603,7 +614,7 @@
     }
       }
     @catch (NSException *exception) {
-        NSLog(@"exception at likes.php :%@",exception);
+        NSLog(@"exception at btn_playpause_clicked :%@",exception);
     }
     @finally{
         
@@ -730,7 +741,7 @@
     }
     }
     @catch (NSException *exception) {
-        NSLog(@"exception at likes.php :%@",exception);
+        NSLog(@"exception at play_count :%@",exception);
     }
     @finally{
         
@@ -852,7 +863,7 @@
         }
         [parameterString appendFormat:@"%@=%@",key, params[key]];
     }
-    NSString* urlString = [NSString stringWithFormat:@"%@likes.php",BaseUrl];
+    NSString* urlString = [NSString stringWithFormat:@"%@likes.php",BaseUrl_Dev];
     NSURL* url = [NSURL URLWithString:urlString];
     
     //this is how cookies were created
@@ -976,12 +987,12 @@
 
 }
 
+
+
 -(void)openshare:(UIButton*)sender
 {
-    
     if ([defaults_userdata boolForKey:@"isUserLogged"])
     {
-        
         UIAlertController * alert=   [UIAlertController
                                       alertControllerWithTitle:@""
                                       message:@"Share with YoMelody chat"
@@ -993,10 +1004,16 @@
                                     handler:^(UIAlertAction * action)
                                     {
                                         MessengerViewController *myVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MessengerViewController"];
-                                        myVC.str_file_id = [_dic_data valueForKey:@"melodypackid"];
-                                        myVC.str_screen_type = @"melody";
+                                        myVC.str_file_id = [NSString stringWithFormat:@"%@", [_dic_data objectForKey:@"melodypackid"]];
+                                        if ([[_dic_data objectForKey:@"added_by_admin"] isEqualToString:@"1"])
+                                        {
+                                            myVC.str_screen_type = @"admin_melody";
+                                        }
+                                        else
+                                        {
+                                            myVC.str_screen_type = @"user_melody";
+                                        }
                                         Appdelegate.fromShareScreen = 0;
-                                        
                                         myVC.isShare_Audio = YES;
                                         [self presentViewController:myVC animated:YES completion:nil];
                                         //Handel your yes please button action here
@@ -1006,56 +1023,32 @@
                                    style:UIAlertActionStyleDefault
                                    handler:^(UIAlertAction * action)
                                    {
-                                       //Handel your yes please button action here
-                                       NSArray *activityItems = @[@"Hi ! this is Gaurav"];
-                                       // NSString *text = @"hello";
-                                       // NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",[arr_rec_thumbnail_url objectAtIndex:i_Path]]];
-                                       //UIImage *image = [UIImage imageNamed:@"socialsharing-facebook-image.jpg"];
-                                       activityController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+                                       NSString *link;
+                                       NSString *noteStr;
                                        
-                                       if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-                                       {
-                                           activityController.popoverPresentationController.sourceView = self.view;
-                                           activityController.popoverPresentationController.sourceRect = CGRectMake(self.view.bounds.size.width/2, self.view.bounds.size.height/4, 0, 0);
-                                       }
+                                       link = [NSString stringWithFormat:@"%@",[_dic_data  objectForKey:@"thumbnail_url"]];
+                                       noteStr = [NSString stringWithFormat:@"Listen to %@\nOn YoMelody.com\n",[_dic_data  objectForKey:@"name"]];
+                                       // NSString *noteStr = [NSString stringWithFormat:@""];
                                        
-                                       [self presentViewController:activityController animated:YES completion:nil];
-                                       if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
-                                           
-                                           SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-                                           [controller setInitialText:@"First post from my iPhone app"];
-                                           //        [controller addURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[arr_rec_thumbnail_url objectAtIndex:i_Path]]]];
-                                           [controller addImage:[UIImage imageNamed:@"socialsharing-facebook-image.jpg"]];
-                                           [controller setCompletionHandler:^(SLComposeViewControllerResult result) {
-                                               switch (result) {
-                                                   case SLComposeViewControllerResultCancelled:
-                                                       NSLog(@"Post Canceled");
-                                                       break;
-                                                   case SLComposeViewControllerResultDone:
-                                                       NSLog(@"Post Sucessful");
-                                                       break;
-                                                   default:
-                                                       break;
-                                               }
-                                           }];
-                                           [self presentViewController:controller animated:YES completion:Nil];
-                                       }
-                                       else if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
-                                       {
-                                           SLComposeViewController *tweetSheet = [SLComposeViewController
-                                                                                  composeViewControllerForServiceType:SLServiceTypeTwitter];
-                                           [tweetSheet setInitialText:@"Great fun to learn iOS programming at appcoda.com!"];
-                                           [self presentViewController:tweetSheet animated:YES completion:nil];
-                                       }
+                                       NSURL *url = [NSURL URLWithString:link];
+                                       UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[noteStr, url] applicationActivities:nil];
+                                       [self presentViewController:activityVC animated:YES completion:nil];
                                    }];
         
         [alert addAction:noButton];
         [alert addAction:yesButton];
         [self presentViewController:alert animated:YES completion:nil];
-        
-        
+    }
+    else
+    {
+        ViewController *myVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+        myVC.open_login=@"0";
+        myVC.other_vc_flag=@"1";
+        [self presentViewController:myVC animated:YES completion:nil];
     }
 }
+
+
 
 
 - (IBAction)btn_back:(id)sender {
@@ -1084,8 +1077,8 @@
            
             [_tf_comment resignFirstResponder];
         }];
-//        [self dismissViewControllerAnimated:YES completion:nil];
-        [self.view.window.rootViewController dismissViewControllerAnimated:NO completion:nil];
+        [self dismissViewControllerAnimated:YES completion:nil];
+//        [self.view.window.rootViewController dismissViewControllerAnimated:NO completion:nil];
 
     }
     else
@@ -1108,7 +1101,18 @@
 {
     
     NSMutableDictionary *params =[[NSMutableDictionary alloc]init];
-    [params setObject:[_dic_data objectForKey:@"melodypackid"] forKey:@"file_id"];
+    NSString *FILE_ID;
+    if (_fileID  != nil)
+    {
+        
+        FILE_ID = _fileID;
+    }
+    else
+    {
+        FILE_ID = [_dic_data objectForKey:@"melodypackid"];
+    }
+    
+    [params setObject:FILE_ID forKey:@"file_id"];
     [params setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"] forKey:@"user_id"];
     [params setObject:_tf_comment.text forKey:@"comment"];
 
@@ -1248,7 +1252,19 @@
 {
     [Appdelegate showProgressHud];
     NSMutableDictionary *params =[[NSMutableDictionary alloc]init];
-    [params setObject:[_dic_data objectForKey:@"melodypackid"] forKey:@"file_id"];
+    
+    NSString *FILE_ID;
+    if (_fileID  != nil)
+    {
+        
+        FILE_ID = _fileID;
+    }
+    else
+    {
+        FILE_ID = [_dic_data objectForKey:@"melodypackid"];
+    }
+    
+    [params setObject:FILE_ID forKey:@"file_id"];
 
     if ([_isFromMelody isEqualToString:@"USER"])
     {
@@ -1366,18 +1382,107 @@
     
     @try{
     // Update the slider about the music time
+   
     NSLog(@"fileSize %ld",fileSize);
     audioPlayer = [soundsArray objectAtIndex:fileSize];
     
     MelodyPackCommentTableViewCell *cell = [_tbl_melodypack_comments cellForRowAtIndexPath:[NSIndexPath indexPathForRow:currentSoundsIndex inSection:0]];
     cell.slider_progress.value = audioPlayer.currentTime;
+    
 }
 @catch (NSException *exception) {
-    NSLog(@"exception at likes.php :%@",exception);
+    NSLog(@"exception at timerupdateSlider :%@",exception);
 }
 @finally{
     
 }
+}
+
+
+
+-(void)getSpecificMelodyData
+{
+    @try{
+        
+        NSMutableDictionary * params = [[NSMutableDictionary alloc]init];
+        [params setObject:KEY_AUTH_VALUE forKey:KEY_AUTH_KEY];
+        
+        if([defaults_userdata boolForKey:@"isUserLogged"]) {
+            [params setObject:[defaults_userdata objectForKey:@"user_id"] forKey:@"user_id"];
+        }
+        
+        [params setObject:_fileID forKey:@"file_id"];
+        
+        [params setObject:_fileType forKey:@"file_type"];
+        
+        
+        NSLog(@"%@",params);
+        NSMutableString* parameterString = [NSMutableString string];
+        for(NSString* key in [params allKeys])
+        {
+            if ([parameterString length]) {
+                [parameterString appendString:@"&"];
+            }
+            [parameterString appendFormat:@"%@=%@",key, params[key]];
+        }
+        NSString* urlString = [NSString stringWithFormat:@"%@view_post.php",BaseUrl];
+        NSURL* url = [NSURL URLWithString:urlString];
+        
+        //this is how cookies were created
+        NSURLSession* session =[NSURLSession sharedSession];
+        NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
+        [request setHTTPMethod:@"POST"];
+        [request setHTTPBody:[parameterString dataUsingEncoding:NSUTF8StringEncoding]];
+        [request setHTTPShouldHandleCookies:NO];
+        
+        NSURLSessionDataTask* task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            
+            if(error)
+            {
+                //do something
+                NSLog(@"%@", error);
+                [Appdelegate hideProgressHudInView];
+                
+            }
+            else
+            {
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSError *myError = nil;
+                    NSDictionary*dic_response=[[NSDictionary alloc]init];
+                    
+                    NSString *requestReply = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+                    NSLog(@"%@",requestReply);
+                    
+                    NSData *data = [requestReply dataUsingEncoding:NSUTF8StringEncoding];
+                    NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data
+                                                                                 options:kNilOptions
+                                                                                   error:&myError];
+                    NSLog(@"%@",jsonResponse);
+                    if([[jsonResponse objectForKey:@"flag"] isEqualToString:@"success"]) {
+                        dic_response = [jsonResponse objectForKey:@"response"];
+                        _dic_data = [dic_response mutableCopy];
+                        NSLog(@"data %@",_dic_data);
+                        like_count=[_dic_data objectForKey:@"likescounts"]; play_count=[_dic_data objectForKey:@"playcounts"]; like_status=[_dic_data objectForKey:@"like_status"];                        [_tbl_melodypack_comments reloadData];
+                    }
+                    else
+                    {
+                        if ([[jsonResponse objectForKey:@"flag"] isEqualToString:@"unsuccess"]) {
+                            
+                        }
+                    }
+                });
+            }
+        }];
+        [task resume];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"exception at activity.php :  %@",exception);
+        [Appdelegate hideProgressHudInView];
+    }
+    @finally{
+        
+    }
 }
 
 @end

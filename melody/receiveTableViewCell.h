@@ -31,5 +31,6 @@
 //----------- For Label --------
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *cons_lbl_height;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *cons_lbl_width;
+@property (weak, nonatomic) IBOutlet UILabel *lbl_userName;
 
 @end

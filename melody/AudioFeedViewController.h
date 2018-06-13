@@ -5,13 +5,10 @@
 //  Created by CodingBrainsMini on 11/21/16.
 //  Copyright © 2016 CodingBrainsMini. All rights reserved.
 //
-#import <AVFoundation/AVFoundation.h>
-#import <AudioToolbox/AudioToolbox.h>
-#import <UIKit/UIKit.h>
-#import "AudioFeedTableViewCell.h"
+
+#import "Constant.h"
 #import "ActivitiesTableViewCell.h"
-#import <QuartzCore/QuartzCore.h>
-@interface AudioFeedViewController : UIViewController<AVAudioPlayerDelegate,AVAudioRecorderDelegate>
+@interface AudioFeedViewController : UIViewController<AVAudioPlayerDelegate,AVAudioRecorderDelegate,UISearchBarDelegate>
 {
     NSMutableArray*arr_filter_data_list;
     int status;
@@ -60,6 +57,8 @@
 }
 
 @property (nonatomic, assign) BOOL isBack;
+@property (nonatomic, assign) BOOL notificationForActivity;
+
 
 @property (weak, nonatomic) IBOutlet NSString *sender_tag;
 
@@ -67,6 +66,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *btn_audio_tab;
 - (IBAction)btn_audio_tab:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *btn_activity_tab;
+@property (weak, nonatomic) IBOutlet UIButton *btn_Users_tab;
+- (IBAction)btn_Users_Action:(id)sender;
+
 - (IBAction)btn_activity_tab:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *btn_filter;
 @property (weak, nonatomic) IBOutlet UIButton *btn_search;
@@ -89,7 +91,12 @@
 /**************************Activity Tab outlets************************/
 @property (weak, nonatomic) IBOutlet UIView *view_activitytab;
 @property (weak, nonatomic) IBOutlet UITableView *tbl_view_activity;
-/****************************************************************/
+
+/************************** Users Tab outlets ************************/
+@property (weak, nonatomic) IBOutlet UIView *view_Users_tab;
+@property (weak, nonatomic) IBOutlet UITableView *tbl_Users;
+
+
 /***************Bottom tab outlet***************/
 @property (weak, nonatomic) IBOutlet UIButton *btn_audiofeed;
 @property (weak, nonatomic) IBOutlet UIButton *btn_discover;
@@ -107,6 +114,7 @@
 - (IBAction)btn_filter_shadow_cancel:(id)sender;
 @property (weak, nonatomic) IBOutlet UITableView *tbl_view_filter_data_list;
 @property (weak, nonatomic) IBOutlet UIView *view_filter;
+@property (weak, nonatomic) IBOutlet UISearchBar *search_bar;
 
 /******************************************************/
 @end

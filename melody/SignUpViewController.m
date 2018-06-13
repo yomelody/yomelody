@@ -48,10 +48,9 @@
     _tf_username.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Username" attributes:@{NSForegroundColorAttributeName: color}];
     _tf_phone.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Phone" attributes:@{NSForegroundColorAttributeName: color}];
     
-    UIColor *color1 = [UIColor whiteColor];
-    _tf_dob_date.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Day" attributes:@{NSForegroundColorAttributeName: color1}];
-    _tf_dob_month.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Month" attributes:@{NSForegroundColorAttributeName: color1}];
-    _tf_dob_year.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Year" attributes:@{NSForegroundColorAttributeName: color1}];
+    _tf_dob_date.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Day" attributes:@{NSForegroundColorAttributeName: color}];
+    _tf_dob_month.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Month" attributes:@{NSForegroundColorAttributeName: color}];
+    _tf_dob_year.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Year" attributes:@{NSForegroundColorAttributeName: color}];
     
     _img_view_profile.layer.masksToBounds = YES;
     _img_view_profile.layer.cornerRadius=_img_view_profile.frame.size.height/2;
@@ -457,28 +456,13 @@
     [self NSStringIsValidEmail:_tf_email.text];
     NSLog([self NSStringIsValidEmail:_tf_email.text] ? @"Yes" : @"No");
     
-    if ([_tf_first_name.text length]!=0 && [_tf_email.text length] !=0 && [_tf_username.text length]!=0 && [_tf_password.text length]!=0 && [_tf_dob_date.text length]!=0  && [_tf_dob_month.text length]!=0 && [_tf_dob_year.text length]!=0 && [_tf_password.text length]>7 && [_tf_username.text length]>1 && [_tf_confirmpass.text length]!=0 && [_tf_phone.text length]!=0  ) {
+    if ([_tf_first_name.text length]!=0 && [_tf_email.text length] !=0 && [_tf_username.text length]!=0 && [_tf_password.text length]!=0 && [_tf_password.text length]>7 && [_tf_username.text length]>1 && [_tf_confirmpass.text length]!=0) {
         
         
      if ([self NSStringIsValidEmail:_tf_email.text] && [_tf_password.text isEqualToString:_tf_confirmpass.text])
-     {
-         if ([_tf_phone.text length]!=0) {
-             if ([_tf_phone.text length] >=10 && [_tf_phone.text length] <=16)
-             {
-                 [self signup_call];
-             }
-             else{
-             
-              _lbl_phone_error.text=@"incorrect phone number";
-                 
-             }
-
-         }
-         else
-         {
+        {
          [self signup_call];
-         }
-             }
+        }
         else
         {
             if (![_tf_password.text isEqualToString:_tf_confirmpass.text])

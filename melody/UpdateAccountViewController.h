@@ -80,6 +80,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btn_signin;
 - (IBAction)btn_signin:(id)sender;
 @property (weak, nonatomic) IBOutlet UITextView *tv_description;
+@property (weak, nonatomic) IBOutlet UILabel *lbl_version;
 
 
 

@@ -18,6 +18,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *btn_previous;
 @property (weak, nonatomic) IBOutlet UIButton *btn_next;
 @property (weak, nonatomic) IBOutlet UIButton *btn_AudioShare_join;
+@property (weak, nonatomic) IBOutlet UILabel *lbl_userName;
 
-
+@property (weak, nonatomic) IBOutlet UIView *sendAudioFileView;
+@property (weak, nonatomic) IBOutlet UIButton *addMelodyBtnS;
 @end

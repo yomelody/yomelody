@@ -60,7 +60,29 @@
     //****************************
     UICollectionView*cv_images;
     UIView*dp_view;
-    
+    //------------------ Melody ---------------------
+    NSMutableArray*arr_melody_pack_id;
+    NSMutableArray*arr_melody_pack_name;
+    NSMutableArray*arr_melody_pack_instrumentals_count;
+    NSMutableArray*arr_melody_pack_bpm;
+    NSMutableArray*arr_melody_pack_genre;
+    NSMutableArray*arr_melody_pack_station;
+    NSMutableArray*arr_melody_pack_cover;
+    NSMutableArray*arr_melody_pack_profile;
+    NSMutableArray*arr_melody_pack_intrumentals;
+    NSMutableArray*arr_melody_thumbnailURL;
+    NSMutableArray *instrumentURLArrayM,*maxDuration;
+
+    NSMutableArray*arr_melody_pack_post_date;
+    NSMutableArray*arr_melody_pack_no_of_play;
+    NSMutableArray*arr_melody_pack_no_of_like;
+    NSMutableArray*arr_melody_pack_no_of_share;
+    NSMutableArray*arr_melody_pack_no_of_coments;
+    NSMutableArray*arr_melody_instrumentals_path;
+    NSMutableArray*arr_melody_like_status;
+    NSMutableArray*arr_melody_url;
+    NSMutableArray *arr_melody_pack_timerM;
+
 }
 @property (strong, nonatomic) NSString *user_id;
 @property (strong, nonatomic) NSString *follower_id;
@@ -116,6 +138,7 @@
 @property (weak, nonatomic) IBOutlet UIView *view_audio;
 @property (weak, nonatomic) IBOutlet UITableView *tbl_view_activities;
 @property (weak, nonatomic) IBOutlet UITableView *tbl_view_audios;
+@property (weak, nonatomic) IBOutlet UITableView *tbl_view_melody;
 
 
 /***************bio tab outlets******************/
@@ -160,4 +183,9 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *img_editProfile;
 
+//-----------------* For Fans Or Following *-------------------
+- (IBAction)btn_Fans_Action:(id)sender;
+- (IBAction)btn_Following_Action:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *btn_followings;
+@property (weak, nonatomic) IBOutlet UIButton *btn_fans;
 @end

@@ -43,6 +43,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btn_PlayRecording;
 @property (weak, nonatomic) IBOutlet UIView *roundBackgroundView;
 @property (weak, nonatomic) IBOutlet UILabel *lbl_included;
+@property (weak, nonatomic) IBOutlet UISwitch *switch_PublicOrPrivate;
 
 /********************************************************/
 @end

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -120,6 +120,7 @@
             <connections>
                 <outlet property="lbl_layer_text" destination="b1h-18-G2y" id="J8u-wp-H6M"/>
                 <outlet property="lbl_layers_count" destination="fxx-As-Eok" id="ht2-29-vfJ"/>
+                <outlet property="lbl_perMonth" destination="jTv-M6-ocd" id="8IS-Tj-fia"/>
                 <outlet property="lbl_plan_price" destination="237-t7-BzV" id="UcN-Ew-eaO"/>
                 <outlet property="lbl_plan_type" destination="nlg-Df-VZw" id="hEj-Tr-8V3"/>
                 <outlet property="lbl_rec_time_text" destination="1EX-7B-QbJ" id="ipi-8F-5KM"/>

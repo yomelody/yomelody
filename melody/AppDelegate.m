@@ -14,10 +14,10 @@
 #define REDIRECT_URI @"www.facebook.com"//don't forget to change this in Info.plist as well
 #import <UIKit/UIKit.h>
 #import "Constant.h"
-#import "BraintreeCore.h"
-#import "BraintreePayPal.h"
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
+#import "ProfileViewController.h"
+//#import "RageIAPHelper.h"
 
 #define SC_API_URL @"https://api.soundcloud.com"
 #define SC_TOKEN @"SC_TOKEN"
@@ -84,63 +84,92 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [BTAppSwitch setReturnURLScheme:@"com.Yomelody.payments"];
-    //--------------------* Facebook *---------------------
+    
+    NSInteger badgeCount = [UIApplication sharedApplication].applicationIconBadgeNumber;
+//    badgeCount = [strBadgeCount integerValue];
+    NSLog(@"badgeCount %ld",(long)badgeCount);
+    
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    [[NSUserDefaults standardUserDefaults] setObject:@"none" forKey:@"navigation"];
+
+    _isHomeClicked=YES;
+    
+    //--------------------* In App Purchase *---------------------------------
+//    [RageIAPHelper sharedInstance];
+    //------------------------------------------------------------------------
+    
+    //--------------------* Facebook *----------------------------------------
     [[FBSDKApplicationDelegate sharedInstance] application:application
                              didFinishLaunchingWithOptions:launchOptions];
-    //-----------------------------------------------------
+    //------------------------------------------------------------------------
     
-    //-----------* Crashlytics with Twitter *------------
+    //-----------* Crashlytics with Twitter *---------------------------------
     [Fabric with:@[[Crashlytics class], [Twitter class]]];
-//    [Fabric with:@[[Twitter class]]];
-    //--------------------* Google *---------------------
+    //    [Fabric with:@[[Twitter class]]];
+    //------------------------------------------------------------------------
 
-//    [[GGLContext sharedInstance] configureWithError: &configureError];
-//    NSAssert(!configureError, @"Error configuring Google services: %@", configureError);
-    ClientID_Google =  @"com.googleusercontent.apps.870917113323-k0l3rk09mffuc2p3ggi8deqaua61simo";
+    //--------------------* Google *------------------------------------------
+    ClientID_Google =  @"com.googleusercontent.apps.870917113323-vgq1s736bmcfmodsp32a4no4flha372r";
     [GIDSignIn sharedInstance].delegate = self;
     [GIDSignIn sharedInstance].clientID = [FIRApp defaultApp].options.clientID;
     [GIDSignIn sharedInstance].shouldFetchBasicProfile = YES;
-    //------------------------------------------
+    //    [[GGLContext sharedInstance] configureWithError: &configureError];
+    //    NSAssert(!configureError, @"Error configuring Google services: %@", configureError);
+    //-------------------------------------------------------------------------
     
+    //--------------------* Image Fetch from Phone Gallery *-------------------
      PHFetchOptions *options = [[PHFetchOptions alloc] init];
      options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
      _assetsFetchResults = [PHAsset fetchAssetsWithOptions:options];
      [self getImageFromGallery];
-
-     //-------------------------------------------------------------
-     if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"camera_status"] isEqual:@"0"]) {
-    }
-    else{
-    [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"camera_status"];
-    }
-    if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"gallery_status"] isEqual:@"0"]) {
-    }
-    else{
+     //------------------------------------------------------------------------
+    
+    //--------------------* Get and Set Camera & Gallery status *--------------
+     if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"camera_status"] isEqual:@"0"])
+     {
+     }
+     else
+     {
+         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"camera_status"];
+     }
+     if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"gallery_status"] isEqual:@"0"])
+     {
+     }
+     else
+     {
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"gallery_status"];
-    }
-    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
+     }
+    //---------------------------------------------------------------------------
+    
+    //-----------* Notification Handler for various iOS version *----------------
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1)
+    {
         // iOS 7.1 or earlier. Disable the deprecation warnings.
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Wdeprecated-declarations"
         UIRemoteNotificationType allNotificationTypes =
         (UIRemoteNotificationTypeSound |
          UIRemoteNotificationTypeAlert |
          UIRemoteNotificationTypeBadge);
         [application registerForRemoteNotificationTypes:allNotificationTypes];
-#pragma clang diagnostic pop
-    } else {
+        #pragma clang diagnostic pop
+    }
+    else
+    {
         // iOS 8 or later
         // [START register_for_notifications]
-        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_9_x_Max) {
+        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_9_x_Max)
+        {
             UIUserNotificationType allNotificationTypes =
             (UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge);
             UIUserNotificationSettings *settings =
             [UIUserNotificationSettings settingsForTypes:allNotificationTypes categories:nil];
             [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-        } else {
+        }
+        else
+        {
             // iOS 10 or later
-#if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
+            #if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
             // For iOS 10 display notification (sent via APNS)
             [UNUserNotificationCenter currentNotificationCenter].delegate = self;
             UNAuthorizationOptions authOptions =
@@ -148,28 +177,30 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
             | UNAuthorizationOptionSound
             | UNAuthorizationOptionBadge;
             [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
-                
             }];
             
             // For iOS 10 data message (sent via FCM)
             [FIRMessaging messaging].remoteMessageDelegate = self;
-#endif
+            #endif
         }
         
         [[UIApplication sharedApplication] registerForRemoteNotifications];
         // [END register_for_notifications]
     }
-
-    //*--------------------*get Notify for images *---------------------
+    //---------------------------------------------------------------------------
+    
+    //*--------------------* Get Notify for images *-----------------------------
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getImageNotification:)
                                                  name:@"getImages" object:nil];
     
     // [START add_token_refresh_observer]
+    
     // Add observer for InstanceID token refresh callback.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tokenRefreshNotification:)
                                                  name:kFIRInstanceIDTokenRefreshNotification object:nil];
     // [END add_token_refresh_observer]
+    
     return YES;
     
 }
@@ -179,37 +210,38 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void) getImageNotification:(NSNotification *) notification
-{
-    if ([[notification name] isEqualToString:@"getImages"])
-        NSLog (@"Successfully received the test notification!");
-    PHFetchOptions *options = [[PHFetchOptions alloc] init];
-    options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
-    _assetsFetchResults = [PHAsset fetchAssetsWithOptions:options];
-    [self getImageFromGallery];
+// Expects the URL of the scheme e.g. "fb://"
+- (BOOL)schemeAvailable:(NSString *)scheme {
+    UIApplication *application = [UIApplication sharedApplication];
+    NSURL *URL = [NSURL URLWithString:scheme];
+    return [application canOpenURL:URL];
 }
-
 
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
             options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
-     if ([url.scheme localizedCaseInsensitiveCompare:@"com.Yomelody.payments"] == NSOrderedSame) {
-          return [BTAppSwitch handleOpenURL:url options:options];
-     }
-//
+     NSURL *URL = [NSURL URLWithString:url.scheme];
+    NSLog(([application canOpenURL:URL]) ? @"Yes" : @"No");
+    
+ 
+    //----------------* Twitter *-------------------
     if ([[Twitter sharedInstance] application:application openURL:url options:options]) {
         return YES;
     }
+    //----------------* iTunes  and Google*-------------------
     if ([url.scheme localizedCaseInsensitiveCompare:@"http://itunes.apple.com"] == NSOrderedSame) {
         return YES;
     }
-//
- 
-     else{
-    return [[GIDSignIn sharedInstance] handleURL:url
+   if([url.scheme localizedCaseInsensitiveCompare:@"fb1437005633236379"] == NSOrderedSame)
+    {
+        return YES;
+        
+    }
+    else
+    {
+        return [[GIDSignIn sharedInstance] handleURL:url
                                sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
                                       annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
-
      }
 }
 
@@ -217,37 +249,38 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
 
+    //----------------* Facebook *-------------------
     BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
                                                                   openURL:url
                                                         sourceApplication:sourceApplication
                                                                annotation:annotation
                     ];
+    
+//    BFURL *parsedUrl = [BFURL URLWithInboundURL:url sourceApplication:sourceApplication];
+//    if ([parsedUrl appLinkData]) {
+//        // this is an applink url, handle it here
+//        NSURL *targetUrl = [parsedUrl targetURL];
+//        [[[UIAlertView alloc] initWithTitle:@"Received link:"
+//                                    message:[targetUrl absoluteString]
+//                                   delegate:nil
+//                          cancelButtonTitle:@"OK"
+//                          otherButtonTitles:nil] show];
+//    }
       //Add any custom logic here.
-     if ([url.scheme localizedCaseInsensitiveCompare:@"com.Yomelody.payments"] == NSOrderedSame) {
-          return [BTAppSwitch handleOpenURL:url sourceApplication:sourceApplication];
-     }
+    //----------------* Payments *-------------------
 
-     else  if ([url.scheme localizedCaseInsensitiveCompare:@"http://itunes.apple.com"] == NSOrderedSame) {
-         return [BTAppSwitch handleOpenURL:url sourceApplication:sourceApplication];
-     }
-     else{
-    return [[GIDSignIn sharedInstance] handleURL:url
+         return [[GIDSignIn sharedInstance] handleURL:url
                                sourceApplication:sourceApplication
                                       annotation:annotation];
-     }
-  
+
     // Add any custom logic here.
-//    return handled;
-    
-    
+//     return handled;
 }
-#pragma mark- GooGle Method
+#pragma mark - Google SignIn Method
+#pragma mark -
+- (void)signIn:(GIDSignIn *)signIn didSignInForUser:(GIDGoogleUser *)user withError:(NSError *)error {
     
-    - (void)signIn:(GIDSignIn *)signIn
-  didSignInForUser:(GIDGoogleUser *)user
-         withError:(NSError *)error {
         // Perform any operations on signed in user here.
-        
         if (error == nil) {
             GIDAuthentication *authentication = user.authentication;
             FIRAuthCredential *credential =
@@ -261,26 +294,19 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
             UIViewController *viewController =[storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
             self.window.rootViewController = viewController;
             [self.window makeKeyAndVisible];
-            
-            // ...
         } else {
             NSLog(@"ERROR : %@",error);
-            
         }
-
     }
-    
-    - (void)signIn:(GIDSignIn *)signIn
-didDisconnectWithUser:(GIDGoogleUser *)user
-         withError:(NSError *)error {
+
+- (void)signIn:(GIDSignIn *)signIn didDisconnectWithUser:(GIDGoogleUser *)user withError:(NSError *)error {
         // Perform any operations when the user disconnects from app here.
         // ...
     }
-    
-  #pragma mark- END
-    
 
 // [START refresh_token]
+#pragma mark - tike Refresh Notification
+#pragma mark -
 - (void)tokenRefreshNotification:(NSNotification *)notification {
      // Note that this callback will be fired everytime a new token is generated, including the first
      // time. So if you need to retrieve the token as soon as it is available this is where that
@@ -296,17 +322,12 @@ didDisconnectWithUser:(GIDGoogleUser *)user
      // TODO: If necessary send token to application server.
 }
 
-
-
-#pragma SoundCloud Method
+#pragma mark - SoundCloud Method
+#pragma mark -
 
 - (void)showErrorAlert {
      [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Cannot authenticate with current data." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
 }
-
-
-
-
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     // If you are receiving a notification message while your app is in the background,
@@ -321,7 +342,7 @@ didDisconnectWithUser:(GIDGoogleUser *)user
     // Print full message.
     NSLog(@"%@", userInfo);
      
-     [[NSUserDefaults standardUserDefaults] setObject:userInfo forKey:@"messege"];
+     [[NSUserDefaults standardUserDefaults] setObject:userInfo forKey:@"       ege"];
      
      
      if ( application.applicationState == UIApplicationStateInactive || application.applicationState == UIApplicationStateBackground  )
@@ -332,8 +353,7 @@ didDisconnectWithUser:(GIDGoogleUser *)user
           UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
           
           UIViewController *viewController =[storyboard instantiateViewControllerWithIdentifier:@"chatViewController"];
-          
-          
+         
           self.window.rootViewController = viewController;
           [self.window makeKeyAndVisible];
      }
@@ -374,7 +394,17 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 
 
 
-
+#pragma mark - Getting Image Notification
+#pragma mark -
+- (void) getImageNotification:(NSNotification *) notification
+{
+    if ([[notification name] isEqualToString:@"getImages"])
+        NSLog (@"Successfully received the test notification!");
+    PHFetchOptions *options = [[PHFetchOptions alloc] init];
+    options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+    _assetsFetchResults = [PHAsset fetchAssetsWithOptions:options];
+    [self getImageFromGallery];
+}
 
 
 
@@ -417,13 +447,18 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
          withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
      // Print message ID.
      NSString *jsonString;
+    NSMutableDictionary *dic =[[NSMutableDictionary alloc]init];
      NSDictionary *userInfo = notification.request.content.userInfo;
+//    NSDictionary *userInfo = response.notification.request.content.userInfo;
+
      NSString *str_notification_type =[userInfo valueForKey:@"gcm.notification.notification_type"];
      if ([str_notification_type isEqualToString:@"Activity"]) {
-          jsonString = [userInfo valueForKey:@"aps"];
+         jsonString = [[userInfo valueForKey:@"aps"] valueForKey:@"alert" ];
      }
      else if ([str_notification_type isEqualToString:@"Chat"]) {
-          jsonString = [[[userInfo valueForKey:@"aps"] valueForKey:@"alert"]valueForKey:@"body"];
+         jsonString = [[[userInfo valueForKey:@"aps"] valueForKey:@"alert"]valueForKey:@"title"];
+         [dic setObject:jsonString forKey:@"msg_title"];
+         [dic setObject:[userInfo valueForKey:@"gcm.notification.chat_id"] forKey:@"chat_id"];
      }
      
      if (userInfo[kGCMMessageIDKey]) {
@@ -434,18 +469,30 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
      // Change this to your preferred presentation option
      completionHandler(UNNotificationPresentationOptionNone);
      NSLog(@"%@",_str_chat_status);
-     [[NSUserDefaults standardUserDefaults] setObject:jsonString forKey:@"messege"];
+     [[NSUserDefaults standardUserDefaults] setObject:dic forKey:@"messege"];
      [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"notification_navigation"];
      UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
      if ([str_notification_type isEqualToString:@"Activity"]) {
-//          UIViewController *viewController =[storyboard instantiateViewControllerWithIdentifier:@"ProfileViewController"];
+        
+          UIViewController *viewController =[storyboard instantiateViewControllerWithIdentifier:@"ProfileViewController"];
+         if ([viewController isKindOfClass:[ProfileViewController class]]){
+             // viewController is visible
+//             self.window.rootViewController = viewController;//change
+//             [self.window makeKeyAndVisible];
+         }
 //          self.window.rootViewController = viewController;//change
 //          [self.window makeKeyAndVisible];
      }
      else {
           UIViewController *viewController =[storyboard instantiateViewControllerWithIdentifier:@"chatViewController"];
-          self.window.rootViewController = viewController;//change
-          [self.window makeKeyAndVisible];
+//         NSLog(@"Current View Controller Class Name: %@",NSStringFromClass(self.window.rootViewController.navigationController.visibleViewController.class));
+
+//         if ([chatViewController is]){
+             // viewController is visible
+//             self.window.rootViewController = viewController;//change
+//             [self.window makeKeyAndVisible];
+//         }
+         
      }
      
 }
@@ -459,12 +506,8 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 didReceiveNotificationResponse:(UNNotificationResponse *)response
          withCompletionHandler:(void (^)())completionHandler {
      NSLog(@"didReceiveNotificationResponse");
-     
-     
-     
-     
-     
      NSString *jsonString;
+    NSMutableDictionary *dic =[[NSMutableDictionary alloc]init];
      NSDictionary *userInfo = response.notification.request.content.userInfo;
      NSLog(@"response.notification.request.content.body: %@", userInfo);
      NSString *str_notification_type =[userInfo valueForKey:@"gcm.notification.notification_type"];
@@ -472,16 +515,23 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
           jsonString = [[userInfo valueForKey:@"aps"] valueForKey:@"alert" ];
      }
      else if ([str_notification_type isEqualToString:@"Chat"]) {
-          jsonString = [[[userInfo valueForKey:@"aps"] valueForKey:@"alert"]valueForKey:@"body"];
+         //chat_id
+          jsonString = [[[userInfo valueForKey:@"aps"] valueForKey:@"alert"]valueForKey:@"title"];
+         [dic setObject:jsonString forKey:@"msg_title"];
+         [dic setObject:[userInfo valueForKey:@"gcm.notification.chat_id"] forKey:@"chat_id"];
      }
-     
+    
+
     NSLog(@"%@", userInfo);
      
-     [[NSUserDefaults standardUserDefaults] setObject:jsonString forKey:@"messege"];
+     [[NSUserDefaults standardUserDefaults] setObject:dic forKey:@"messege"];
      [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"notification_navigation"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"activity" forKey:@"navigation"];
+
      UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
      if ([str_notification_type isEqualToString:@"Activity"]) {
-          UIViewController *viewController =[storyboard instantiateViewControllerWithIdentifier:@"ProfileViewController"];
+          UIViewController *viewController =[storyboard instantiateViewControllerWithIdentifier:@"AudioFeedViewController"];
+         
           self.window.rootViewController = viewController;//change
           [self.window makeKeyAndVisible];
      }
@@ -499,9 +549,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 // [START ios_10_data_message_handling]
 #if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 // Receive data message on iOS 10 devices while app is in the foreground.
-
-
-
 //------------ Controls comes when user send messages -----------------------
 //------------------------------ ***** 3 rd ***--------------------------------
 //------------------------- applicationReceivedRemoteMessage -----------------------------
@@ -509,7 +556,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 - (void)applicationReceivedRemoteMessage:(FIRMessagingRemoteMessage *)remoteMessage {
     // Print full message
      NSLog(@"applicationReceivedRemoteMessage with FIRMessagingRemoteMessage");
-
     NSLog(@"remoteMessage %@", remoteMessage.appData);
      NSString *jsonString = [remoteMessage.appData valueForKey:@"body"];
 //     [[NSUserDefaults standardUserDefaults] setObject:userInfo forKey:@"messege"];
@@ -532,14 +578,15 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     if (![[FIRInstanceID instanceID] token]) {
         return;
     }
-    
     // Disconnect previous FCM connection if it exists.
     [[FIRMessaging messaging] disconnect];
-    
     [[FIRMessaging messaging] connectWithCompletion:^(NSError * _Nullable error) {
         if (error != nil) {
             NSLog(@"Unable to connect to FCM. %@", error);
-                     } else {
+            
+        }
+        else
+        {
             NSLog(@"Connected to FCM.");
         }
     }];
@@ -558,23 +605,19 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
 //--------------- didRegisterForRemoteNotificationsWithDeviceToken -----------------
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-     
-     
      NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
      token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
+    //---------------- * Sandbox User * -----------------
      [[FIRInstanceID instanceID] setAPNSToken:deviceToken type:FIRInstanceIDAPNSTokenTypeSandbox];
-     NSLog(@"FIRInstanceIDAPNSTokenTypeSandbox =%ld",(long)FIRInstanceIDAPNSTokenTypeSandbox);
-          
-     NSString *refreshedToken = [[FIRInstanceID instanceID] token];
-     [[NSUserDefaults standardUserDefaults]setObject:refreshedToken forKey:@"deviceToken"];
-
+    //---------------- * Production User * -----------------
+//    [[FIRInstanceID instanceID] setAPNSToken:deviceToken type:FIRInstanceIDAPNSTokenTypeProd];
+    NSString *refreshedToken = [[FIRInstanceID instanceID] token];
+    if (refreshedToken != nil) {
+        [[NSUserDefaults standardUserDefaults]setObject:refreshedToken forKey:@"deviceToken"];
+    }
      NSLog(@"InstanceID token: %@", refreshedToken);
-     
      // Connect to FCM since connection may have failed when attempted before having a token.
      [self connectToFcm];
-     
-    // for production
-    //     [[FIRInstanceID instanceID] setAPNSToken:deviceToken type:FIRInstanceIDAPNSTokenTypeProd];
 }
 
 
@@ -589,6 +632,9 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     
     method_exchangeImplementations(openUrl, customOpenUrl);
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
+    application.applicationIconBadgeNumber = 0;
+
 }
 
 // [END connect_on_active]
@@ -634,6 +680,9 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"user_id"] != nil) {
+        [self notificationBadgeAPI];
+    }
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
 }
 
@@ -641,6 +690,76 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+#pragma mark - Method of Badge Notification
+#pragma mark -
+-(void)notificationBadgeAPI{
+    @try{
+        NSDictionary* params = @{
+                                 KEY_AUTH_KEY:KEY_AUTH_VALUE,
+                                 @"userid":[[NSUserDefaults standardUserDefaults] valueForKey:@"user_id"]
+                                 };
+        NSLog(@"%@",params);
+        NSMutableString* parameterString = [NSMutableString string];
+        for(NSString* key in [params allKeys])
+        {
+            if ([parameterString length]) {
+                [parameterString appendString:@"&"];
+            }
+            [parameterString appendFormat:@"%@=%@",key, params[key]];
+        }
+        NSString* urlString = [NSString stringWithFormat:@"%@totalnewmessage.php",BaseUrl];
+        NSURL* url = [NSURL URLWithString:urlString];
+        NSURLSession* session =[NSURLSession sharedSession];
+        NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
+        [request setHTTPMethod:@"POST"];
+        [request setHTTPBody:[parameterString dataUsingEncoding:NSUTF8StringEncoding]];
+        [request setHTTPShouldHandleCookies:NO];
+        
+        NSURLSessionDataTask* task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if (error) {
+
+            }
+            else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    NSError *myError = nil;
+                    
+                    NSString *requestReply = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+                    NSLog(@"%@",requestReply);
+                    NSData *data2=[requestReply dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+                    id jsonObject = [NSJSONSerialization
+                                     
+                                     JSONObjectWithData:data2
+                                     options:NSJSONReadingAllowFragments error:&myError];
+                    
+                    NSLog(@"%@",jsonObject);
+                    if ([[jsonObject valueForKey:@"flag"] isEqual:@"success"]) {
+                        
+                        NSString *strBadgeCount = [jsonObject valueForKey:@"newMessage"];
+                        
+                        NSInteger badgeCount = [UIApplication sharedApplication].applicationIconBadgeNumber;
+                        badgeCount = [strBadgeCount integerValue];
+                        NSLog(@"badgeCount %ld",(long)badgeCount);
+                        NSLog(@"strBadgeCount %@",strBadgeCount);
+                        [UIApplication sharedApplication].applicationIconBadgeNumber = badgeCount;
+                        
+                    
+                    }
+                    else{
+                        
+                    }
+                });
+            }
+        }];
+        [task resume];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"exception at notificationBadgeAPI :%@",exception);
+    }
+    @finally{
+        
+    }
+}
 
 
 #pragma mark - CUSTOM METHODS
@@ -984,6 +1103,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 #pragma mark -
 
 - (void)getImageFromGallery{
+    @try{
      self.str_chat_status=@"1";
      if ([self hasGalleryPermission])
      {
@@ -1002,8 +1122,10 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                     
                     [_imageManager requestImageForAsset:asset targetSize:CGSizeMake(newwidth,newheight) contentMode:PHImageContentModeAspectFill options:nil resultHandler:^(UIImage *result, NSDictionary *info)
                      {
-                      
-                          [_arr_Gallery_Items insertObject:result atIndex:k];
+                         if (result != nil) {
+                             [_arr_Gallery_Items insertObject:result atIndex:k];
+
+                         }
                      }];
                }
           }
@@ -1015,11 +1137,20 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                     [_imageManager requestImageForAsset:asset targetSize:CGSizeMake(asset.pixelWidth/20,asset.pixelHeight/20) contentMode:PHImageContentModeAspectFill options:nil resultHandler:^(UIImage *result, NSDictionary *info)
                      {
                           //_img_view_profile.image = result;
-                          [_arr_Gallery_Items insertObject:result atIndex:k];
-                     }];
+                         if (result != nil) {
+                             [_arr_Gallery_Items insertObject:result atIndex:k];
+                             
+                         }                     }];
                }
           }
      }
+    }
+    @catch (NSException *exception) {
+        NSLog(@"exception at getImageFromGallery :%@",exception);
+    }
+    @finally{
+        
+    }
 }
 
 #pragma mark - Image : Compression

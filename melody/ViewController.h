@@ -15,8 +15,7 @@
 @import GoogleSignIn;
 @interface ViewController : UIViewController<TWTRTimelineDelegate,TWTRTweetDetailViewControllerDelegate,TWTRTweetViewDelegate,TWTRAPIServiceConfig,UITextFieldDelegate>
 {
-    int i;
-    int j;
+    int i,j,k;
     //NSMutableArray*setting_menu;
     NSMutableDictionary*dic_response;
     NSUserDefaults*defaults_userdata;
@@ -30,17 +29,16 @@
     TWTRSession *twsession;
     NSString *open_login;
     NSString*cover_url;
-   
-    int k;
+    
 }
+
 @property (strong, nonatomic)NSString *open_login;
 @property (nonatomic, assign)BOOL *isSignUpScreen;
-
 @property (strong, nonatomic)NSString *other_vc_flag;
+//=====OUTLETS
 @property (weak, nonatomic) IBOutlet UIImageView *img_view_main_logo;
 @property (weak, nonatomic) IBOutlet UIImageView *img_view_main_logo_st;
 @property (weak, nonatomic) IBOutlet UILabel *lbl_bottom_quate;
-
 @property (weak, nonatomic) IBOutlet UIView *view_profile_afterlogin;
 @property (weak, nonatomic) IBOutlet UIImageView *img_view_profile_pic;
 @property (weak, nonatomic) IBOutlet UILabel *lbl_username;
@@ -49,22 +47,22 @@
 @property (weak, nonatomic) IBOutlet UIImageView *img_view_profile_pic_st;
 @property (weak, nonatomic) IBOutlet UILabel *lbl_username_st;
 @property (weak, nonatomic) IBOutlet UILabel *lbl_user_station_st;
-
-- (IBAction)btn_logout:(id)sender;
-
 @property (weak, nonatomic) IBOutlet UIButton *btn_forgotPassword;
-- (IBAction)btn_ForgotPwdAction:(id)sender;
-
 @property (weak, nonatomic) IBOutlet UIButton *btn_logout;
 @property (weak, nonatomic) IBOutlet UIButton *btn_login;
 @property (weak, nonatomic) IBOutlet UIButton *btn_signout_bottom;
-- (IBAction)btn_signout_bottom:(id)sender;
+@property (weak, nonatomic) IBOutlet UIView *view_bottom_menu;
 
+//IBACTIONS
+- (IBAction)btn_ForgotPwdAction:(id)sender;
+- (IBAction)btn_logout:(id)sender;
+- (IBAction)btn_signout_bottom:(id)sender;
 - (IBAction)btn_station:(id)sender;
 - (IBAction)btn_studio:(id)sender;
 - (IBAction)btn_chat:(id)sender;
 - (IBAction)btn_melody:(id)sender;
-@property (weak, nonatomic) IBOutlet UIView *view_bottom_menu;
+
+
 /*******************settings  menu outlets*********/
 - (IBAction)btn_settings:(id)sender;
 @property (weak, nonatomic) IBOutlet UIView *view_settings;
@@ -102,6 +100,7 @@
 - (IBAction)action_InviteContacts:(id)sender;
 @property(weak, nonatomic) IBOutlet GIDSignInButton *signInButton;
 @property(weak, nonatomic)  GIDGoogleUser *dicSignUserGoogle;
+@property (weak, nonatomic) IBOutlet UIButton *btn_Badge;
 
 
 @end

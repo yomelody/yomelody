@@ -9,11 +9,10 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import <StoreKit/StoreKit.h>
-#import "BraintreeCore.h"
-#import "BraintreeDropIn.h"
-#import "BraintreePayPal.h"
+UIKIT_EXTERN NSString *const IAPHelperProductPurchasedNotification;
+typedef void (^RequestProductsCompletionHandler)(BOOL success, NSArray * products);
 
-@interface MelodyViewController : UIViewController<UIActivityItemSource,SKProductsRequestDelegate,SKPaymentTransactionObserver,BTDropInControllerDelegate,BTViewControllerPresentingDelegate>
+@interface MelodyViewController : UIViewController<UIActivityItemSource,SKProductsRequestDelegate,SKPaymentTransactionObserver>
 {
     NSUserDefaults *defaults_userdata;
     NSMutableArray*arr_plan_type;
@@ -75,21 +74,28 @@
     NSMutableArray*arr_menu_items;
     NSMutableArray*arr_tab_select;
     NSMutableArray*arr_genre_id;
-    NSString*genre;
+    NSString*genre,*genre1;
     int instrument_play_status;
     AVAudioPlayer*audioPlayer;
     /****************in app purchase******************/
-    SKProductsRequest *productsRequest;
     NSArray *validProducts;
     UIActivityIndicatorView *activityIndicatorView;
     IBOutlet UIButton *purchaseButton;
-    
+    NSMutableArray*arr_PublicState;
 }
+
+//------------------- * IAP * -------------------------
+- (id)initWithProductIdentifiers:(NSSet *)productIdentifiers;
+- (void)requestProductsWithCompletionHandler:(RequestProductsCompletionHandler)completionHandler;
+// Add two new method declarations
+- (void)buyProduct:(SKProduct *)product;
+- (BOOL)productPurchased:(NSString *)productIdentifier;
 
 - (void)fetchAvailableProducts;
 - (BOOL)canMakePurchases;
 - (void)purchaseMyProduct:(SKProduct*)product;
-- (IBAction)purchase:(id)sender;
+//-----------------------------------------------------
+
 /*************************************************/
 @property (strong,nonatomic) NSMutableString*str_parentID;
 
@@ -130,6 +136,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *tbl_view_subscr_packs;
 @property (nonatomic, assign) BOOL isCoverImage;
 @property (nonatomic, strong) NSData* imagedata_forCover;
+@property (nonatomic, strong) NSString* imagename_forCover;
+
 
 
 
@@ -156,9 +164,17 @@
 @property (weak, nonatomic) IBOutlet UILabel *lbl_allRightsReservedYear;
 
 @property (weak, nonatomic) IBOutlet UIView *view_tabBar;
+@property (weak, nonatomic) IBOutlet UIButton *btn_restore;
+- (IBAction)btn_restoreAction:(id)sender;
 
-//braintreeClient
-@property (nonatomic, strong) BTAPIClient* braintreeClient;
-@property (nonatomic, strong) BTPayPalDriver *payPalDriver;
+// New code for Redirection recording
+
+@property (strong,nonatomic) NSString*fromScreen;
+@property (strong,nonatomic) NSString*genereValue;
+@property (strong,nonatomic) NSMutableDictionary *chatDict;
 /******************************************************/
+@property (strong,nonatomic) NSMutableDictionary *stationDict;
+@property (strong,nonatomic) NSString *view_recording_visible;
+
+
 @end

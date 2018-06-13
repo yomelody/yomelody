@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIView *view_free_plan;
 @property (weak, nonatomic) IBOutlet UILabel *lbl_layer_text;
 @property (weak, nonatomic) IBOutlet UILabel *lbl_rec_time_text;
+@property (weak, nonatomic) IBOutlet UILabel *lbl_perMonth;
 
 
 @end

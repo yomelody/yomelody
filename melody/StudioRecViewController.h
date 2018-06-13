@@ -11,7 +11,6 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import <QuartzCore/QuartzCore.h>
 #import "ViewController.h"
-#import "WaveView.h"
 #import "EZAudio.h"
 #import "GTLRGmail.h"
 
@@ -23,9 +22,7 @@
 @class EZAudioPlot;
 @protocol AudioPlayerViewDelegate<NSObject>
 -(void) audioPlayerViewPlayFromHTTPSelected:(AudioPlayerView*)audioPlayerView;
-
 @end
-
 
 typedef enum : NSUInteger {
     CustomizationStateDefault = 0,
@@ -35,7 +32,6 @@ typedef enum : NSUInteger {
 
 @interface StudioRecViewController : UIViewController<AVAudioPlayerDelegate,AVAudioRecorderDelegate,UITableViewDelegate,UITableViewDataSource,EZAudioPlayerDelegate,EZMicrophoneDelegate, EZRecorderDelegate>
 {
-    
    // UIView*view_master_volume;
     NSString*resulttimer;
     NSUserDefaults*defaults_userdata;
@@ -46,7 +42,7 @@ typedef enum : NSUInteger {
     NSData *objectData;
     NSTimer *recordingTimer;
     NSInteger seconds,totalSeconds,minutes,hours;
-    AVAudioPlayer *audioPlayer;
+    AVAudioPlayer *audioPlayer,*audioPlayerI,*audioPlayerForRecording;
     AVAudioRecorder *audioRecorder;
     NSMutableArray*arr_instruments;
     int cancel_back_status;
@@ -77,6 +73,7 @@ typedef enum : NSUInteger {
 
 @property (atomic, assign) BOOL canceled;
 @property (nonatomic, strong) AVAudioRecorder *Audiorecorder;
+@property (nonatomic,strong) EZRecorder *recorder;
 
 @property (weak, nonatomic) IBOutlet UIButton *btn_done;
 
@@ -84,7 +81,6 @@ typedef enum : NSUInteger {
 @property (weak, nonatomic) IBOutlet UIButton *btn_sync;
 - (IBAction)btn_sync:(id)sender;
 @property (weak, nonatomic) IBOutlet UIView *view_sync;
-@property (weak, nonatomic) IBOutlet WaveView *view_waveform;
 //@property (nonatomic, weak) IBOutlet EZAudioPlotGL *audioPlot;
 /*********************Outlets of view after Done button clicked******************/
 @property (weak, nonatomic) IBOutlet UILabel *lbl_text;
@@ -205,11 +201,9 @@ typedef enum : NSUInteger {
 @property (weak, nonatomic) IBOutlet UIView *view_eq;
 @property (weak, nonatomic) IBOutlet UIView *view_fxeq;
 
-//-------------- * Wave Form * --------------/
 
 
 
-//------------------------------------------------------------------------------
 #pragma mark - Properties
 //------------------------------------------------------------------------------
 @property (nonatomic, strong)  GIDSignInButton *signInButton;
@@ -219,15 +213,27 @@ typedef enum : NSUInteger {
 // An EZAudioFile that will be used to load the audio file at the file path specified
 //
 @property (nonatomic, strong) EZAudioFile *audioFile;
-
 //
 // The CoreGraphics based audio plot
 //
-@property (nonatomic, strong) IBOutlet EZAudioPlotGL *audioPlot;
+//-------------- * Wave Form * --------------/
+@property (weak, nonatomic) IBOutlet EZAudioPlotGL *recordingAudioPlot;
+@property (weak, nonatomic) IBOutlet EZAudioPlot *playingAudioPlot;
+@property (nonatomic, strong) EZMicrophone *microphone;
 @property (nonatomic, strong) EZAudioPlayer *player;
 @property (nonatomic, assign) BOOL isRecording;
 @property (nonatomic, assign) BOOL isCoverImage;
 @property (nonatomic, strong) NSData* imagedata_forCover;
+@property (nonatomic, strong) NSString* imagename_forCover;
+@property (nonatomic, assign) BOOL isBack;
+
+// New code for Redirection recording
+
+@property (strong,nonatomic) NSString*fromScreen;
+@property (strong,nonatomic) NSMutableDictionary *chatDict;
+@property (strong,nonatomic) NSString*coverPicFromChat;
+
+@property (strong,nonatomic) NSMutableDictionary *stationDict;
 
 
 @end

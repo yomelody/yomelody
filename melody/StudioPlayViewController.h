@@ -5,10 +5,11 @@
 //  Created by CodingBrainsMini on 11/29/16.
 //  Copyright © 2016 CodingBrainsMini. All rights reserved.
 //
-
-#import <UIKit/UIKit.h>
-#import <AVFoundation/AVFoundation.h>
+#import "Constant.h"
 #import "EZAudio.h"
+//#include "EZAudio.h"
+#define kAudioFileDefault [[NSBundle mainBundle] pathForResource:@"simple-drum-beat" ofType:@"wav"]
+
 @class EZAudioPlot;
 
 @interface StudioPlayViewController : UIViewController<AVAudioPlayerDelegate,AVAudioRecorderDelegate,UITextFieldDelegate,EZAudioPlayerDelegate,EZMicrophoneDelegate, EZRecorderDelegate>
@@ -122,12 +123,28 @@
 @property (weak, nonatomic) IBOutlet UILabel *lbl_instuments_count;
 
 @property (weak, nonatomic) IBOutlet UIButton *btn_join;
+
+
 //EZAudioPLotGL
 @property (nonatomic, strong) EZAudioFile *audioFile;
 @property (weak, nonatomic) IBOutlet EZAudioPlotGL *view_wave;
 @property (nonatomic, strong) EZAudioPlayer *player_wave;
+@property (weak, nonatomic) IBOutlet UICollectionView *colUserName;
 
+@property (weak, nonatomic) IBOutlet UIView *view_main;
 
+@property (weak, nonatomic) IBOutlet UIView *view_join;
+@property (nonatomic,weak) IBOutlet EZAudioPlot *audioPlot;
+//
+// The microphone component
+//
+@property (nonatomic, strong) EZMicrophone *microphone;
+@property (nonatomic, assign) BOOL isRecording;
 
+// New code for Redirection recording
 
+@property (strong,nonatomic) NSString*fromScreen;
+@property (strong,nonatomic) NSMutableDictionary *chatDict;
+
+@property (strong,nonatomic) NSMutableDictionary *stationDict;
 @end

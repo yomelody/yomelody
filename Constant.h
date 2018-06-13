@@ -8,6 +8,9 @@
 
 #ifndef Constant_h
 #define Constant_h
+//-------------------- Utility -----------
+#import "MyManager.h"
+#import "KSToastView.h"
 #import "MBProgressHUD.h"
 #import "AppDelegate.h"
 #import "TSMessage.h"
@@ -19,16 +22,81 @@
 #import "DBManager.h"
 #import "Reachability.h"
 #import "ActionSheetPicker.h"
-//#import <FacebookSDK/FacebookSDK.h>
-#import "PayPalMobile.h"
+#import "imageCollectionViewCell.h"
+#include <stdlib.h>
+#import "ProgressHUD.h"
+#import <TwitterKit/TwitterKit.h>
+#import "CircleProgressBar.h"
+#import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
+#import <Social/Social.h>
+
+//-------------------- Messenger -----------
+#import "UpdateGroupVC.h"
+#import "chatViewController.h"
 #import "MessengerViewController.h"
+#import "contactsViewController.h"
+
+//-------------------- Melody ---------------
+#import "MelodyPackCommentsViewController.h"
+#import "MelodyViewController.h"
+
+//-------------------- Profile ---------------
+#import "FansOrFollowingVC.h"
+#import "ProfileViewController.h"
+
+//-------------------- Studio ---------------
+#import "StudioPlayViewController.h"
+#import "StudioRecViewController.h"
+
+//-------------------- Custom Cell ---------------
+#import "InstrumentalTableViewCell.h"
+#import "GenreDropdownTableViewCell.h"
+#import "AudioFeedTableViewCell.h"
+#import "ActivitiesTableViewCell.h"
+#import "sendfileTableViewCell.h"
+#import "receivefileTableViewCell.h"
+#import "receiveTableViewCell.h"
+#import "messagesTableViewCell.h"
+#import "sendMessageTableViewCell.h"
+#import "contactsTableViewCell.h"
+#import "Ok_CancelTableViewCell.h"
+#import "UserCollectionViewCell.h"
+#import "CommentMessegesTableViewCell.h"
+#import "AudioFeedCommentTableViewCell.h"
+
+
+//-------------------- AudioToolbox ---------------
+#import <AudioUnit/AudioUnit.h>
+#import <CoreAudioKit/CoreAudioKit.h>
+#import <AudioToolbox/AudioToolbox.h>
+#import <QuartzCore/QuartzCore.h>
+#import "EZAudio.h"
+//-------------------- Discover ---------------
+#import "DiscoverViewController.h"
+#import "PagedImageScrollView.h"
+
+//-------------------- Station ---------------
+#import "AudioFeedCommentsViewController.h"
+#import "AudioFeedViewController.h"
+#import "menuCollectionViewCell.h"
+#import "AppDelegate.h"
+#import "WebViewController.h"
+#import <SafariServices/SafariServices.h>
+#import "ViewController.h"
+//-------------------- Address * Contact ---------------
+#import <AddressBook/ABAddressBook.h>
+#import <AddressBookUI/AddressBookUI.h>
+#import <MessageUI/MessageUI.h>
+
+
 #endif /* Constant_h */
 //http://52.89.220.199/api/company_policy/privacy_policy.php
 #define PRIVACY_POLICY_URL @"http://52.89.220.199/api/company_policy/privacy_policy.php"
 #define TERMS_SERVICE_URL @"http://52.89.220.199/api/company_policy/terms_services.php"
 
 #define BaseUrl @"http://52.89.220.199/api/"//25/07/17 LIVE
-//#define BaseUrl @"http://52.89.220.199/dev_api/"//25/07/17 DEV
+#define BaseUrl_Dev @"http://52.89.220.199/dev_api/"//25/07/17 DEV
 
 #pragma ERROR MESSAGES
 #define NUMBERS_ONLY @"1234567890"
@@ -61,6 +129,10 @@
 #pragma mark - Navigation
 #define Activity @"Activity"
 #define Messenger @"Messenger"
+#define Station @"Station"
+#define Studio @"Studio"
+
+
 #define Placeholder @"Write something..."
 #define INSTRUMENT_TYPE @"instrument_id"
 #define isiPhone5  ([[UIScreen mainScreen] bounds].size.height == 568)?TRUE:FALSE

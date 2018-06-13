@@ -21,47 +21,6 @@ PODS:
   - Bolts/AppLinks (1.8.4):
     - Bolts/Tasks
   - Bolts/Tasks (1.8.4)
-  - Braintree (4.8.5):
-    - Braintree/Card (= 4.8.5)
-    - Braintree/Core (= 4.8.5)
-    - Braintree/PayPal (= 4.8.5)
-    - Braintree/UI (= 4.8.5)
-  - Braintree/3D-Secure (4.8.5):
-    - Braintree/Card
-    - Braintree/Core
-  - Braintree/Apple-Pay (4.8.5):
-    - Braintree/Core
-  - Braintree/Card (4.8.5):
-    - Braintree/Core
-  - Braintree/Core (4.8.5)
-  - Braintree/PayPal (4.8.5):
-    - Braintree/Core
-    - Braintree/PayPalOneTouch
-  - Braintree/PayPalDataCollector (4.8.5):
-    - Braintree/Core
-    - Braintree/PayPalUtils
-  - Braintree/PayPalOneTouch (4.8.5):
-    - Braintree/Core
-    - Braintree/PayPalDataCollector
-    - Braintree/PayPalUtils
-  - Braintree/PayPalUtils (4.8.5)
-  - Braintree/UI (4.8.5):
-    - Braintree/Card
-    - Braintree/Core
-  - Braintree/UnionPay (4.8.5):
-    - Braintree/Card
-    - Braintree/Core
-  - Braintree/Venmo (4.8.5):
-    - Braintree/Core
-    - Braintree/PayPalDataCollector
-  - BraintreeDropIn (5.2.2):
-    - BraintreeDropIn/DropIn (= 5.2.2)
-  - BraintreeDropIn/DropIn (5.2.2):
-    - Braintree/Card (~> 4.0)
-    - Braintree/Core (~> 4.0)
-    - Braintree/UnionPay (~> 4.0)
-    - BraintreeDropIn/UIKit
-  - BraintreeDropIn/UIKit (5.2.2)
   - Crashlytics (3.8.5):
     - Fabric (~> 1.6.3)
   - Fabric (1.6.11)
@@ -154,12 +113,6 @@ PODS:
 DEPENDENCIES:
   - ActionSheetPicker-3.0
   - AFNetworking
-  - Braintree
-  - Braintree/3D-Secure
-  - Braintree/Apple-Pay
-  - Braintree/PayPal
-  - Braintree/Venmo
-  - BraintreeDropIn
   - Crashlytics
   - Fabric
   - FBSDKCoreKit
@@ -179,8 +132,6 @@ SPEC CHECKSUMS:
   ActionSheetPicker-3.0: d11a4c12c6aaf704b8a3f56d179198c99f3e41e6
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
-  Braintree: 12225834d0e39ffad56888756a3c0d8bda043d53
-  BraintreeDropIn: 0ff4879547af66dae814911992e01324975d556d
   Crashlytics: dfbae35ef22ca189240d230ad501feea4ee85d2d
   Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
   FBSDKCoreKit: 53e3f4bfb64e80c5f229dd30ae33ff57fbbbd2d1
@@ -205,6 +156,6 @@ SPEC CHECKSUMS:
   TwitterCore: fbdbeaf6d2d20cf7c7aa4136fe5173c1c85df2e2
   TwitterKit: 97e729ceea041d174126235bf6ff67dcf37772d4
 
-PODFILE CHECKSUM: fb0be4d7b0e9cf2fce87d17ce22b5b0558fb1451
+PODFILE CHECKSUM: e0d44cbe2f285bd9e1f9e137e1c0ef9becfbb07a
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.4.0

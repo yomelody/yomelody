@@ -14,15 +14,12 @@
     static dispatch_once_t once;
     static RageIAPHelper * sharedInstance;
     dispatch_once(&once, ^{
-        
-        
         NSSet * productIdentifiers = [NSSet setWithObjects:
-                                      @"com.yourcompanyname.product.one",
-                                      @"com.yourcompanyname.product.five",
-                                      @"com.yourcompanyname.product.ten",
+//                                      @"com.Yomelody.1.FreePack",
+                                      @"com.Yomelody.2.Standard_Pack",
+                                      @"com.Yomelody.3.Premium_Pack",//com.Yomelody.3.Premium
+                                      @"com.Yomelody.4.Producer_Pack",//com.Yomelody.1.Freemium
                                       nil];
-        
-        
         sharedInstance = [[self alloc] initWithProductIdentifiers:productIdentifiers];
     });
     return sharedInstance;

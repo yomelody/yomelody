@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key> Privacy - Media Library Usage Description</key>
-	<string>$(PRODUCT_NAME) media library use</string>
+	<string>Need Media Library access for uploading Images.</string>
 	<key>Auth0ClientId</key>
 	<string>Cb0DHAp4LRgygBtDIBSpp66jvJbv4BTc</string>
 	<key>Auth0Domain</key>
@@ -23,7 +23,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.0.6</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -35,7 +35,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.870917113323-k0l3rk09mffuc2p3ggi8deqaua61simo</string>
+				<string>com.googleusercontent.apps.870917113323-vgq1s736bmcfmodsp32a4no4flha372r</string>
 			</array>
 		</dict>
 		<dict>
@@ -48,7 +48,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>3</string>
+	<string>8</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -88,12 +88,14 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>hi</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Please allow YoMelody to access your camera roll.</string>
+	<string>Need Camera access for uploading Images.</string>
+	<key>NSContactsUsageDescription</key>
+	<string></string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Need Microphone access for audio  recording.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Please allow YoMelody to access your photo gallery.</string>
+	<string>Need Library access for uploading Images.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>speech use</string>
 	<key>Privacy - Calendars Usage Description </key>

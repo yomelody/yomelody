@@ -6,12 +6,8 @@
 //  Copyright © 2016 CodingBrainsMini. All rights reserved.
 //
 
-#import "MessengerViewController.h"
-#import "messagesTableViewCell.h"
-#import "chatViewController.h"
+
 #import "Constant.h"
-#import "contactsViewController.h"
-#import "ProfileViewController.h"
 
 @interface MessengerViewController ()
 {
@@ -63,13 +59,14 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     NSLog(@"Current logged user %@",[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"]);
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"]) {
+//    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"]) {
+//        if(arr_response == nil)
         [self loadRecentConversession];
-    }
+//    }
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
-    _isShare_Audio = NO;    
+//    _isShare_Audio = NO;    
 }
 
 #pragma mark - TableView Delegates & Datsource
@@ -98,12 +95,10 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     messagesTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:nil];
-    
     if (cell == nil)
         
     {
         NSArray *nib2 = [[NSBundle mainBundle] loadNibNamed:@"messagesTableViewCell"
-                         
                                                       owner:self options:nil];
         cell.accessoryType = UITableViewCellStyleDefault;
         cell = (messagesTableViewCell*)[nib2 objectAtIndex:0];
@@ -123,7 +118,7 @@
               cell.lbl_MsgCount.text = [[arr_response objectAtIndex:indexPath.row]valueForKey:@"New_message"];
 
           }
-        
+      
         //-------------------------- For Group Chat --------------------------
         if ([[[arr_response objectAtIndex:indexPath.row]valueForKey:@"chat_type"] isEqualToString:@"group"]){
             grp_name = [[arr_response objectAtIndex:indexPath.row]valueForKey:@"group_name"];
@@ -157,13 +152,13 @@
 
         }
         else{
-            
-            if([[arr_receiver_id objectAtIndex:index] isEqual:[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"]]) {
-                cell.lbl_sender_name.text=[arr_sender_name objectAtIndex:indexPath.row];
-            }
-            else{
+//
+//            if([[arr_receiver_id objectAtIndex:index] isEqual:[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"]]) {
+//                cell.lbl_sender_name.text=[arr_sender_name objectAtIndex:indexPath.row];
+//            }
+//            else{
                 cell.lbl_sender_name.text=[arr_receiver_name objectAtIndex:indexPath.row];
-            }
+//            }
             
             //------------------------- Set Msg --------------------------
             cell.lbl_message.text=[arr_receiver_msg objectAtIndex:indexPath.row];
@@ -434,6 +429,12 @@
 
 -(void)loadRecentConversession
 {
+    
+    if([[MyManager sharedManager] isInternetAvailable])
+    {
+        [KSToastView ks_showToast:@"Internet connectivity issue" delay:0.1f];
+        return;
+    }
     [Appdelegate showProgressHud];
     NSDictionary* params = @{
                              KEY_AUTH_KEY:KEY_AUTH_VALUE,
@@ -448,7 +449,8 @@
         }
         [parameterString appendFormat:@"%@=%@",key, params[key]];
     }
-    NSString* urlString = [NSString stringWithFormat:@"%@UserConversation.php",BaseUrl];
+    //userconversation1.php is for Testing pupose
+    NSString* urlString = [NSString stringWithFormat:@"%@userconversation1.php",BaseUrl];//UserConversation.php
     NSURL* url = [NSURL URLWithString:urlString];
     
     NSURLSession* session =[NSURLSession sharedSession];
@@ -461,23 +463,11 @@
         if(error)
         {
             [Appdelegate hideProgressHudInView];
-            NSLog(@"%@", error);
-            UIAlertController * alert=   [UIAlertController
-                                          alertControllerWithTitle:@"Message"
-                                          message:MSG_NoInternetMsg
-                                          preferredStyle:UIAlertControllerStyleAlert];
-            
-            UIAlertAction* yesButton = [UIAlertAction
-                                        actionWithTitle:@"ok"
-                                        style:UIAlertActionStyleDefault
-                                        handler:^(UIAlertAction * action)
-                                        {
-                                            self.img_placeholderNoConversation.hidden = NO;
-                                            //Handel your yes please button action here
-                                        }];
-            
-            [alert addAction:yesButton];
-            [self presentViewController:alert animated:YES completion:nil];
+            if([[MyManager sharedManager] isInternetAvailable])
+            {
+                [KSToastView ks_showToast:@"Internet connectivity issue" delay:0.1f];
+                return;
+            }
         }
         else
         {
@@ -537,10 +527,11 @@
                 else
                 {
                     [Appdelegate hideProgressHudInView];
-
                     self.img_placeholderNoConversation.hidden = NO;
 
                     if ([[jsonResponse objectForKey:@"flag"] isEqualToString:@"unsuccess"]) {
+                        [Appdelegate hideProgressHudInView];
+
                         UIAlertController * alert=   [UIAlertController
                                                       alertControllerWithTitle:@"Alert"
                                                       message:@"Unable to load users!"
@@ -552,6 +543,8 @@
                                                     handler:^(UIAlertAction * action)
                                                     {
                                                         //Handel your yes please button action here
+                                                    [Appdelegate hideProgressHudInView];
+
                                                     }];
                         
                         [alert addAction:yesButton];

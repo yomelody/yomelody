@@ -502,10 +502,16 @@ typedef struct
                           GL_FALSE,
                           sizeof(EZAudioPlotGLPoint),
                           NULL);
-    
+//    glDrawArrays(mode, 0, pointCount);
+//    if (mirrored)
+//    {
+//        baseEffect.transform.modelviewMatrix = GLKMatrix4Rotate(transform, M_PI, 1.0f, 0.0f, 0.0f);
+//        [baseEffect prepareToDraw];
+//        glDrawArrays(mode, 0, pointCount);
+//    }
     if(Appdelegate.isHomeClicked == NO)
     {
-        
+
     }
     else
     {

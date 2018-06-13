@@ -38,4 +38,7 @@ int text_flag;
 - (IBAction)btn_send:(id)sender;
 @property (strong, nonatomic) NSString *isFromMelody;
 
+@property (strong, nonatomic) NSString *fileID;
+@property (strong, nonatomic) NSString *fileType;
+@property (strong, nonatomic) NSString *isFrom;
 @end

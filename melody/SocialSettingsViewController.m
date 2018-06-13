@@ -9,7 +9,12 @@
 #import "SocialSettingsViewController.h"
 #import "ViewController.h"
 #import "Constant.h"
-@interface SocialSettingsViewController ()
+#import <SafariServices/SafariServices.h>
+
+
+
+
+@interface SocialSettingsViewController ()<SFSafariViewControllerDelegate>
 {
     NSDictionary*dic_responseGET;
     NSString *socialStatusType,*send_status,*get_status,*fb_status,*twitter_status,*google_status;
@@ -138,6 +143,11 @@
         if ([google_status isEqualToString:@"0"]) {
             send_status = @"1";
             _switch_google.on = YES;
+            [self showGooglePlusShare:[NSURL URLWithString:@""]];
+            
+            
+            
+
         }
         else
         {
@@ -336,6 +346,33 @@
         }
     }];
     [task resume];
+}
+
+- (void)showGooglePlusShare:(NSURL*)shareURL {
+    
+    NSURLComponents* urlComponents = [[NSURLComponents alloc]
+                                      initWithString:@"https://plus.google.com/share"];
+    urlComponents.queryItems = @[[[NSURLQueryItem alloc]
+                                  initWithName:@"url"
+                                  value:[shareURL absoluteString]]];
+    NSURL* url = [urlComponents URL];
+    
+    if ([SFSafariViewController class]) {
+        // Open the URL in SFSafariViewController (iOS 9+)
+        SFSafariViewController* controller = [[SFSafariViewController alloc]
+                                              initWithURL:url];
+        controller.delegate = self;
+        
+        [self presentViewController:controller animated:YES completion:nil];
+    } else {
+        // Open the URL in the device's browser
+        [[UIApplication sharedApplication] openURL:url];
+    }
+}
+
+
+- (void)safariViewController:(SFSafariViewController *)controller didCompleteInitialLoad:(BOOL)didLoadSuccessfully{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

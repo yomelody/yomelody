@@ -6,10 +6,7 @@
 //  Copyright © 2016 CodingBrainsMini. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import <AVFoundation/AVFoundation.h>
-#import <AudioToolbox/AudioToolbox.h>
-#import <QuartzCore/QuartzCore.h>
+#import "Constant.h"
 
 @interface AudioFeedCommentsViewController : UIViewController<UITextFieldDelegate,AVAudioPlayerDelegate,AVAudioRecorderDelegate>
 {
@@ -45,5 +42,8 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *placeholder_Img;
 
+@property (strong, nonatomic) NSString *fileID;
+@property (strong, nonatomic) NSString *fileType;
+@property (strong, nonatomic) NSString *isFrom;
 
 @end

@@ -46,5 +46,20 @@
     
 }
 
+-(BOOL)isInternetAvailable
+{
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    [reachability startNotifier];
+    NetworkStatus remoteHostStatus = [reachability currentReachabilityStatus];
+    if(remoteHostStatus == NotReachable)
+    {
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
+}
+
 
 @end

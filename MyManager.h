@@ -18,6 +18,7 @@ NSString *someProperty;
 
 @property (nonatomic, retain) NSString *someProperty;
 @property(nonatomic,strong) AVAudioPlayer *audioPlayer;
+-(BOOL)isInternetAvailable;
 
 + (id)sharedManager;
 
