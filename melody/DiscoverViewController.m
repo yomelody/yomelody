@@ -315,7 +315,7 @@ NSInteger current_Record,limit;
             }
             [parameterString appendFormat:@"%@=%@",key, params[key]];
         }
-        NSString* urlString = [NSString stringWithFormat:@"%@recordings.php",BaseUrl_Dev];
+        NSString* urlString = [NSString stringWithFormat:@"%@recordings.php",BaseUrl];
         NSURL* url = [NSURL URLWithString:urlString];
         //this is how cookies were created
         NSURLSession* session =[NSURLSession sharedSession];
@@ -1677,7 +1677,7 @@ _tf_srearch.text=@"";
                 }
                 [parameterString appendFormat:@"%@=%@",key, params[key]];
             }
-            NSString* urlString = [NSString stringWithFormat:@"%@likes.php",BaseUrl_Dev];
+            NSString* urlString = [NSString stringWithFormat:@"%@likes.php",BaseUrl];
             NSURL* url = [NSURL URLWithString:urlString];
             
             NSURLSession* session =[NSURLSession sharedSession];

@@ -676,8 +676,18 @@ long lastIndex = 10000;
 //        [_tbl_view_audio_feed reloadData];
 //    }
 //    else{
+    if (arr_rec_response == nil)
+    {
         arr_rec_response = [[NSMutableArray alloc]init];
         [self loadRecordings];
+        
+    }
+    else{
+        _tbl_view_audio_feed.hidden = NO;
+        _tbl_view_activity.hidden = YES;
+        _tbl_Users.hidden = YES;
+    }
+
 //    }
 //    [_tbl_view_audio_feed reloadData];
 }
@@ -685,6 +695,7 @@ long lastIndex = 10000;
 
 - (IBAction)btn_Users_Action:(id)sender {
     
+    limit = 0;
     _search_bar.hidden = NO;
     _tf_srearch.hidden = YES;
     [self.view endEditing:YES];
@@ -718,6 +729,7 @@ long lastIndex = 10000;
 
 -(void)activityAction{
     
+    limit = 0;
     [self playerInitializes];
     _search_bar.hidden = YES;
     _tf_srearch.hidden = NO;
@@ -1211,6 +1223,7 @@ long lastIndex = 10000;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (tableView.tag==1) {
+        
         AudioFeedTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AudioFeed"];
         if (cell == nil)
         {
@@ -1357,14 +1370,17 @@ long lastIndex = 10000;
         urlString =[UrlStrArray firstObject];
         NSLog(@"FIRST WORD %@",urlString);
         
-        if ([urlString isEqualToString:@"http:"]) {
-            ImageURL_Profile=[NSString stringWithFormat:@"%@",[arr_rec_profile objectAtIndex:indexPath.row]];
-        }
-        else{
-            ImageURL_Profile =[NSString stringWithFormat:@"%@%@",BaseUrl,[arr_rec_profile objectAtIndex:indexPath.row]];
-        }
+//        if ([urlString isEqualToString:@"http:"]) {
+//            ImageURL_Profile=[NSString stringWithFormat:@"%@",[arr_rec_profile objectAtIndex:indexPath.row]];
+//        }
+//        else{
+//            ImageURL_Profile =[NSString stringWithFormat:@"%@%@",BaseUrl,[arr_rec_profile objectAtIndex:indexPath.row]];
+//        }
+//        
+//        NSURL *url2 = [NSURL URLWithString:ImageURL_Profile];
         
-        NSURL *url2 = [NSURL URLWithString:ImageURL_Profile];
+        
+        NSURL *url2 = [NSURL URLWithString:[arr_rec_profile objectAtIndex:indexPath.row]];
         
             cell.btn_Profile.contentMode = UIViewContentModeScaleToFill;
             
@@ -2561,7 +2577,7 @@ long lastIndex = 10000;
         }
         [parameterString appendFormat:@"%@=%@",key, params[key]];
     }
-    NSString* urlString = [NSString stringWithFormat:@"%@station_recordings.php",BaseUrl_Dev];//NEW API
+    NSString* urlString = [NSString stringWithFormat:@"%@station_recordings.php",BaseUrl];//NEW API
 
     NSURL* url = [NSURL URLWithString:urlString];
     NSURLSession* session =[NSURLSession sharedSession];
@@ -2816,7 +2832,7 @@ long lastIndex = 10000;
                 {
                     loadingData = NO;
                     [Appdelegate hideProgressHudInView];
-                    if (!loadingData) {
+                    if (!loadingData && arr_rec_response.count == 0) {
                         self.placeholder_img.hidden = NO;
                         _tbl_view_audio_feed.hidden = YES;
                         self.placeholder_img.image = [UIImage imageNamed:@"NoResult_img"];
@@ -2988,7 +3004,7 @@ long lastIndex = 10000;
         }
         [parameterString appendFormat:@"%@=%@",key, params[key]];
     }
-    NSString* urlString = [NSString stringWithFormat:@"%@activity.php",BaseUrl_Dev];
+    NSString* urlString = [NSString stringWithFormat:@"%@activity.php",BaseUrl];
     NSURL* url = [NSURL URLWithString:urlString];
     
     //this is how cookies were created

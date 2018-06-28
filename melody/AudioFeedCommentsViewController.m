@@ -128,25 +128,68 @@ long lastIndexAFC = 10000;
 
 
 - (IBAction)btn_back:(id)sender {
-    [audioPlayer stop];
-    audioPlayer = nil;
-    [self dismissViewControllerAnimated:YES completion:nil];
     
+    [self playerInitializes];
+    
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_navigation"] isEqual:@"1"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"notification_navigation" ];
+        
+        Appdelegate.str_chat_status=@"0";
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"device_token"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"profilepic"];
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UITabBarController *rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+        [[UIApplication sharedApplication].keyWindow setRootViewController:rootViewController];
+        //   [self.view.window.rootViewController dismissViewControllerAnimated:NO completion:nil];
+        
+    }
+    else{
+        
+        if (_isBack) {
+            _isBack = NO;
+            UIViewController *vc = self.presentingViewController;
+            while (vc.presentingViewController) {
+                vc = vc.presentingViewController;
+            }
+            [vc dismissViewControllerAnimated:YES completion:NULL];
+        }
+        else{
+            [self dismissViewControllerAnimated:YES completion:nil];
+            
+        }
+    }
 }
 
 
 - (IBAction)btn_home:(id)sender {
     
-    [audioPlayer stop];
-    audioPlayer = nil;
-    if (Appdelegate.isFirstTimeSignUp)
-    {
+    [self playerInitializes];
+    
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_navigation"] isEqual:@"1"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"notification_navigation" ];
+        
+        Appdelegate.str_chat_status=@"0";
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"device_token"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"profilepic"];
+        
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        ViewController *rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+        UITabBarController *rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
         [[UIApplication sharedApplication].keyWindow setRootViewController:rootViewController];
+        //   [self.view.window.rootViewController dismissViewControllerAnimated:NO completion:nil];
+        
     }
     else{
-        [self.view.window.rootViewController dismissViewControllerAnimated:NO completion:nil];
+        if (Appdelegate.isFirstTimeSignUp)
+        {
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            ViewController *rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+            [[UIApplication sharedApplication].keyWindow setRootViewController:rootViewController];
+            //Appdelegate.isFirstTimeSignUp=NO; >> IF PROBLEM OCCURS AGAIN UNCOMMENT THIS LINE
+        }
+        else{
+            [self.view.window.rootViewController dismissViewControllerAnimated:NO completion:nil];
+        }
     }
 }
 
@@ -448,7 +491,7 @@ long lastIndexAFC = 10000;
         }
         [parameterString appendFormat:@"%@=%@",key, params[key]];
     }
-    NSString* urlString = [NSString stringWithFormat:@"%@likes.php",BaseUrl_Dev];
+    NSString* urlString = [NSString stringWithFormat:@"%@likes.php",BaseUrl];
     NSURL* url = [NSURL URLWithString:urlString];
     
     //this is how cookies were created

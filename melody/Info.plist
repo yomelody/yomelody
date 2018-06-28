@@ -46,9 +46,15 @@
 				<string>com.Yomelody.payments</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>twitterkit-8yF2EqrSGbmVmj7zf99jZHBKQ</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>8</string>
+	<string>14</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -59,9 +65,9 @@
 				<key>KitInfo</key>
 				<dict>
 					<key>consumerKey</key>
-					<string>Xq6cieg5b6FFEqSsJHzTnbrW8</string>
+					<string>8yF2EqrSGbmVmj7zf99jZHBKQ</string>
 					<key>consumerSecret</key>
-					<string>GtR8gm0JZySbZfVLlW4YwzCMc8D7ERXIz0C8kdN3TjZ5MBVkxc</string>
+					<string>upet1n3DHAOsii9QLcESWm4vyGl5KCDU5kXb3d98bUaaInMNvK</string>
 				</dict>
 				<key>KitName</key>
 				<string>Twitter</string>
@@ -80,6 +86,8 @@
 		<string>fb-messenger-share-api</string>
 		<string>fbauth2</string>
 		<string>fbshareextension</string>
+		<string>twitter</string>
+		<string>twitterauth</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

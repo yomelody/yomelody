@@ -450,7 +450,7 @@
         [parameterString appendFormat:@"%@=%@",key, params[key]];
     }
     //userconversation1.php is for Testing pupose
-    NSString* urlString = [NSString stringWithFormat:@"%@userconversation1.php",BaseUrl];//UserConversation.php
+    NSString* urlString = [NSString stringWithFormat:@"%@userconversation.php",BaseUrl];//UserConversation.php
     NSURL* url = [NSURL URLWithString:urlString];
     
     NSURLSession* session =[NSURLSession sharedSession];

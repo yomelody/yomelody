@@ -68,8 +68,8 @@
     noGroupMemberLbl.textAlignment= NSTextAlignmentCenter;
     noGroupMemberLbl.textColor=[UIColor grayColor];
     [self.view addSubview:noGroupMemberLbl];
-    
-   
+    _btn_exitGroup.hidden = YES;
+    _addMemberButtonO.hidden = YES;
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
@@ -1359,7 +1359,6 @@
                                                 //Handel your yes please button action here
                                                 
                                             }];
-                
                 [alert addAction:yesButton];
                 [self presentViewController:alert animated:YES completion:nil];
             }
@@ -1519,7 +1518,8 @@
         //NSString* urlString = [NSString stringWithFormat:@"%@",BaseUrl];
         
         
-        NSString* urlString = [NSString stringWithFormat:@"http://52.89.220.199/dev_api/exit_group.php"];
+        //NSString* urlString = [NSString stringWithFormat:@"http://52.89.220.199/dev_api/exit_group.php"];
+        NSString* urlString = [NSString stringWithFormat:@"%@exit_group.php",BaseUrl_Dev];
         NSURL* url = [NSURL URLWithString:urlString];
         //this is how cookies were created
         NSURLSession* session =[NSURLSession sharedSession];

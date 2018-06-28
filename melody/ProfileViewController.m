@@ -724,7 +724,7 @@ long last_Index = 99999999999;
         [parameterString appendFormat:@"%@=%@",key, params[key]];
     }
 
-    NSString* urlString = [NSString stringWithFormat:@"%@recordings.php",BaseUrl_Dev];
+    NSString* urlString = [NSString stringWithFormat:@"%@recordings.php",BaseUrl];
     NSURL* url = [NSURL URLWithString:urlString];
     NSURLSession* session =[NSURLSession sharedSession];
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
@@ -1668,7 +1668,7 @@ long last_Index = 99999999999;
             }
             [parameterString appendFormat:@"%@=%@",key, params[key]];
         }
-        NSString* urlString = [NSString stringWithFormat:@"%@likes.php",BaseUrl_Dev];
+        NSString* urlString = [NSString stringWithFormat:@"%@likes.php",BaseUrl];
         NSURL* url = [NSURL URLWithString:urlString];
         //this is how cookies were created
         NSURLSession* session =[NSURLSession sharedSession];
@@ -1966,7 +1966,7 @@ long last_Index = 99999999999;
         }
         [parameterString appendFormat:@"%@=%@",key, params[key]];
     }
-    NSString* urlString = [NSString stringWithFormat:@"%@activity.php",BaseUrl_Dev];
+    NSString* urlString = [NSString stringWithFormat:@"%@activity.php",BaseUrl];
     NSURL* url = [NSURL URLWithString:urlString];
     
     //this is how cookies were created
@@ -2358,6 +2358,7 @@ long last_Index = 99999999999;
                 [cell.btn_like setBackgroundImage:[UIImage imageNamed:@"btn_hand_outline.png"] forState:UIControlStateNormal];
             }
         
+        cell.switch_PublicOrPrivate.tag = indexPath.row;
         //----* Make Public/Private only show on OWN(logged-in user) Recordings *-----
         if ([[[arr_recordingResponseM objectAtIndex:indexPath.row] valueForKey:@"added_by"] isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"]]) {
             
@@ -2368,6 +2369,7 @@ long last_Index = 99999999999;
             {
                 [cell.switch_PublicOrPrivate setOn:NO];
             }
+            
             [cell.switch_PublicOrPrivate addTarget:self action:@selector(switchPublicToggled:)
                                   forControlEvents:UIControlEventTouchUpInside];
             cell.switch_PublicOrPrivate.hidden=NO;
@@ -3476,6 +3478,8 @@ long last_Index = 99999999999;
     // Update the slider about the music time
     MelodyPacksTableViewCell *cell = [self.tbl_view_melody cellForRowAtIndexPath:[NSIndexPath indexPathForRow:instrument_play_index inSection:0]];
     cell.slider_progress.value = audioPlayer.currentTime;
+    
+    cell.lbl_timer.text=[NSString stringWithFormat:@"%@",[Appdelegate timeFormatted:[NSString stringWithFormat:@"%f",audioPlayer.currentTime]]];
 }
 
 
@@ -3643,7 +3647,7 @@ long last_Index = 99999999999;
                         dic_response=[jsonResponse objectForKey:@"response"];
                         NSLog(@"---- Before %@",arr_PublicState);
                         
-                        //                        [arr_PublicState replaceObjectAtIndex:index withObject:isPublic];
+                        [arr_PublicState replaceObjectAtIndex:index withObject:isPublic];
                         
                         NSLog(@"**** After %@",arr_PublicState);
                         
@@ -3653,6 +3657,7 @@ long last_Index = 99999999999;
                                                     subtitle:NSLocalizedString(succesMSG, nil)
                                                         type:TSMessageNotificationTypeSuccess];
                         arr_rec_response=[[NSMutableArray alloc]init];
+                        arr_recordingResponseM=[[NSMutableArray alloc]init];
                         [self loadRecordings];
                         
                     }
@@ -4017,7 +4022,7 @@ long last_Index = 99999999999;
             }
             [parameterString appendFormat:@"%@=%@",key, params[key]];
         }
-        NSString* urlString = [NSString stringWithFormat:@"%@likes.php",BaseUrl_Dev];
+        NSString* urlString = [NSString stringWithFormat:@"%@likes.php",BaseUrl];
         NSURL* url = [NSURL URLWithString:urlString];
         NSURLSession* session =[NSURLSession sharedSession];
         NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];

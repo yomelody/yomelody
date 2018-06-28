@@ -25,9 +25,19 @@
     NSLog(@"CURR DEV %@", [[UIDevice currentDevice] model]);
     currentDevice=[[UIDevice currentDevice] model];
     [self.btn_Done setTitleColor:[UIColor colorWithRed:0.0f green:132.0f blue:200.0f alpha:.6] forState:UIControlStateNormal ];
-
+ 
+    if (isiPhone5)
+    {
+        _croll_view_signupcontent.contentSize = CGSizeMake(0,_croll_view_signupcontent.frame.size.height+100);
+        _croll_view_signupcontent.scrollEnabled=YES;
+        _croll_view_signupcontent.contentInset = UIEdgeInsetsMake(0, 0, 90, 0);
+//        _croll_view_signupcontent.contentOffset = CGPointMake(0, -20);
+    }
+    else{
     _croll_view_signupcontent.contentSize = CGSizeMake(_croll_view_signupcontent.contentSize.width,self.view.frame.size.height+100);
-    //_croll_view_signupcontent.contentSize = CGSizeMake(375, 810);
+
+    }
+    _croll_view_signupcontent.scrollEnabled=YES;
     dic_response=[[NSMutableDictionary alloc]init];
     imageData=[[NSData alloc]init];
     imageName=[[NSString alloc]init];
@@ -139,7 +149,7 @@
     [_tf_dob_month resignFirstResponder];
     [_tf_dob_year resignFirstResponder];
     [_tf_confirmpass resignFirstResponder];
-    _croll_view_signupcontent.contentSize = CGSizeMake(_croll_view_signupcontent.contentSize.width, self.view.frame.size.height+100);
+    _croll_view_signupcontent.contentSize = CGSizeMake(0, self.view.frame.size.height+100);
     [_croll_view_signupcontent setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     dp_view.hidden=YES;
 
@@ -162,7 +172,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-    _croll_view_signupcontent.contentSize = CGSizeMake(_croll_view_signupcontent.contentSize.width,self.view.frame.size.height+100);
+    _croll_view_signupcontent.contentSize = CGSizeMake(0,self.view.frame.size.height+100);
 }
 
 
@@ -179,18 +189,20 @@
 
     if (isiPhone5)
     {
-        _croll_view_signupcontent.contentSize = CGSizeMake(_croll_view_signupcontent.contentSize.width, self.view.frame.size.height+200);
+        _croll_view_signupcontent.contentSize = CGSizeMake(0, self.view.frame.size.height+200);
         [_croll_view_signupcontent setFrame:CGRectMake(0, 200, self.view.frame.size.width, self.view.frame.size.height-200)];
+        _croll_view_signupcontent.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+
     }
     else if ([currentDevice isEqualToString:@"iPad"])
     {
         
-        _croll_view_signupcontent.contentSize = CGSizeMake(_croll_view_signupcontent.contentSize.width, self.view.frame.size.height+250);
+        _croll_view_signupcontent.contentSize = CGSizeMake(0, self.view.frame.size.height+250);
         [_croll_view_signupcontent setFrame:CGRectMake(0, 200, self.view.frame.size.width, self.view.frame.size.height-250)];
     }
     else
     {
-        _croll_view_signupcontent.contentSize = CGSizeMake(_croll_view_signupcontent.contentSize.width, self.view.frame.size.height+100);
+        _croll_view_signupcontent.contentSize = CGSizeMake(0, self.view.frame.size.height+100);
         [_croll_view_signupcontent setFrame:CGRectMake(0, 100, self.view.frame.size.width, self.view.frame.size.height-100)];
     }
     _croll_view_signupcontent.scrollEnabled=YES;
@@ -207,19 +219,21 @@
         self.view.frame = f;
     }];
     if(isiPhone5){
-        _croll_view_signupcontent.contentSize = CGSizeMake(0,self.view.frame.size.height+100);
+        _croll_view_signupcontent.contentSize = CGSizeMake(0,self.view.frame.size.height);
         _croll_view_signupcontent.scrollEnabled=YES;
+        _croll_view_signupcontent.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+
     }
     else if ([currentDevice isEqualToString:@"iPad"])
     {
         
-        _croll_view_signupcontent.contentSize = CGSizeMake(_croll_view_signupcontent.contentSize.width, self.view.frame.size.height+300);
+        _croll_view_signupcontent.contentSize = CGSizeMake(0, self.view.frame.size.height+300);
         [_croll_view_signupcontent setFrame:CGRectMake(0, 300, self.view.frame.size.width, self.view.frame.size.height-300)];
         _croll_view_signupcontent.scrollEnabled=YES;
 
     }
     else{
-        _croll_view_signupcontent.contentSize = CGSizeMake(0,self.view.frame.size.height+50);
+        _croll_view_signupcontent.contentSize = CGSizeMake(0,self.view.frame.size.height+100);
         _croll_view_signupcontent.scrollEnabled=YES;
     }
 

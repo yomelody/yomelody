@@ -39,6 +39,7 @@
 - (IBAction)btn_send_cancel:(id)sender;
 @property (weak, nonatomic) IBOutlet UIView *view_add_comment;
 @property (strong,nonatomic) NSMutableDictionary *dic_data;
+@property (nonatomic, assign) BOOL isBack;
 
 @property (weak, nonatomic) IBOutlet UIImageView *placeholder_Img;
 

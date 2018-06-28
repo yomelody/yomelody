@@ -256,6 +256,9 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
                                                                annotation:annotation
                     ];
     
+//    if ([[Twitter sharedInstance] application:application openURL:url options:options]) {
+//        return handled;
+//    }
 //    BFURL *parsedUrl = [BFURL URLWithInboundURL:url sourceApplication:sourceApplication];
 //    if ([parsedUrl appLinkData]) {
 //        // this is an applink url, handle it here
@@ -268,11 +271,11 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 //    }
       //Add any custom logic here.
     //----------------* Payments *-------------------
-
+//    else{
          return [[GIDSignIn sharedInstance] handleURL:url
                                sourceApplication:sourceApplication
                                       annotation:annotation];
-
+//    }
     // Add any custom logic here.
 //     return handled;
 }
@@ -530,9 +533,29 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
      UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
      if ([str_notification_type isEqualToString:@"Activity"]) {
-          UIViewController *viewController =[storyboard instantiateViewControllerWithIdentifier:@"AudioFeedViewController"];
+//          UIViewController *viewController =[storyboard instantiateViewControllerWithIdentifier:@"AudioFeedViewController"];
+//
+//          self.window.rootViewController = viewController;//change
          
-          self.window.rootViewController = viewController;//change
+         AudioFeedCommentsViewController *Avc = [storyboard instantiateViewControllerWithIdentifier:@"AudioFeedCommentsViewController"];
+         
+         MelodyPackCommentsViewController*Mvc=[storyboard instantiateViewControllerWithIdentifier:@"MelodyPackCommentsViewController"];
+         
+         if ([[response.notification.request.content.userInfo objectForKey:@"file_type"] isEqualToString:@"user_melody"])
+         {
+             Mvc.fileID=[response.notification.request.content.userInfo objectForKey:@"file_id"];
+             Mvc.fileType = [response.notification.request.content.userInfo objectForKey:@"file_type"];
+             Mvc.isFrom=@"ACTIVITY";
+             Mvc.isFromMelody=@"USER";
+             self.window.rootViewController = Mvc;
+         }
+         else{
+             Avc.fileID=[response.notification.request.content.userInfo objectForKey:@"file_id"];
+             Avc.fileType = [response.notification.request.content.userInfo objectForKey:@"file_type"];
+             Avc.isFrom=@"ACTIVITY";
+             self.window.rootViewController = Avc;
+         }
+         
           [self.window makeKeyAndVisible];
      }
      else {
@@ -608,7 +631,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
      NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
      token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
     //---------------- * Sandbox User * -----------------
-     [[FIRInstanceID instanceID] setAPNSToken:deviceToken type:FIRInstanceIDAPNSTokenTypeSandbox];
+//     [[FIRInstanceID instanceID] setAPNSToken:deviceToken type:FIRInstanceIDAPNSTokenTypeSandbox];
     //---------------- * Production User * -----------------
 //    [[FIRInstanceID instanceID] setAPNSToken:deviceToken type:FIRInstanceIDAPNSTokenTypeProd];
     NSString *refreshedToken = [[FIRInstanceID instanceID] token];

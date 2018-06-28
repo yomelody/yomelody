@@ -2245,7 +2245,7 @@ BOOL isMyMelody = NO;
         }
         [parameterString appendFormat:@"%@=%@",key, params[key]];
     }
-    NSString* urlString = [NSString stringWithFormat:@"%@likes.php",BaseUrl_Dev];
+    NSString* urlString = [NSString stringWithFormat:@"%@likes.php",BaseUrl];
     NSURL* url = [NSURL URLWithString:urlString];
     NSURLSession* session =[NSURLSession sharedSession];
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
@@ -2374,7 +2374,7 @@ BOOL isMyMelody = NO;
         }
         [parameterString appendFormat:@"%@=%@",key, params[key]];
     }
-    NSString* urlString = [NSString stringWithFormat:@"%@likes.php",BaseUrl_Dev];
+    NSString* urlString = [NSString stringWithFormat:@"%@likes.php",BaseUrl];
     NSURL* url = [NSURL URLWithString:urlString];
     NSURLSession* session =[NSURLSession sharedSession];
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
@@ -2527,6 +2527,7 @@ BOOL isMyMelody = NO;
 
 -(void)btn_add_clicked:(UIButton*)sender
 {
+    
     if (![defaults_userdata boolForKey:@"isUserLogged"]) {
         if (arr_melody_pack_intrumentals.count<=1 ) {
             _sender_tag=[NSString stringWithFormat:@"%ld",(long)sender.tag];
@@ -3060,8 +3061,13 @@ BOOL isMyMelody = NO;
             {
                 [cell.switch_PublicOrPrivate setOn:NO];
             }
+            
+            
             [cell.switch_PublicOrPrivate addTarget:self action:@selector(switchPublicToggled:)
                                   forControlEvents:UIControlEventTouchUpInside];
+            
+            
+            [cell.btn_play_value setTitle:[NSString stringWithFormat:@"%@",[arr_rec_play_count objectAtIndex:indexPath.row]] forState:UIControlStateNormal];
             
             NSString *tempDate = [arr_rec_post_date objectAtIndex:indexPath.row];
             if (tempDate == nil || tempDate.length >0) {

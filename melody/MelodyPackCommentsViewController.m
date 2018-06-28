@@ -863,7 +863,7 @@
         }
         [parameterString appendFormat:@"%@=%@",key, params[key]];
     }
-    NSString* urlString = [NSString stringWithFormat:@"%@likes.php",BaseUrl_Dev];
+    NSString* urlString = [NSString stringWithFormat:@"%@likes.php",BaseUrl];
     NSURL* url = [NSURL URLWithString:urlString];
     
     //this is how cookies were created
@@ -1140,7 +1140,6 @@
     NSURL* url = [NSURL URLWithString:urlString];
     
     //this is how cookies were created
-    
     
     NSURLSession* session =[NSURLSession sharedSession];
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];

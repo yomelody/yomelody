@@ -1001,9 +1001,7 @@
         [parameterString appendFormat:@"%@=%@",key, params[key]];
     }
         
-        // http://52.89.220.199/dev_api/chat1.php
-        NSString* urlString = [NSString stringWithFormat:@"http://52.89.220.199/dev_api/chat1.php"];
-//    NSString* urlString = [NSString stringWithFormat:@"%@chat.php",BaseUrl];
+    NSString* urlString = [NSString stringWithFormat:@"%@chat1.php",BaseUrl_Dev];
     NSURL* url = [NSURL URLWithString:urlString];
     
     //this is how cookies were created
@@ -2233,8 +2231,6 @@ _btn_go_to_studio_play.hidden=NO;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     @try{
-   
-        
        
         if([arr_messageList count] > 0 && [arr_messageList count] > indexPath.row){
             //This is for Notification message such as Create group,add user and remove user
