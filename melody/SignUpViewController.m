@@ -68,6 +68,7 @@
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
    [_croll_view_signupcontent addGestureRecognizer:tap];
+    
     UISwipeGestureRecognizer*swipedown=[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
     [swipedown setDirection:(UISwipeGestureRecognizerDirectionDown)];
     [self.view addGestureRecognizer:swipedown];

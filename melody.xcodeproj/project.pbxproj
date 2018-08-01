@@ -255,15 +255,6 @@
 		E3DE9BEA1E3918B40012F20C /* artist-with-headphone.png in Resources */ = {isa = PBXBuildFile; fileRef = E3DE9BE91E3918B40012F20C /* artist-with-headphone.png */; };
 		E3DE9BEC1E3918E00012F20C /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = E3DE9BEB1E3918E00012F20C /* camera.png */; };
 		E3E3AB9B1E9FE00200FD47B4 /* AsyncImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E3AB711E9FE00200FD47B4 /* AsyncImageView.m */; };
-		E3E3AB9C1E9FE00200FD47B4 /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E3AB741E9FE00200FD47B4 /* HPGrowingTextView.m */; };
-		E3E3AB9D1E9FE00200FD47B4 /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E3AB761E9FE00200FD47B4 /* HPTextViewInternal.m */; };
-		E3E3AB9E1E9FE00200FD47B4 /* MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E3AB791E9FE00200FD47B4 /* MHFacebookImageViewer.m */; };
-		E3E3AB9F1E9FE00200FD47B4 /* MNMPullToRefresh.strings in Resources */ = {isa = PBXBuildFile; fileRef = E3E3AB7B1E9FE00200FD47B4 /* MNMPullToRefresh.strings */; };
-		E3E3ABA01E9FE00200FD47B4 /* MNMPullToRefreshManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E3AB7D1E9FE00200FD47B4 /* MNMPullToRefreshManager.m */; };
-		E3E3ABA11E9FE00200FD47B4 /* MNMPullToRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E3AB7F1E9FE00200FD47B4 /* MNMPullToRefreshView.m */; };
-		E3E3ABA21E9FE00200FD47B4 /* QBPopupMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E3AB821E9FE00200FD47B4 /* QBPopupMenu.m */; };
-		E3E3ABA31E9FE00200FD47B4 /* QBPopupMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E3AB841E9FE00200FD47B4 /* QBPopupMenuItem.m */; };
-		E3E3ABA41E9FE00200FD47B4 /* QBPopupMenuOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E3AB861E9FE00200FD47B4 /* QBPopupMenuOverlayView.m */; };
 		E3E3ABAE1E9FE00200FD47B4 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E3AB9A1E9FE00200FD47B4 /* WebViewController.m */; };
 		E3E3AC001E9FE57700FD47B4 /* melody-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E3E3ABFF1E9FE57700FD47B4 /* melody-Info.plist */; };
 		E3E3AC051E9FE59400FD47B4 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E3E3AC021E9FE59400FD47B4 /* Default-568h@2x.png */; };
@@ -585,6 +576,7 @@
 		E387F86D1F5FEA36009E2890 /* UpdateGroupVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdateGroupVC.m; sourceTree = "<group>"; };
 		E388C380206EA1DD00E533FA /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus.png; sourceTree = "<group>"; };
 		E38F06FC1F4B237900FF8A0A /* NSObject_TWTRShareEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSObject_TWTRShareEmailViewController.h; sourceTree = "<group>"; };
+		E3912E8421111BF200F1A154 /* melody-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "melody-Prefix.pch"; sourceTree = "<group>"; };
 		E3926D831F6C131F0023C61B /* state_add_join.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = state_add_join.png; sourceTree = "<group>"; };
 		E39702DF1F5EB49E003FF46A /* group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = group.png; path = Assets.xcassets/img_group.imageset/group.png; sourceTree = "<group>"; };
 		E39D50B21F66E9B6000CACF2 /* dubble-tick-dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "dubble-tick-dark.png"; path = "../Images/dubble-tick-dark.png"; sourceTree = "<group>"; };
@@ -652,27 +644,9 @@
 		E3DE9BEB1E3918E00012F20C /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
 		E3E3AB701E9FE00200FD47B4 /* AsyncImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncImageView.h; sourceTree = "<group>"; };
 		E3E3AB711E9FE00200FD47B4 /* AsyncImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncImageView.m; sourceTree = "<group>"; };
-		E3E3AB731E9FE00200FD47B4 /* HPGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPGrowingTextView.h; sourceTree = "<group>"; };
-		E3E3AB741E9FE00200FD47B4 /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPGrowingTextView.m; sourceTree = "<group>"; };
-		E3E3AB751E9FE00200FD47B4 /* HPTextViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPTextViewInternal.h; sourceTree = "<group>"; };
-		E3E3AB761E9FE00200FD47B4 /* HPTextViewInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPTextViewInternal.m; sourceTree = "<group>"; };
-		E3E3AB781E9FE00200FD47B4 /* MHFacebookImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHFacebookImageViewer.h; sourceTree = "<group>"; };
-		E3E3AB791E9FE00200FD47B4 /* MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHFacebookImageViewer.m; sourceTree = "<group>"; };
-		E3E3AB7B1E9FE00200FD47B4 /* MNMPullToRefresh.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = MNMPullToRefresh.strings; sourceTree = "<group>"; };
-		E3E3AB7C1E9FE00200FD47B4 /* MNMPullToRefreshManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MNMPullToRefreshManager.h; sourceTree = "<group>"; };
-		E3E3AB7D1E9FE00200FD47B4 /* MNMPullToRefreshManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MNMPullToRefreshManager.m; sourceTree = "<group>"; };
-		E3E3AB7E1E9FE00200FD47B4 /* MNMPullToRefreshView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MNMPullToRefreshView.h; sourceTree = "<group>"; };
-		E3E3AB7F1E9FE00200FD47B4 /* MNMPullToRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MNMPullToRefreshView.m; sourceTree = "<group>"; };
-		E3E3AB811E9FE00200FD47B4 /* QBPopupMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBPopupMenu.h; sourceTree = "<group>"; };
-		E3E3AB821E9FE00200FD47B4 /* QBPopupMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBPopupMenu.m; sourceTree = "<group>"; };
-		E3E3AB831E9FE00200FD47B4 /* QBPopupMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBPopupMenuItem.h; sourceTree = "<group>"; };
-		E3E3AB841E9FE00200FD47B4 /* QBPopupMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBPopupMenuItem.m; sourceTree = "<group>"; };
-		E3E3AB851E9FE00200FD47B4 /* QBPopupMenuOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBPopupMenuOverlayView.h; sourceTree = "<group>"; };
-		E3E3AB861E9FE00200FD47B4 /* QBPopupMenuOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBPopupMenuOverlayView.m; sourceTree = "<group>"; };
 		E3E3AB991E9FE00200FD47B4 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		E3E3AB9A1E9FE00200FD47B4 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		E3E3ABFF1E9FE57700FD47B4 /* melody-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "melody-Info.plist"; sourceTree = "<group>"; };
-		E3E3AC011E9FE58000FD47B4 /* melody-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "melody-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		E3E3AC021E9FE59400FD47B4 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		E3E3AC031E9FE59400FD47B4 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = ../Default.png; sourceTree = "<group>"; };
 		E3E3AC041E9FE59400FD47B4 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "../Default@2x.png"; sourceTree = "<group>"; };
@@ -876,6 +850,7 @@
 				309E1EAD1DE0679500891A87 /* Supporting Files */,
 				E38F06FC1F4B237900FF8A0A /* NSObject_TWTRShareEmailViewController.h */,
 				E364DC661F557ACF001D7C55 /* melody-Bridging-Header.h */,
+				E3912E8421111BF200F1A154 /* melody-Prefix.pch */,
 			);
 			path = melody;
 			sourceTree = "<group>";
@@ -884,7 +859,6 @@
 			isa = PBXGroup;
 			children = (
 				309E1EAE1DE0679500891A87 /* main.m */,
-				E3E3AC011E9FE58000FD47B4 /* melody-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1752,10 +1726,6 @@
 			isa = PBXGroup;
 			children = (
 				E3E3AB6F1E9FE00200FD47B4 /* AsyncImageView */,
-				E3E3AB721E9FE00200FD47B4 /* Growing TextView */,
-				E3E3AB771E9FE00200FD47B4 /* MHFacebOokImage */,
-				E3E3AB7A1E9FE00200FD47B4 /* PullToRefresh */,
-				E3E3AB801E9FE00200FD47B4 /* QBPopup */,
 				E3E3AB981E9FE00200FD47B4 /* WebView */,
 			);
 			name = vendor;
@@ -1768,51 +1738,6 @@
 				E3E3AB711E9FE00200FD47B4 /* AsyncImageView.m */,
 			);
 			path = AsyncImageView;
-			sourceTree = "<group>";
-		};
-		E3E3AB721E9FE00200FD47B4 /* Growing TextView */ = {
-			isa = PBXGroup;
-			children = (
-				E3E3AB731E9FE00200FD47B4 /* HPGrowingTextView.h */,
-				E3E3AB741E9FE00200FD47B4 /* HPGrowingTextView.m */,
-				E3E3AB751E9FE00200FD47B4 /* HPTextViewInternal.h */,
-				E3E3AB761E9FE00200FD47B4 /* HPTextViewInternal.m */,
-			);
-			path = "Growing TextView";
-			sourceTree = "<group>";
-		};
-		E3E3AB771E9FE00200FD47B4 /* MHFacebOokImage */ = {
-			isa = PBXGroup;
-			children = (
-				E3E3AB781E9FE00200FD47B4 /* MHFacebookImageViewer.h */,
-				E3E3AB791E9FE00200FD47B4 /* MHFacebookImageViewer.m */,
-			);
-			path = MHFacebOokImage;
-			sourceTree = "<group>";
-		};
-		E3E3AB7A1E9FE00200FD47B4 /* PullToRefresh */ = {
-			isa = PBXGroup;
-			children = (
-				E3E3AB7B1E9FE00200FD47B4 /* MNMPullToRefresh.strings */,
-				E3E3AB7C1E9FE00200FD47B4 /* MNMPullToRefreshManager.h */,
-				E3E3AB7D1E9FE00200FD47B4 /* MNMPullToRefreshManager.m */,
-				E3E3AB7E1E9FE00200FD47B4 /* MNMPullToRefreshView.h */,
-				E3E3AB7F1E9FE00200FD47B4 /* MNMPullToRefreshView.m */,
-			);
-			path = PullToRefresh;
-			sourceTree = "<group>";
-		};
-		E3E3AB801E9FE00200FD47B4 /* QBPopup */ = {
-			isa = PBXGroup;
-			children = (
-				E3E3AB811E9FE00200FD47B4 /* QBPopupMenu.h */,
-				E3E3AB821E9FE00200FD47B4 /* QBPopupMenu.m */,
-				E3E3AB831E9FE00200FD47B4 /* QBPopupMenuItem.h */,
-				E3E3AB841E9FE00200FD47B4 /* QBPopupMenuItem.m */,
-				E3E3AB851E9FE00200FD47B4 /* QBPopupMenuOverlayView.h */,
-				E3E3AB861E9FE00200FD47B4 /* QBPopupMenuOverlayView.m */,
-			);
-			path = QBPopup;
 			sourceTree = "<group>";
 		};
 		E3E3AB981E9FE00200FD47B4 /* WebView */ = {
@@ -2146,7 +2071,6 @@
 				E31CBC041E82DC0A00C8C7FE /* imageCollectionViewCell.xib in Resources */,
 				307EB90A1DE577AF00152111 /* headphone.png in Resources */,
 				E36A558E203E39950086C791 /* i-9.tif in Resources */,
-				E3E3AB9F1E9FE00200FD47B4 /* MNMPullToRefresh.strings in Resources */,
 				E36BAACA202BACB20062371E /* GoogleService-Info.plist in Resources */,
 				E379B53F1F3C7A8C000BE008 /* TSMessagesDefaultDesign.json in Resources */,
 				E307EAB71F78E95800E279B4 /* red_circle.png in Resources */,
@@ -2411,7 +2335,6 @@
 				E3835B991FABB68500F36529 /* AudioFeedCommentsViewController.m in Sources */,
 				E3141E451E26F41C00664ED3 /* receiveTableViewCell.m in Sources */,
 				30BF47571DE42AD600468E3C /* MessengerViewController.m in Sources */,
-				E3E3ABA31E9FE00200FD47B4 /* QBPopupMenuItem.m in Sources */,
 				E3E3AB9B1E9FE00200FD47B4 /* AsyncImageView.m in Sources */,
 				E30FF5271E5B53EA00C4634D /* DBManager.m in Sources */,
 				E3CACCD81E5E40F1002DDFB2 /* MenuViewController.m in Sources */,
@@ -2430,17 +2353,13 @@
 				309E1EB51DE0679500891A87 /* ViewController.m in Sources */,
 				E37183F72034CB44009B7857 /* EZMicrophone.m in Sources */,
 				307EB9241DE5C3F600152111 /* messagesTableViewCell.m in Sources */,
-				E3E3ABA01E9FE00200FD47B4 /* MNMPullToRefreshManager.m in Sources */,
 				E3A1473620B607EC0069BA83 /* UsersTableViewCell.m in Sources */,
 				E37183F32034CB44009B7857 /* EZAudioPlayer.m in Sources */,
 				E37183FA2034CB44009B7857 /* EZRecorder.m in Sources */,
 				E379B53D1F3C7243000BE008 /* TSBlurView.m in Sources */,
 				E3A420ED20092F6500C2C8D9 /* KSToastView.m in Sources */,
-				E3E3AB9E1E9FE00200FD47B4 /* MHFacebookImageViewer.m in Sources */,
 				3016A6B31DF02CB400B9D32F /* CollectionViewCell.m in Sources */,
-				E3E3AB9C1E9FE00200FD47B4 /* HPGrowingTextView.m in Sources */,
 				E32CB28F1E3173CC000B75F2 /* contactsViewController.m in Sources */,
-				E3E3ABA11E9FE00200FD47B4 /* MNMPullToRefreshView.m in Sources */,
 				E37183EE2034CB44009B7857 /* EZAudioDisplayLink.m in Sources */,
 				E3B3CF4E1E0DC6AF00820A1B /* UpdateAccountViewController.m in Sources */,
 				E37183F52034CB44009B7857 /* EZAudioPlotGL.m in Sources */,
@@ -2464,7 +2383,6 @@
 				E31CBC031E82DC0A00C8C7FE /* imageCollectionViewCell.m in Sources */,
 				30AD5F0C1DE985DE000BBFA6 /* MelodyViewController.m in Sources */,
 				E3106DA71E5CE38600541EEF /* MelodyPackCommentTableViewCell.m in Sources */,
-				E3E3ABA41E9FE00200FD47B4 /* QBPopupMenuOverlayView.m in Sources */,
 				E3E3ABAE1E9FE00200FD47B4 /* WebViewController.m in Sources */,
 				E3C3A3271E0B197000796E09 /* sendMessageTableViewCell.m in Sources */,
 				30BF475A1DE42AE800468E3C /* ProfileViewController.m in Sources */,
@@ -2476,7 +2394,6 @@
 				E31BB5DB1E5769E5008C2A75 /* MBProgressHUD.m in Sources */,
 				E3E52FE31FC35949007E141C /* ProgressHUD.m in Sources */,
 				E350438C200EAE61001680AF /* MelodyHomeTableViewCell.m in Sources */,
-				E3E3ABA21E9FE00200FD47B4 /* QBPopupMenu.m in Sources */,
 				305D30941DE6EEAB0000D14B /* StudioRecViewController.m in Sources */,
 				E379DC7E1F57FC2800DBB50B /* MyManager.m in Sources */,
 				E37183F02034CB44009B7857 /* EZAudioFile.m in Sources */,
@@ -2484,7 +2401,6 @@
 				307EB9161DE5884600152111 /* ActivitiesTableViewCell.m in Sources */,
 				E36A559C203E3B680086C791 /* LaunchViewController.m in Sources */,
 				E37183F12034CB44009B7857 /* EZAudioFloatConverter.m in Sources */,
-				E3E3AB9D1E9FE00200FD47B4 /* HPTextViewInternal.m in Sources */,
 				E3275B001E37FB95001A787F /* CircleProgressBar.m in Sources */,
 				E3CF4B3320C6035500707430 /* NotificationTableViewCell.m in Sources */,
 				E3835B971FABB65900F36529 /* AudioFeedViewController.m in Sources */,
@@ -2677,10 +2593,10 @@
 					"$(PROJECT_DIR)/FacebookSDKs-iOS-4.25.0\\ (1)",
 					"$(PROJECT_DIR)/FacebookSDKs-iOS-4.25.0\\ (1)",
 				);
-				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
+				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "/Users/codingbrains/Desktop/InstaMelody/melody13 -04-2017/melody-Prefix.pch";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "melody/melody-Prefix.pch";
 				INFOPLIST_FILE = melody/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2727,10 +2643,10 @@
 					"$(PROJECT_DIR)/FacebookSDKs-iOS-4.25.0\\ (1)",
 					"$(PROJECT_DIR)/FacebookSDKs-iOS-4.25.0\\ (1)",
 				);
-				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
+				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "/Users/codingbrains/Desktop/InstaMelody/melody13 -04-2017/melody-Prefix.pch";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "melody/melody-Prefix.pch";
 				INFOPLIST_FILE = melody/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
